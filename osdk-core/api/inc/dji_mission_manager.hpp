@@ -162,7 +162,7 @@ public:
 
 private:
   //! @note no dynamic container, so fix the size of the mission container
-  static const int MAX_MISSION_SIZE = 5;
+  static const int MAX_MISSION_SIZE = 5000;
 
   WaypointMission* wpMissionArray[MAX_MISSION_SIZE];
   HotpointMission* hpMissionArray[MAX_MISSION_SIZE];

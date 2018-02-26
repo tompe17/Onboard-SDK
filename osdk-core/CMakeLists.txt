@@ -44,7 +44,7 @@ if (MSVC)
 endif (MSVC)
 
 if (CMAKE_SYSTEM_NAME MATCHES Linux)
-  set(COMMON_CXX_FLAGS "-std=c++11 -pthread")
+  set(COMMON_CXX_FLAGS "-std=c++11 -pthread -fpic")
 endif ()
 
 if (CMAKE_SYSTEM_NAME MATCHES Darwin)
