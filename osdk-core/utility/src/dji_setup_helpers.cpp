@@ -42,8 +42,8 @@ Setup::Setup(bool enableAdvancedSensing) {
 Setup::~Setup() {
 }
 
-void Setup::setupEnvironment() {
-}
+///void Setup::setupEnvironment() {
+///}
 
 bool Setup::initLinker() {
   /*! init linker */
