@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <chrono>
 #include <cstring>
+#include <cstdlib>
 
 #ifdef ANDROID
 #include <malloc.h>
