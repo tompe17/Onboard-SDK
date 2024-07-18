@@ -67,7 +67,7 @@ bool DJICameraStreamDecoder::init()
     return true;
   }
 
-  avcodec_register_all();
+  /// avcodec_register_all();
   pCodecCtx = avcodec_alloc_context3(NULL);
   if (!pCodecCtx)
   {
