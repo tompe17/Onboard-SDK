@@ -79,7 +79,7 @@ Setup::addUSBACMChannel(const char *device, uint32_t baudrate) {
   }
 }
 
-bool Setup::initVehicle() {
-  return true;
-}
+///bool Setup::initVehicle() {
+///  return true;
+///}
 
