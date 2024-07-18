@@ -51,7 +51,7 @@ class Setup {
   bool addFCUartChannel(const char *device, uint32_t baudrate);
   bool addUSBACMChannel(const char *device, uint32_t baudrate);
 
-  virtual bool initVehicle();
+  //virtual bool initVehicle();
   virtual void setupEnvironment();
 
  public:

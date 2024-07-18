@@ -46,7 +46,7 @@ class LinuxSetup : private Setup {
   ~LinuxSetup();
 
  public:
-  virtual void setupEnvironment(int argc, char** argv);
+  void setupEnvironment(int argc, char** argv);
   bool initVehicle();
 
  public:
