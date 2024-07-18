@@ -59,6 +59,8 @@ DJICameraStreamDecoder::~DJICameraStreamDecoder()
 
 bool DJICameraStreamDecoder::init()
 {
+  return false;
+#if 0  
   pthread_mutex_lock(&decodemutex);
 
   if(true == initSuccess)
@@ -110,6 +112,7 @@ bool DJICameraStreamDecoder::init()
   pthread_mutex_unlock(&decodemutex);
 
   return true;
+#endif  
 }
 
 bool DJICameraStreamDecoder::getNewImage(CameraRGBImage & copyOfImage, int timeoutMilliSec)
