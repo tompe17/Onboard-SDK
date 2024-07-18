@@ -221,6 +221,7 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
 
     if (pkt.size > 0)
     {
+#if 0      
       int gotPicture = 0;
       avcodec_decode_video2(pCodecCtx, pFrameYUV, &gotPicture, &pkt);
 
@@ -261,6 +262,7 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
           decodedImageHandler.writeNewImageWithLock(pFrameRGB->data[0], bufSize, w, h);
         }
       }
+#endif      
     }
   }
   pthread_mutex_unlock(&decodemutex);
