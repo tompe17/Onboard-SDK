@@ -266,7 +266,7 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
     }
   }
   pthread_mutex_unlock(&decodemutex);
-  av_free_packet(&pkt);
+  ///  av_free_packet(&pkt);
 }
 
 bool DJICameraStreamDecoder::registerCallback(CameraImageCallback f, void *param)
