@@ -63,7 +63,6 @@ DJICameraStreamDecoder::~DJICameraStreamDecoder()
 
 bool DJICameraStreamDecoder::init()
 {
-  return false;
 #if 1
   pthread_mutex_lock(&decodemutex);
 
