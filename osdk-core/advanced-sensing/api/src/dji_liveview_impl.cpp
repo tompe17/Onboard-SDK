@@ -481,6 +481,7 @@ LiveView::LiveViewErrCode LiveViewImpl::startH264Stream(LiveView::LiveViewCamera
     return LiveView::OSDK_LIVEVIEW_HEART_BEAT_START_FAIL;
   }
 
+  DSTATUS("lLIVEVIEW**** started\n");  
   return LiveView::OSDK_LIVEVIEW_PASS;
 }
 
