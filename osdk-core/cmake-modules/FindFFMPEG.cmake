@@ -66,6 +66,11 @@ FIND_LIBRARY(FFMPEG_avcodec_LIBRARY avcodec
   /usr/lib
 )
 
+FIND_LIBRARY(FFMPEG_libavutil_LIBRARY libavutil
+  /usr/local/lib
+  /usr/lib
+)
+
 FIND_LIBRARY(FFMPEG_avutil_LIBRARY avutil
   /usr/local/lib
   /usr/lib
@@ -115,12 +120,13 @@ SET(FFMPEG_LIBRARIES)
 IF(FFMPEG_INCLUDE_DIR)
   IF(FFMPEG_avformat_LIBRARY)
     IF(FFMPEG_avcodec_LIBRARY)
-      IF(FFMPEG_avutil_LIBRARY)
+      IF(FFMPEG_libavutil_LIBRARY)
         SET( FFMPEG_FOUND "YES" )
         SET( FFMPEG_BASIC_LIBRARIES 
           ${FFMPEG_avcodec_LIBRARY} 
           ${FFMPEG_avformat_LIBRARY}
           ${FFMPEG_avutil_LIBRARY} 
+          ${FFMPEG_libavutil_LIBRARY} 
           )
 
         # swscale is always a part of newer ffmpeg distros
