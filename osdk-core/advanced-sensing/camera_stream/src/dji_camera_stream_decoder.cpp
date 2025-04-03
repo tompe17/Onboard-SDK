@@ -207,7 +207,7 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
   AVPacket pkt;
   av_init_packet(&pkt);
   pthread_mutex_lock(&decodemutex);
-  DSTATUS("=======================decodeBuffer.");
+
   while (remainingLen > 0)
   {
     if (!pCodecParserCtx || !pCodecCtx) {
@@ -224,8 +224,6 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
 
     if (pkt.size > 0)
     {
-      int gotPicture = 0;
-
       int ret = avcodec_send_packet(pCodecCtx, &pkt);
       if (ret == AVERROR(EAGAIN)) {
         ;
@@ -287,46 +285,6 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
         }
         
       }
-
-#if 0
-      if (!gotPicture)
-      {
-        //DSTATUS_PRIVATE("Got Frame, but no picture\n");
-        continue;
-      }
-      else
-      {
-        int w = pFrameYUV->width;
-        int h = pFrameYUV->height;
-        //DSTATUS_PRIVATE("Got picture! size=%dx%d\n", w, h);
-
-        if(NULL == pSwsCtx)
-        {
-          pSwsCtx = sws_getContext(w, h, pCodecCtx->pix_fmt,
-                                   w, h, AV_PIX_FMT_RGB24,
-                                   4, NULL, NULL, NULL);
-        }
-
-        if(NULL == rgbBuf)
-        {
-          bufSize = avpicture_get_size(AV_PIX_FMT_RGB24, w, h);
-          rgbBuf = (uint8_t*) av_malloc(bufSize);
-          avpicture_fill((AVPicture*)pFrameRGB, rgbBuf, AV_PIX_FMT_RGB24, w, h);
-        }
-
-        if(NULL != pSwsCtx && NULL != rgbBuf)
-        {
-          sws_scale(pSwsCtx,
-                    (uint8_t const *const *) pFrameYUV->data, pFrameYUV->linesize, 0, pFrameYUV->height,
-                             pFrameRGB->data, pFrameRGB->linesize);
-
-          pFrameRGB->height = h;
-          pFrameRGB->width = w;
-
-          decodedImageHandler.writeNewImageWithLock(pFrameRGB->data[0], bufSize, w, h);
-        }
-      }
-#endif      
     }
   }
   pthread_mutex_unlock(&decodemutex);
