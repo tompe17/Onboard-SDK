@@ -241,10 +241,14 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
       while (ret >= 0) {
         ret = avcodec_receive_frame(pCodecCtx, pFrameYUV);
         if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) {
+          fprintf(stderr, "Error during decoding: EAGAIN - not fatal\n");
+          break;
+        }
+        if (ret == AVERROR_EOF) {
           fprintf(stderr, "Error during decoding: EOF\n");
           break;
         } else if (ret < 0) {
-          fprintf(stderr, "Error during decoding\n");
+          fprintf(stderr, "Error during decoding - fatal: %d\n", ret);
           break;
         }
         // Have frame
@@ -259,7 +263,7 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
                                    w, h, AV_PIX_FMT_RGB24,
                                    4, NULL, NULL, NULL);
         }
-#if 1
+
         if(NULL == rgbBuf)
         {
           // bufSize = avpicture_get_size(AV_PIX_FMT_RGB24, w, h);
@@ -269,7 +273,7 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
           //avpicture_fill((AVPicture*)pFrameRGB, rgbBuf, AV_PIX_FMT_RGB24, w, h);
           av_image_fill_arrays(pFrameRGB->data,pFrameRGB->linesize,(uint8_t*)rgbBuf,AV_PIX_FMT_RGB24, w, h, 1);
         }
-#endif
+        
         if(NULL != pSwsCtx && NULL != rgbBuf)
         {
           sws_scale(pSwsCtx,
