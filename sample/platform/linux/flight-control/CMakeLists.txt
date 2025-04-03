@@ -27,6 +27,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -g -O0")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../core/inc)
 
+find_package(FFMPEG REQUIRED)
+
 FILE(GLOB SOURCE_FILES *.hpp *.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../common/dji_linux_environment.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../common/dji_linux_helpers.cpp
@@ -41,3 +43,4 @@ if (OSDK_HOTPLUG)
 endif ()
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+target_link_libraries(${PROJECT_NAME} ${FFMPEG_LIBRARIES} pthread)

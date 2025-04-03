@@ -27,8 +27,10 @@
 #include "dji_log.hpp"
 #include "unistd.h"
 #include "pthread.h"
+extern "C" {
 #include "libavutil/avutil.h"
 #include "libavutil/imgutils.h"
+}
 
 DJICameraStreamDecoder::DJICameraStreamDecoder()
   : initSuccess(false),
