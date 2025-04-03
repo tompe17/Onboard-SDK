@@ -173,11 +173,8 @@ void DJICameraStreamDecoder::cleanup()
 
 void* DJICameraStreamDecoder::callbackThreadEntry(void* p)
 {
-  DSTATUS("****** Decoder Callback Thread Start Before USLEEP******\n");
   usleep(50*1000);
-  DSTATUS("****** Decoder Callback Thread Start After SLeep\n");  
   static_cast<DJICameraStreamDecoder*>(p)->callbackThreadFunc();
-  DSTATUS("****** Decoder Callback Thread After Call to callbackthreadfunc\n");  
   return NULL;
 }
 
@@ -187,7 +184,6 @@ void DJICameraStreamDecoder::callbackThreadFunc()
   while(cbThreadIsRunning)
   {
     CameraRGBImage copyOfImage;
-    DSTATUS("****** callbackThreadFunc getNewImage ******\n");      
     if(!decodedImageHandler.getNewImageWithLock(copyOfImage, 1000))
     //    if(!decodedImageHandler.getNewImageWithLock(copyOfImage, 10))    
     {
@@ -195,10 +191,8 @@ void DJICameraStreamDecoder::callbackThreadFunc()
       continue;
     }
 
-    DSTATUS("****** callbackThreadFunc before if(cb) ******\n");          
     if(cb)
     {
-      DSTATUS("****** callbackThreadFunc copy image ******\n");      
       (*cb)(copyOfImage, cbUserParam);
     }
   }
