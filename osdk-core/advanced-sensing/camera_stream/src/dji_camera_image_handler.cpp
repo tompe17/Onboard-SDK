@@ -24,6 +24,7 @@
  */
 
 #include "dji_camera_image_handler.hpp"
+#include "stdio.h"
 
 DJICameraImageHandler::DJICameraImageHandler():m_newImageFlag(false)
 {
