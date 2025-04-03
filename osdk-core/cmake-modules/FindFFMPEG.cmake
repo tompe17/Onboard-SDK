@@ -126,7 +126,6 @@ IF(FFMPEG_INCLUDE_DIR)
           ${FFMPEG_avcodec_LIBRARY} 
           ${FFMPEG_avformat_LIBRARY}
           ${FFMPEG_avutil_LIBRARY} 
-          ${FFMPEG_libavutil_LIBRARY} 
           )
 
         # swscale is always a part of newer ffmpeg distros
