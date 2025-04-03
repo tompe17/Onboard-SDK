@@ -175,7 +175,9 @@ void* DJICameraStreamDecoder::callbackThreadEntry(void* p)
 {
   DSTATUS("****** Decoder Callback Thread Start ******\n");
   usleep(50*1000);
+  DSTATUS("****** Decoder Callback Thread Start After SLeep\n");  
   static_cast<DJICameraStreamDecoder*>(p)->callbackThreadFunc();
+  DSTATUS("****** Decoder Callback Thread After Call to callbackthreadfunc\n");  
   return NULL;
 }
 
