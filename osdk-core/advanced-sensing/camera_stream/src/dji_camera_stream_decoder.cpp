@@ -226,7 +226,7 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
     {
       int gotPicture = 0;
 
-      int ret = avcodec_send_packet(pCodecCtx, pkt.data);
+      int ret = avcodec_send_packet(pCodecCtx, pkt);
       if (ret < 0) {
         fprintf(stderr, "Error sending a packet for decoding: %d\n", pkt.size);
       }
