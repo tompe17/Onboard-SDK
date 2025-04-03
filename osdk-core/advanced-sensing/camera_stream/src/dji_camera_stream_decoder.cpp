@@ -241,7 +241,7 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
       while (ret >= 0) {
         ret = avcodec_receive_frame(pCodecCtx, pFrameYUV);
         if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) {
-          fprintf(stderr, "Error during decoding: EAGAIN - not fatal\n");
+          // fprintf(stderr, "Error during decoding: EAGAIN - not fatal\n");
           break;
         }
         if (ret == AVERROR_EOF) {
@@ -255,7 +255,7 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
         int w = pFrameYUV->width;
         int h = pFrameYUV->height;
         // DSTATUS_PRIVATE("Got picture! size=%dx%d\n", w, h);
-        fprintf(stderr, "Got picture! size=%dx%d\n", w, h);
+        //        fprintf(stderr, "Got picture! size=%dx%d\n", w, h);
         
         if(NULL == pSwsCtx)
         {
