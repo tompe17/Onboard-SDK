@@ -49,6 +49,7 @@ void show_rgb(CameraRGBImage img, void *p)
 {
   string name = string(reinterpret_cast<char *>(p));
   cout << "#### Got image from:\t" << name << endl;
+  return;
 #ifdef OPEN_CV_INSTALLED
   Mat mat(img.height, img.width, CV_8UC3, img.rawData.data(), img.width*3);
   cvtColor(mat, mat, COLOR_RGB2BGR);
