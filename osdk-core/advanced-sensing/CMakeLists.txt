@@ -105,7 +105,7 @@ FILE(GLOB CLOSED_SRC
 ##add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/camera_stream/src)
 
 add_library(${PROJECT_NAME} STATIC ${CLOSED_SRC})
-target_link_libraries(${PROJECT_NAME} ${FFMPEG_LIBRARIES} pthread)
+target_link_libraries(${PROJECT_NAME} ${FFMPEG_LIBRARIES} pthread /usr/lib/x86_64-linux-gnu/libavutil.a)
 
 set(CLOSED_SOURCE_LIBS ${NEW_OSDK_CORE_SRC}/advanced-sensing-2.0.3)
 
