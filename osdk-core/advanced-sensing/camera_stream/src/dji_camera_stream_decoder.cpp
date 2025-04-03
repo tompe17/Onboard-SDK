@@ -210,7 +210,7 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
   {
     if (!pCodecParserCtx || !pCodecCtx) {
       //DSTATUS("Invalid decoder ctx.");
-      fprintf(stderr, "Invalid decoder ctx.")
+      fprintf(stderr, "Invalid decoder ctx.");
       break;
     }
     processedLen = av_parser_parse2(pCodecParserCtx, pCodecCtx,
