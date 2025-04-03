@@ -210,7 +210,7 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
   {
     if (!pCodecParserCtx || !pCodecCtx) {
       //DSTATUS("Invalid decoder ctx.");
-      fprinf(stderr, "Invalid decoder ctx.")
+      fprintf(stderr, "Invalid decoder ctx.")
       break;
     }
     processedLen = av_parser_parse2(pCodecParserCtx, pCodecCtx,
@@ -252,14 +252,14 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
                                    w, h, AV_PIX_FMT_RGB24,
                                    4, NULL, NULL, NULL);
         }
-
+#if 0
         if(NULL == rgbBuf)
         {
           bufSize = avpicture_get_size(AV_PIX_FMT_RGB24, w, h);
           rgbBuf = (uint8_t*) av_malloc(bufSize);
           avpicture_fill((AVPicture*)pFrameRGB, rgbBuf, AV_PIX_FMT_RGB24, w, h);
         }
-
+#endif
         if(NULL != pSwsCtx && NULL != rgbBuf)
         {
           sws_scale(pSwsCtx,
