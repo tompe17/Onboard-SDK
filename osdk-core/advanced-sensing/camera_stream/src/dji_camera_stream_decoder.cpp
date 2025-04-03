@@ -181,18 +181,22 @@ void* DJICameraStreamDecoder::callbackThreadEntry(void* p)
 
 void DJICameraStreamDecoder::callbackThreadFunc()
 {
+  DSTATUS("****** Decoder Callback Thread Func ******\n");  
   while(cbThreadIsRunning)
   {
     CameraRGBImage copyOfImage;
-    //    if(!decodedImageHandler.getNewImageWithLock(copyOfImage, 1000))
-    if(!decodedImageHandler.getNewImageWithLock(copyOfImage, 10))    
+    DSTATUS("****** callbackThreadFunc getNewImage ******\n");      
+    if(!decodedImageHandler.getNewImageWithLock(copyOfImage, 1000))
+    //    if(!decodedImageHandler.getNewImageWithLock(copyOfImage, 10))    
     {
       DDEBUG_PRIVATE("Decoder Callback Thread: Get image time out\n");
       continue;
     }
 
+    DSTATUS("****** callbackThreadFunc before if(cb) ******\n");          
     if(cb)
     {
+      DSTATUS("****** callbackThreadFunc copy image ******\n");      
       (*cb)(copyOfImage, cbUserParam);
     }
   }
