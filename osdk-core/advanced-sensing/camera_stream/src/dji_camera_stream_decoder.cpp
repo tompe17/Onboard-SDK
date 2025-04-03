@@ -227,14 +227,18 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
       int gotPicture = 0;
 
       int ret = avcodec_send_packet(pCodecCtx, &pkt);
-      if (ret < 0) {
+      if (ret == AVERROR(EAGAIN)) {
+        ;
+      } else if (ret < 0) {
         fprintf(stderr, "Error sending a packet for decoding: %d - %d\n", pkt.size,
                 ret);
+      } else {
+        // ret == 0
       }
       
       // avcodec_decode_video2(pCodecCtx, pFrameYUV, &gotPicture, &pkt);
 
-      while (ret > 0) {
+      while (ret >= 0) {
         ret = avcodec_receive_frame(pCodecCtx, pFrameYUV);
         if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) {
           fprintf(stderr, "Error during decoding: EOF\n");
