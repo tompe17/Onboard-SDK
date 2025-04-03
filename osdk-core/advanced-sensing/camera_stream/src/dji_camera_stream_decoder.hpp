@@ -52,7 +52,7 @@ private:
 
   pthread_mutex_t       decodemutex;
   AVCodecContext*       pCodecCtx;
-  AVCodec*              pCodec;
+  const AVCodec*              pCodec;
   AVCodecParserContext* pCodecParserCtx;
   SwsContext*           pSwsCtx;
 
