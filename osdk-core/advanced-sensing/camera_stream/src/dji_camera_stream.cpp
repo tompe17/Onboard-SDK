@@ -31,6 +31,7 @@
 
 void decodeStream(void* cbParam, uint8_t* buf, int len)
 {
+  DSTATUS("decodeStream*************************");
   DJICameraStreamDecoder *d = reinterpret_cast<DJICameraStreamDecoder*>(cbParam);
   d->decodeBuffer(buf, len);
 }
