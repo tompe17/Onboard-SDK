@@ -232,10 +232,10 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
 
       while (ret > 0) {
         ret = avcodec_receive_frame(pCodecCtx, pFrameYUV);
-        if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
+        if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) {
           fprintf(stderr, "Error during decoding: EOF\n");
           break;
-        else if (ret < 0) {
+        } else if (ret < 0) {
           fprintf(stderr, "Error during decoding\n");
           break;
         }
