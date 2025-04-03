@@ -252,7 +252,7 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
                                    w, h, AV_PIX_FMT_RGB24,
                                    4, NULL, NULL, NULL);
         }
-#if 0
+#if 1
         if(NULL == rgbBuf)
         {
           bufSize = avpicture_get_size(AV_PIX_FMT_RGB24, w, h);
