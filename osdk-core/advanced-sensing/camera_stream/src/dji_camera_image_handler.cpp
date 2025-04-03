@@ -46,6 +46,7 @@ bool DJICameraImageHandler::getNewImageWithLock(CameraRGBImage & copyOfImage, in
    * Because this is the behavior of pthread_cond_timedwait.
    */
   pthread_mutex_lock(&m_mutex);
+  fprintf(stderr, "getNewImageWithLock: Got LOCK");
   if(m_newImageFlag)
   {
     /* At this point, a copy of m_img is made, so it is safe to 
@@ -57,6 +58,7 @@ bool DJICameraImageHandler::getNewImageWithLock(CameraRGBImage & copyOfImage, in
   }
   else
   {
+    fprintf(stderr, "getNewImageWithLock: Wait for image");    
     struct timespec absTimeout;
     clock_gettime(CLOCK_REALTIME, &absTimeout);
     absTimeout.tv_nsec += timeoutMilliSec * 1e6;
