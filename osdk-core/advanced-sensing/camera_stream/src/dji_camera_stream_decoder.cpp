@@ -184,7 +184,8 @@ void DJICameraStreamDecoder::callbackThreadFunc()
   while(cbThreadIsRunning)
   {
     CameraRGBImage copyOfImage;
-    if(!decodedImageHandler.getNewImageWithLock(copyOfImage, 1000))
+    //    if(!decodedImageHandler.getNewImageWithLock(copyOfImage, 1000))
+    if(!decodedImageHandler.getNewImageWithLock(copyOfImage, 10))    
     {
       DDEBUG_PRIVATE("Decoder Callback Thread: Get image time out\n");
       continue;
