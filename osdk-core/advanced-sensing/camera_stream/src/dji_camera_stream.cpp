@@ -39,6 +39,7 @@ DJICameraStream::DJICameraStream(CameraType camType) :
         cameraType(camType)
 {
   cameraNameStr = (camType == FPV_CAMERA) ? std::string("FPV_CAMERA") : std::string("MAIN_CAMERA");
+  DSTATUS("DJICameraStream**********************************");
   rawDataStream = new DJICameraStreamLink(camType);
   decoder       = new DJICameraStreamDecoder;
 }

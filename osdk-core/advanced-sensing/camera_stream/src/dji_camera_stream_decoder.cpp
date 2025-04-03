@@ -67,7 +67,7 @@ bool DJICameraStreamDecoder::init()
 
   if(true == initSuccess)
   {
-    DSTATUS_PRIVATE("Decoder already initialized.\n");
+    DSTATUS("Decoder already initialized.\n");
     return true;
   }
 
