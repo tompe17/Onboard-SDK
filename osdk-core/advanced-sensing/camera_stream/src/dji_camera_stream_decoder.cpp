@@ -240,6 +240,9 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
           break;
         }
         // Have frame
+        int w = pFrameYUV->width;
+        int h = pFrameYUV->height;
+        DSTATUS_PRIVATE("Got picture! size=%dx%d\n", w, h);
       }
 
 #if 0
