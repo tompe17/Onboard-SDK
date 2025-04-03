@@ -63,7 +63,6 @@ DJICameraStreamDecoder::~DJICameraStreamDecoder()
 
 bool DJICameraStreamDecoder::init()
 {
-#if 1
   pthread_mutex_lock(&decodemutex);
 
   if(true == initSuccess)
@@ -115,7 +114,6 @@ bool DJICameraStreamDecoder::init()
   pthread_mutex_unlock(&decodemutex);
 
   return true;
-#endif  
 }
 
 bool DJICameraStreamDecoder::getNewImage(CameraRGBImage & copyOfImage, int timeoutMilliSec)
@@ -175,7 +173,7 @@ void DJICameraStreamDecoder::cleanup()
 
 void* DJICameraStreamDecoder::callbackThreadEntry(void* p)
 {
-  DSTATUS_PRIVATE("****** Decoder Callback Thread Start ******\n");
+  DSTATUS("****** Decoder Callback Thread Start ******\n");
   usleep(50*1000);
   static_cast<DJICameraStreamDecoder*>(p)->callbackThreadFunc();
   return NULL;
@@ -209,10 +207,11 @@ void DJICameraStreamDecoder::decodeBuffer(uint8_t* buf, int bufLen)
   AVPacket pkt;
   av_init_packet(&pkt);
   pthread_mutex_lock(&decodemutex);
+  DSTATUS("=======================decodeBuffer.");
   while (remainingLen > 0)
   {
     if (!pCodecParserCtx || !pCodecCtx) {
-      //DSTATUS("Invalid decoder ctx.");
+      DSTATUS("Invalid decoder ctx.");
       fprintf(stderr, "Invalid decoder ctx.");
       break;
     }
