@@ -465,7 +465,7 @@ std::vector<WaypointV2> WaypointV2MissionSample::generateLineWaypoints(float32_t
   startPoint.relativeHeight = 15;
   setWaypointV2Defaults(startPoint);
   startPoint.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
-  startPoint.dampingDistance = 40.0
+  startPoint.dampingDistance = 40.0;
   waypointList.push_back(startPoint);
 
   // Iterative algorithm
