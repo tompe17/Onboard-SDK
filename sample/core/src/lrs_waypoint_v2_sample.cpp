@@ -277,8 +277,8 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::initMissionSetting(int timeout
   missionInitSettings.missionID = rand();
   missionInitSettings.repeatTimes  = 1;
   missionInitSettings.finishedAction = DJIWaypointV2MissionFinishedNoAction;
-  missionInitSettings.maxFlightSpeed = 10;
-  missionInitSettings.autoFlightSpeed = 2;
+  missionInitSettings.maxFlightSpeed = 15;
+  missionInitSettings.autoFlightSpeed = 7;
   missionInitSettings.exitMissionOnRCSignalLost = 1;
   missionInitSettings.gotoFirstWaypointMode = DJIWaypointV2MissionGotoFirstWaypointModePointToPoint;
   //  missionInitSettings.mission =  generatePolygonWaypoints(radius, polygonNum);
