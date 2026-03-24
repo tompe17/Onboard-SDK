@@ -282,7 +282,7 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::initMissionSetting(int timeout
   missionInitSettings.exitMissionOnRCSignalLost = 1;
   missionInitSettings.gotoFirstWaypointMode = DJIWaypointV2MissionGotoFirstWaypointModePointToPoint;
   //  missionInitSettings.mission =  generatePolygonWaypoints(radius, polygonNum);
-  missionInitSettings.mission =  generateLineWaypoints(radius, polygonNum);  
+  missionInitSettings.mission =  generateLineWaypoints(10.0, 6);  
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   ErrorCode::ErrorCodeType ret = vehiclePtr->waypointV2Mission->init(&missionInitSettings,timeout);
@@ -464,6 +464,8 @@ std::vector<WaypointV2> WaypointV2MissionSample::generateLineWaypoints(float32_t
   startPoint.longitude = subscribeGPosition.longitude;
   startPoint.relativeHeight = 15;
   setWaypointV2Defaults(startPoint);
+  startPoint.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+  startPoint.dampingDistance = 0.0
   waypointList.push_back(startPoint);
 
   // Iterative algorithm
@@ -471,6 +473,10 @@ std::vector<WaypointV2> WaypointV2MissionSample::generateLineWaypoints(float32_t
     setWaypointV2Defaults(waypointV2);
     float32_t X = step + i*step;
     float32_t Y = 0.0;
+    waypointV2.dampingDistance = 0.0;
+    if (i == (n_points - 1)) {
+      waypointV2.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
+    }
     waypointV2.latitude = X/EARTH_RADIUS + startPoint.latitude;
     waypointV2.longitude = Y/(EARTH_RADIUS * cos(startPoint.latitude)) + startPoint.longitude;
     waypointV2.relativeHeight = startPoint.relativeHeight ;
