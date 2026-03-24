@@ -513,7 +513,7 @@ void WaypointV2MissionSample::setWaypointV2Defaults(WaypointV2& waypointV2) {
   waypointV2.config.useLocalCruiseVel = 0;
   waypointV2.config.useLocalMaxVel = 0;
 
-  waypointV2.dampingDistance = 40;
+  waypointV2.dampingDistance = 40.0;
   waypointV2.heading = 0;
   waypointV2.turnMode = DJIWaypointV2TurnModeClockwise;
 
