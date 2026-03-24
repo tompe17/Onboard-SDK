@@ -264,10 +264,10 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::runWaypointV2Mission()
 
 ErrorCode::ErrorCodeType WaypointV2MissionSample::initMissionSetting(int timeout) {
 
-  uint16_t polygonNum = 6;
-  float32_t radius = 6;
+  //uint16_t polygonNum = 6;
+  //float32_t radius = 6;
 
-  uint16_t actionNum = 5;
+  //uint16_t actionNum = 5;
   srand(int(time(0)));
 
   /*! Generate waypoints*/
