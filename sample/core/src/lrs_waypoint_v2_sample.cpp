@@ -374,6 +374,26 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::stopWaypointMission(int timeou
   return ret;
 }
 
+ErrorCode::ErrorCodeType WaypointV2MissionSample::startWaypointMission(int timeout) {
+  ErrorCode::ErrorCodeType ret = vehiclePtr->waypointV2Mission->start(timeout);
+  if(ret != ErrorCode::SysCommonErr::Success)
+  {
+    DERROR("Start waypoint v2 mission ErrorCode:0x%lX", ret);
+    ErrorCode::printErrorCodeMsg(ret);
+    return ret;
+  }
+  else
+  {
+    DSTATUS("Start waypoint v2 mission successfully!");
+  }
+  return ret;
+}
+
+ErrorCode::ErrorCodeType WaypointV2MissionSample::stopWaypointMission(int timeout) {
+  ErrorCode::ErrorCodeType ret = vehiclePtr->waypointV2Mission->stop(timeout);
+  return ret;
+}
+
 ErrorCode::ErrorCodeType WaypointV2MissionSample::pauseWaypointMission(int timeout) {
   ErrorCode::ErrorCodeType ret = vehiclePtr->waypointV2Mission->pause(timeout);
   if(ret != ErrorCode::SysCommonErr::Success)
@@ -518,6 +538,50 @@ std::vector<WaypointV2> WaypointV2MissionSample::generateStairWaypoints(float32_
       X += step;
     } else {
       Y += step;
+    }
+    waypointV2.dampingDistance = 0.0;
+    /// waypointV2.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+    waypointV2.waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
+    if (i == (n_points - 1)) {
+      waypointV2.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
+      waypointV2.dampingDistance = 0.0;      
+    }
+    waypointV2.latitude = X/EARTH_RADIUS + startPoint.latitude;
+    waypointV2.longitude = Y/(EARTH_RADIUS * cos(startPoint.latitude)) + startPoint.longitude;
+    waypointV2.relativeHeight = startPoint.relativeHeight ;
+    waypointList.push_back(waypointV2);
+  }
+  /// waypointList.push_back(startPoint);
+  return waypointList;
+}
+
+std::vector<WaypointV2> WaypointV2MissionSample::generateAngleWaypoints(float32_t step, float32_t angle_deg, uint16_t n_points) {
+  // Let's create a vector to store our waypoints in.
+
+  float32_t angle = angle_deg*M_PI/180.0;
+  std::vector<WaypointV2> waypointList;
+  WaypointV2 startPoint;
+  WaypointV2 waypointV2;
+
+  Telemetry::TypeMap<TOPIC_GPS_FUSED>::type subscribeGPosition = vehiclePtr->subscribe->getValue<TOPIC_GPS_FUSED>();
+  startPoint.latitude  = subscribeGPosition.latitude;
+  startPoint.longitude = subscribeGPosition.longitude;
+  startPoint.relativeHeight = 15;
+  setWaypointV2Defaults(startPoint);
+  startPoint.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+  startPoint.dampingDistance = 1.0;
+  /// waypointList.push_back(startPoint);
+
+  // Iterative algorithm
+  float32_t X = 20.0;
+  float32_t Y = 0.0;
+  for (int i = 0; i < n_points; i++) {
+    setWaypointV2Defaults(waypointV2);
+    if (i % 2) {
+      X += tan(angle)*step;
+    } else {
+      X -= tan(angle)*step;
+      // Y += step;
     }
     waypointV2.dampingDistance = 0.0;
     /// waypointV2.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
