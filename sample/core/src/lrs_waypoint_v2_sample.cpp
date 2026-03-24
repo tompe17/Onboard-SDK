@@ -474,6 +474,7 @@ std::vector<WaypointV2> WaypointV2MissionSample::generateLineWaypoints(float32_t
     float32_t X = step + i*step;
     float32_t Y = 0.0;
     waypointV2.dampingDistance = 0.0;
+    waypointV2.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;    
     if (i == (n_points - 1)) {
       waypointV2.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
     }
