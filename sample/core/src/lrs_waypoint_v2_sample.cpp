@@ -453,7 +453,7 @@ std::vector<WaypointV2> WaypointV2MissionSample::generatePolygonWaypoints(float3
     waypointV2.relativeHeight = startPoint.relativeHeight ;
     waypointList.push_back(waypointV2);
   }
-  waypointList.push_back(startPoint);
+  /// waypointList.push_back(startPoint);
   return waypointList;
 }
 
