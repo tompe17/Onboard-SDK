@@ -51,6 +51,10 @@ add_executable(djiosdk-waypoint-v2-sample
         ${SOURCE_FILES}
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../core/src/waypoint_v2_sample.cpp
         waypoint_v2_main.cpp)
+add_executable(örs-djiosdk-waypoint-v2-sample
+        ${SOURCE_FILES}
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../core/src/lrs_waypoint_v2_sample.cpp
+        waypoint_v2_main.cpp)
 endif(WAYPT2_CORE)
 
 
