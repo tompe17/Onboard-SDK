@@ -467,6 +467,8 @@ std::vector<WaypointV2> WaypointV2MissionSample::generateLineWaypoints(float32_t
   startPoint.latitude  = subscribeGPosition.latitude;
   startPoint.longitude = subscribeGPosition.longitude;
   startPoint.relativeHeight = 15;
+  waypointV2.latitude = -step/EARTH_RADIUS + startPoint.latitude;
+  waypointV2.longitude = -step/(EARTH_RADIUS * cos(startPoint.latitude)) + startPoint.longitude;
   setWaypointV2Defaults(startPoint);
   startPoint.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
   startPoint.dampingDistance = 0.0;
