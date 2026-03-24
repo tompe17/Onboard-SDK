@@ -453,7 +453,7 @@ std::vector<WaypointV2> WaypointV2MissionSample::generatePolygonWaypoints(float3
     waypointV2.relativeHeight = startPoint.relativeHeight ;
     waypointList.push_back(waypointV2);
   }
-  /// waypointList.push_back(startPoint);
+  waypointList.push_back(startPoint);
   return waypointList;
 }
 
@@ -470,7 +470,7 @@ std::vector<WaypointV2> WaypointV2MissionSample::generateLineWaypoints(float32_t
   setWaypointV2Defaults(startPoint);
   startPoint.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
   startPoint.dampingDistance = 0.0;
-  waypointList.push_back(startPoint);
+  /// waypointList.push_back(startPoint);
 
   // Iterative algorithm
   for (int i = 0; i < n_points; i++) {
@@ -488,7 +488,7 @@ std::vector<WaypointV2> WaypointV2MissionSample::generateLineWaypoints(float32_t
     waypointV2.relativeHeight = startPoint.relativeHeight ;
     waypointList.push_back(waypointV2);
   }
-  waypointList.push_back(startPoint);
+  /// waypointList.push_back(startPoint);
   return waypointList;
 }
 
