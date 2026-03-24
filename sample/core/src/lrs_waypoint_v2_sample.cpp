@@ -506,7 +506,7 @@ std::vector<WaypointV2> WaypointV2MissionSample::generateStairWaypoints(float32_
   startPoint.relativeHeight = 15;
   setWaypointV2Defaults(startPoint);
   startPoint.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
-  startPoint.dampingDistance = 0.0;
+  startPoint.dampingDistance = 1.0;
   /// waypointList.push_back(startPoint);
 
   // Iterative algorithm
@@ -519,11 +519,11 @@ std::vector<WaypointV2> WaypointV2MissionSample::generateStairWaypoints(float32_
     } else {
       Y += step;
     }
-    waypointV2.dampingDistance = 0.0;
+    waypointV2.dampingDistance = 1.0;
     waypointV2.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;    
     if (i == (n_points - 1)) {
       waypointV2.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
-      waypointV2.dampingDistance = 0.0;      
+      waypointV2.dampingDistance = 1.0;      
     }
     waypointV2.latitude = X/EARTH_RADIUS + startPoint.latitude;
     waypointV2.longitude = Y/(EARTH_RADIUS * cos(startPoint.latitude)) + startPoint.longitude;
