@@ -281,7 +281,7 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::initMissionSetting(int timeout
   missionInitSettings.missionID = rand();
   missionInitSettings.repeatTimes  = 1;
   missionInitSettings.finishedAction = DJIWaypointV2MissionFinishedNoAction;
-  missionInitSettings.finishedAction = DJIWaypointV2MissionFinishedGotoFirstWaypoint;
+  missionInitSettings.finishedAction = DJIWaypointV2MissionFinishedGoToFirstWaypoint;
   missionInitSettings.maxFlightSpeed = 15;
   missionInitSettings.autoFlightSpeed = 7;
   missionInitSettings.exitMissionOnRCSignalLost = 1;
