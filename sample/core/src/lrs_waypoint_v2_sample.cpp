@@ -282,7 +282,7 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::initMissionSetting(int timeout
   missionInitSettings.exitMissionOnRCSignalLost = 1;
   missionInitSettings.gotoFirstWaypointMode = DJIWaypointV2MissionGotoFirstWaypointModePointToPoint;
   //  missionInitSettings.mission =  generatePolygonWaypoints(radius, polygonNum);
-  missionInitSettings.mission =  generateLineWaypoints(10.0, 10);  
+  missionInitSettings.mission =  generateLineWaypoints(20.0, 10);  
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   ErrorCode::ErrorCodeType ret = vehiclePtr->waypointV2Mission->init(&missionInitSettings,timeout);
