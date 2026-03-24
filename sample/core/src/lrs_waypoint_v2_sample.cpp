@@ -374,25 +374,6 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::stopWaypointMission(int timeou
   return ret;
 }
 
-ErrorCode::ErrorCodeType WaypointV2MissionSample::startWaypointMission(int timeout) {
-  ErrorCode::ErrorCodeType ret = vehiclePtr->waypointV2Mission->start(timeout);
-  if(ret != ErrorCode::SysCommonErr::Success)
-  {
-    DERROR("Start waypoint v2 mission ErrorCode:0x%lX", ret);
-    ErrorCode::printErrorCodeMsg(ret);
-    return ret;
-  }
-  else
-  {
-    DSTATUS("Start waypoint v2 mission successfully!");
-  }
-  return ret;
-}
-
-ErrorCode::ErrorCodeType WaypointV2MissionSample::stopWaypointMission(int timeout) {
-  ErrorCode::ErrorCodeType ret = vehiclePtr->waypointV2Mission->stop(timeout);
-  return ret;
-}
 
 ErrorCode::ErrorCodeType WaypointV2MissionSample::pauseWaypointMission(int timeout) {
   ErrorCode::ErrorCodeType ret = vehiclePtr->waypointV2Mission->pause(timeout);
