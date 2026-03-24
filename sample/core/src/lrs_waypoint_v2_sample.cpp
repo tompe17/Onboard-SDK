@@ -170,7 +170,7 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::runWaypointV2Mission()
     return false;
   }
 
-  int timeout = 1;
+  int timeout = 100;
   GetRemainRamAck actionMemory = {0};
   ErrorCode::ErrorCodeType ret;
 
