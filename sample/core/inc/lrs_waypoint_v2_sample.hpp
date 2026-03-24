@@ -161,6 +161,7 @@ public:
 
   std::vector<WaypointV2> generatePolygonWaypoints(float32_t radius, uint16_t polygonNum);
   std::vector<WaypointV2> generateLineWaypoints(float32_t step, uint16_t n_points);
+  std::vector<WaypointV2> generateStairWaypoints(float32_t step, uint16_t n_points);
 
 
   /*! @brief Sample generate polygon waypoints

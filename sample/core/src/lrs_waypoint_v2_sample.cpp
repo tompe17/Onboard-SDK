@@ -286,8 +286,9 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::initMissionSetting(int timeout
   missionInitSettings.autoFlightSpeed = 7;
   missionInitSettings.exitMissionOnRCSignalLost = 1;
   missionInitSettings.gotoFirstWaypointMode = DJIWaypointV2MissionGotoFirstWaypointModePointToPoint;
-  //  missionInitSettings.mission =  generatePolygonWaypoints(radius, polygonNum);
-  missionInitSettings.mission =  generateLineWaypoints(20.0, 10);  
+  // missionInitSettings.mission =  generatePolygonWaypoints(radius, polygonNum);
+  // missionInitSettings.mission =  generateLineWaypoints(10.0, 8);  
+  missionInitSettings.mission =  generateStairWaypoints(10.0, 8);  
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   ErrorCode::ErrorCodeType ret = vehiclePtr->waypointV2Mission->init(&missionInitSettings,timeout);
@@ -476,8 +477,48 @@ std::vector<WaypointV2> WaypointV2MissionSample::generateLineWaypoints(float32_t
   // Iterative algorithm
   for (int i = 0; i < n_points; i++) {
     setWaypointV2Defaults(waypointV2);
-    float32_t X = step + (i+5)*step;
+    float32_t X = step + (i+3)*step;
     float32_t Y = 0.0;
+    waypointV2.dampingDistance = 0.0;
+    waypointV2.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;    
+    if (i == (n_points - 1)) {
+      waypointV2.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
+      waypointV2.dampingDistance = 6.0;      
+    }
+    waypointV2.latitude = X/EARTH_RADIUS + startPoint.latitude;
+    waypointV2.longitude = Y/(EARTH_RADIUS * cos(startPoint.latitude)) + startPoint.longitude;
+    waypointV2.relativeHeight = startPoint.relativeHeight ;
+    waypointList.push_back(waypointV2);
+  }
+  /// waypointList.push_back(startPoint);
+  return waypointList;
+}
+
+std::vector<WaypointV2> WaypointV2MissionSample::generateStairWaypoints(float32_t step, uint16_t n_points) {
+  // Let's create a vector to store our waypoints in.
+  std::vector<WaypointV2> waypointList;
+  WaypointV2 startPoint;
+  WaypointV2 waypointV2;
+
+  Telemetry::TypeMap<TOPIC_GPS_FUSED>::type subscribeGPosition = vehiclePtr->subscribe->getValue<TOPIC_GPS_FUSED>();
+  startPoint.latitude  = subscribeGPosition.latitude;
+  startPoint.longitude = subscribeGPosition.longitude;
+  startPoint.relativeHeight = 15;
+  setWaypointV2Defaults(startPoint);
+  startPoint.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+  startPoint.dampingDistance = 0.0;
+  /// waypointList.push_back(startPoint);
+
+  // Iterative algorithm
+  float32_t X = 3*step;
+  float32_t Y = 0.0;
+  for (int i = 0; i < n_points; i++) {
+    setWaypointV2Defaults(waypointV2);
+    if (i % 2) {
+      X += step;
+    } else {
+      Y += step;
+    }
     waypointV2.dampingDistance = 0.0;
     waypointV2.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;    
     if (i == (n_points - 1)) {
