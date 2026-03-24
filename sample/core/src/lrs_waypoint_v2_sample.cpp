@@ -440,7 +440,7 @@ std::vector<WaypointV2> WaypointV2MissionSample::generatePolygonWaypoints(float3
   startPoint.longitude = subscribeGPosition.longitude;
   startPoint.relativeHeight = 15;
   setWaypointV2Defaults(startPoint);
-  waypointList.push_back(startPoint);
+  ///  waypointList.push_back(startPoint);
 
   // Iterative algorithm
   for (int i = 0; i < polygonNum; i++) {
