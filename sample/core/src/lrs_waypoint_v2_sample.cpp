@@ -282,13 +282,13 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::initMissionSetting(int timeout
   missionInitSettings.repeatTimes  = 1;
   missionInitSettings.finishedAction = DJIWaypointV2MissionFinishedNoAction;
   //  missionInitSettings.finishedAction = DJIWaypointV2MissionFinishedGoToFirstWaypoint;
-  missionInitSettings.maxFlightSpeed = 2.0;
+  missionInitSettings.maxFlightSpeed = 12.0;
   missionInitSettings.autoFlightSpeed = 2.0;
   missionInitSettings.exitMissionOnRCSignalLost = 1;
   missionInitSettings.gotoFirstWaypointMode = DJIWaypointV2MissionGotoFirstWaypointModePointToPoint;
   // missionInitSettings.mission =  generatePolygonWaypoints(radius, polygonNum);
   // missionInitSettings.mission =  generateLineWaypoints(10.0, 8);  
-  missionInitSettings.mission =  generateStairWaypoints(20.0, 8);  
+  missionInitSettings.mission =  generateStairWaypoints(10.0, 8);  
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   ErrorCode::ErrorCodeType ret = vehiclePtr->waypointV2Mission->init(&missionInitSettings,timeout);
@@ -567,7 +567,7 @@ void WaypointV2MissionSample::setWaypointV2Defaults(WaypointV2& waypointV2) {
   waypointV2.pointOfInterest.positionX = 0;
   waypointV2.pointOfInterest.positionY = 0;
   waypointV2.pointOfInterest.positionZ = 0;
-  waypointV2.maxFlightSpeed= 2.0;
+  waypointV2.maxFlightSpeed= 12.0;
   waypointV2.autoFlightSpeed = 2.0;
 }
 
