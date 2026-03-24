@@ -282,8 +282,8 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::initMissionSetting(int timeout
   missionInitSettings.repeatTimes  = 1;
   missionInitSettings.finishedAction = DJIWaypointV2MissionFinishedNoAction;
   //  missionInitSettings.finishedAction = DJIWaypointV2MissionFinishedGoToFirstWaypoint;
-  missionInitSettings.maxFlightSpeed = 15;
-  missionInitSettings.autoFlightSpeed = 2;
+  missionInitSettings.maxFlightSpeed = 2.0;
+  missionInitSettings.autoFlightSpeed = 2.0;
   missionInitSettings.exitMissionOnRCSignalLost = 1;
   missionInitSettings.gotoFirstWaypointMode = DJIWaypointV2MissionGotoFirstWaypointModePointToPoint;
   // missionInitSettings.mission =  generatePolygonWaypoints(radius, polygonNum);
@@ -567,7 +567,7 @@ void WaypointV2MissionSample::setWaypointV2Defaults(WaypointV2& waypointV2) {
   waypointV2.pointOfInterest.positionX = 0;
   waypointV2.pointOfInterest.positionY = 0;
   waypointV2.pointOfInterest.positionZ = 0;
-  waypointV2.maxFlightSpeed= 11;
+  waypointV2.maxFlightSpeed= 2.0;
   waypointV2.autoFlightSpeed = 2.0;
 }
 
