@@ -288,7 +288,7 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::initMissionSetting(int timeout
   missionInitSettings.gotoFirstWaypointMode = DJIWaypointV2MissionGotoFirstWaypointModePointToPoint;
   // missionInitSettings.mission =  generatePolygonWaypoints(radius, polygonNum);
   // missionInitSettings.mission =  generateLineWaypoints(10.0, 8);  
-  missionInitSettings.mission =  generateStairWaypoints(10.0, 6);  
+  missionInitSettings.mission =  generateStairWaypoints(20.0, 6);  
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   ErrorCode::ErrorCodeType ret = vehiclePtr->waypointV2Mission->init(&missionInitSettings,timeout);
@@ -510,7 +510,7 @@ std::vector<WaypointV2> WaypointV2MissionSample::generateStairWaypoints(float32_
   /// waypointList.push_back(startPoint);
 
   // Iterative algorithm
-  float32_t X = 10.0;
+  float32_t X = 20.0;
   float32_t Y = 0.0;
   for (int i = 0; i < n_points; i++) {
     setWaypointV2Defaults(waypointV2);
