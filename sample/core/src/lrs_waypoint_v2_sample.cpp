@@ -170,7 +170,7 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::runWaypointV2Mission()
     return false;
   }
 
-  int timeout = 100;
+  int timeout = 1;
   GetRemainRamAck actionMemory = {0};
   ErrorCode::ErrorCodeType ret;
 
@@ -230,7 +230,7 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::runWaypointV2Mission()
   sleep(20);
 
   /*! set global cruise speed */
-  setGlobalCruiseSpeed(1.5, timeout);
+  setGlobalCruiseSpeed(8.0, timeout);
   sleep(timeout);
 
   /*! get global cruise speed */
@@ -238,15 +238,19 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::runWaypointV2Mission()
   sleep(timeout);
 
   /*! pause the mission*/
+#if 0  
   ret = pauseWaypointMission(timeout);
   if(ret != ErrorCode::SysCommonErr::Success)
     return ret;
   sleep(5);
+#endif  
 
   /*! resume the mission*/
+#if 0  
   ret = resumeWaypointMission(timeout);
   if(ret != ErrorCode::SysCommonErr::Success)
     return ret;
+#endif  
   sleep(50);
   /*! Set up telemetry subscription*/
   if(!teardownSubscription(DEFAULT_PACKAGE_INDEX, timeout))
