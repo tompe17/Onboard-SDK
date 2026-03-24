@@ -230,8 +230,8 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::runWaypointV2Mission()
   sleep(20);
 
   /*! set global cruise speed */
-  setGlobalCruiseSpeed(8.0, timeout);
-  sleep(timeout);
+  //setGlobalCruiseSpeed(8.0, timeout);
+  //sleep(timeout);
 
   /*! get global cruise speed */
   getGlobalCruiseSpeed(timeout);
@@ -481,6 +481,7 @@ std::vector<WaypointV2> WaypointV2MissionSample::generateLineWaypoints(float32_t
     waypointV2.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;    
     if (i == (n_points - 1)) {
       waypointV2.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
+      waypointV2.dampingDistance = 6.0;      
     }
     waypointV2.latitude = X/EARTH_RADIUS + startPoint.latitude;
     waypointV2.longitude = Y/(EARTH_RADIUS * cos(startPoint.latitude)) + startPoint.longitude;
@@ -524,8 +525,8 @@ void WaypointV2MissionSample::setWaypointV2Defaults(WaypointV2& waypointV2) {
   waypointV2.pointOfInterest.positionX = 0;
   waypointV2.pointOfInterest.positionY = 0;
   waypointV2.pointOfInterest.positionZ = 0;
-  waypointV2.maxFlightSpeed= 9;
-  waypointV2.autoFlightSpeed = 2;
+  waypointV2.maxFlightSpeed= 11;
+  waypointV2.autoFlightSpeed = 4;
 }
 
 ErrorCode::ErrorCodeType WaypointV2MissionSample::getActionRemainMemory
