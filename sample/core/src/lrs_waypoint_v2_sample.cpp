@@ -709,7 +709,14 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   startPoint.latitude       = rad2deg(subscribeGPosition.latitude);
   startPoint.longitude      = rad2deg(subscribeGPosition.longitude);
 
-  printf("GPS start lat: %f lon %f", startPoint.latitude , startPoint.longitude);
+  printf("RAW (rad): lat=%.6f lon=%.6f\n",
+         subscribeGPosition.latitude, subscribeGPosition.longitude);
+
+  printf("DEG: lat=%.6f lon=%.6f\n",
+         subscribeGPosition.latitude * 180.0 / M_PI,
+         subscribeGPosition.longitude * 180.0 / M_PI);
+
+//  printf("GPS start lat: %f lon %f", startPoint.latitude , startPoint.longitude);
 
   startPoint.relativeHeight = 15;
   setWaypointV2Defaults(startPoint);
