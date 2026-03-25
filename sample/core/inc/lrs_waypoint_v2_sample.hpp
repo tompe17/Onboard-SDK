@@ -164,6 +164,9 @@ public:
   std::vector<WaypointV2> generateStairWaypoints(float32_t step, uint16_t n_points);
   std::vector<WaypointV2> generateAngleWaypoints(float32_t step, float32_t angle_deg, uint16_t n_points);
 
+  double calculateDistance(const WaypointV2& wp1, const WaypointV2& wp2);
+  void printWaypointDistances(const std::vector<WaypointV2>& waypointList);
+  double calculateDistance3D(const WaypointV2& wp1, const WaypointV2& wp2);
 
   /*! @brief Sample generate polygon waypoints
    *

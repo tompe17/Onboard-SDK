@@ -296,6 +296,49 @@ WaypointV2MissionSample::runWaypointV2Mission()
   return ErrorCode::SysCommonErr::Success;
 }
 
+// Earth radius in meters
+//constexpr double EARTH_RADIUS = 6378137.0;
+
+// Convert degrees to radians
+double deg2rad(double deg) {
+  return deg * M_PI / 180.0;
+}
+
+// Haversine distance (meters)
+double WaypointV2MissionSample::calculateDistance(const WaypointV2& wp1, const WaypointV2& wp2) {
+  double lat1 = deg2rad(wp1.latitude);
+  double lon1 = deg2rad(wp1.longitude);
+  double lat2 = deg2rad(wp2.latitude);
+  double lon2 = deg2rad(wp2.longitude);
+
+  double dLat = lat2 - lat1;
+  double dLon = lon2 - lon1;
+
+  double a = sin(dLat / 2) * sin(dLat / 2) +
+             cos(lat1) * cos(lat2) *
+               sin(dLon / 2) * sin(dLon / 2);
+
+  double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+  return EARTH_RADIUS * c;
+}
+
+void WaypointV2MissionSample::printWaypointDistances(const std::vector<WaypointV2>& waypointList) {
+  for (size_t i = 1; i < waypointList.size(); ++i) {
+    double dist = calculateDistance3D(waypointList[i - 1], waypointList[i]);
+
+    printf("Distance WP[%zu] -> WP[%zu]: %.2f meters\n",
+           i - 1, i, dist);
+  }
+}
+
+double WaypointV2MissionSample::calculateDistance3D(const WaypointV2& wp1, const WaypointV2& wp2) {
+  double horizontal = calculateDistance(wp1, wp2);
+  double vertical = wp2.relativeHeight - wp1.relativeHeight;
+
+  return sqrt(horizontal * horizontal + vertical * vertical);
+}
+
 ErrorCode::ErrorCodeType
 WaypointV2MissionSample::initMissionSetting(int timeout)
 {
@@ -332,6 +375,8 @@ WaypointV2MissionSample::initMissionSetting(int timeout)
   // missionInitSettings.mission =  generateStairWaypoints(20.0, 6);
   missionInitSettings.mission      = generateAngleWaypoints(10.0, 45.0, 4);
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
+
+  printWaypointDistances(missionInitSettings.mission);
 
   ErrorCode::ErrorCodeType ret =
     vehiclePtr->waypointV2Mission->init(&missionInitSettings, timeout);
