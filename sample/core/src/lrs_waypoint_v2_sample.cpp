@@ -311,10 +311,10 @@ double
 WaypointV2MissionSample::calculateDistance(const WaypointV2& wp1,
                                            const WaypointV2& wp2)
 {
-  double lat1 = deg2rad(wp1.latitude);
-  double lon1 = deg2rad(wp1.longitude);
-  double lat2 = deg2rad(wp2.latitude);
-  double lon2 = deg2rad(wp2.longitude);
+  double lat1 = (wp1.latitude);
+  double lon1 = (wp1.longitude);
+  double lat2 = (wp2.latitude);
+  double lon2 = (wp2.longitude);
 
   printf("lat1: %f lon1: %f   ----  lat2: %f, lon2: %f",lat1, lon1, lat2, lon2);
 
