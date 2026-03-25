@@ -204,7 +204,7 @@ WaypointV2MissionSample::runWaypointV2Mission()
     return false;
   }
 
-  int                      timeout      = 0;
+  int                      timeout      = 1;
   GetRemainRamAck          actionMemory = { 0 };
   ErrorCode::ErrorCodeType ret;
 
