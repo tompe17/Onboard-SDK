@@ -388,6 +388,7 @@ WaypointV2MissionSample::initMissionSetting(int timeout)
   // missionInitSettings.mission =  generateStairWaypoints(20.0, 6);
   missionInitSettings.mission      = generateAngleWaypoints(10.0, 45.0, 4);
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
+  printWaypointDistances(missionInitSettings.mission);
 
   for (auto& wp : missionInitSettings.mission) {
     wp.latitude  = deg2rad(wp.latitude);
