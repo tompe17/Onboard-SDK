@@ -704,6 +704,9 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     vehiclePtr->subscribe->getValue<TOPIC_GPS_FUSED>();
   startPoint.latitude       = subscribeGPosition.latitude;
   startPoint.longitude      = subscribeGPosition.longitude;
+
+  printf("GPS start lat: %f lon %f", startPoint.latitude , startPoint.longitude);
+
   startPoint.relativeHeight = 15;
   setWaypointV2Defaults(startPoint);
   startPoint.waypointType    = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
