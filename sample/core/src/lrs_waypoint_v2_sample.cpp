@@ -297,44 +297,58 @@ WaypointV2MissionSample::runWaypointV2Mission()
 }
 
 // Earth radius in meters
-//constexpr double EARTH_RADIUS = 6378137.0;
+// constexpr double EARTH_RADIUS = 6378137.0;
 
 // Convert degrees to radians
-double deg2rad(double deg) {
+double
+deg2rad(double deg)
+{
   return deg * M_PI / 180.0;
 }
 
 // Haversine distance (meters)
-double WaypointV2MissionSample::calculateDistance(const WaypointV2& wp1, const WaypointV2& wp2) {
+double
+WaypointV2MissionSample::calculateDistance(const WaypointV2& wp1,
+                                           const WaypointV2& wp2)
+{
   double lat1 = deg2rad(wp1.latitude);
   double lon1 = deg2rad(wp1.longitude);
   double lat2 = deg2rad(wp2.latitude);
   double lon2 = deg2rad(wp2.longitude);
 
+  printf("lat1: %f lon1: %f   ----  lat2: %f, lon2: %f",lat1, lon1, lat2, lon2);
+
+
   double dLat = lat2 - lat1;
   double dLon = lon2 - lon1;
 
   double a = sin(dLat / 2) * sin(dLat / 2) +
-             cos(lat1) * cos(lat2) *
-               sin(dLon / 2) * sin(dLon / 2);
+             cos(lat1) * cos(lat2) * sin(dLon / 2) * sin(dLon / 2);
 
   double c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
   return EARTH_RADIUS * c;
 }
 
-void WaypointV2MissionSample::printWaypointDistances(const std::vector<WaypointV2>& waypointList) {
-  for (size_t i = 1; i < waypointList.size(); ++i) {
+void
+WaypointV2MissionSample::printWaypointDistances(
+  const std::vector<WaypointV2>& waypointList)
+{
+  for (size_t i = 1; i < waypointList.size(); ++i)
+  {
     double dist = calculateDistance3D(waypointList[i - 1], waypointList[i]);
 
-    printf("Distance WP[%zu] -> WP[%zu]: %.2f meters\n",
-           i - 1, i, dist);
+
+    printf("Distance WP[%zu] -> WP[%zu]: %.2f meters\n", i - 1, i, dist);
   }
 }
 
-double WaypointV2MissionSample::calculateDistance3D(const WaypointV2& wp1, const WaypointV2& wp2) {
+double
+WaypointV2MissionSample::calculateDistance3D(const WaypointV2& wp1,
+                                             const WaypointV2& wp2)
+{
   double horizontal = calculateDistance(wp1, wp2);
-  double vertical = wp2.relativeHeight - wp1.relativeHeight;
+  double vertical   = wp2.relativeHeight - wp1.relativeHeight;
 
   return sqrt(horizontal * horizontal + vertical * vertical);
 }
@@ -366,9 +380,8 @@ WaypointV2MissionSample::initMissionSetting(int timeout)
   missionInitSettings.exitMissionOnRCSignalLost = 1;
   missionInitSettings.gotoFirstWaypointMode =
     DJIWaypointV2MissionGotoFirstWaypointModePointToPoint;
-//  missionInitSettings.gotoFirstWaypointMode =
-//    DJIWaypointV2MissionGotoFirstWaypointModeSafely;
-
+  //  missionInitSettings.gotoFirstWaypointMode =
+  //    DJIWaypointV2MissionGotoFirstWaypointModeSafely;
 
   // missionInitSettings.mission =  generatePolygonWaypoints(radius,
   // polygonNum); missionInitSettings.mission =  generateLineWaypoints(10.0, 8);
@@ -700,7 +713,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   // Iterative algorithm
   float32_t X       = 20.0;
   float32_t Y       = 0.0;
-  uint16_t damping = 1;
+  uint16_t  damping = 1;
   for (int i = 0; i < n_points; i++)
   {
     setWaypointV2Defaults(waypointV2);
@@ -714,12 +727,13 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     }
     Y += step;
     waypointV2.dampingDistance = damping;
-//    waypointV2.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+    //    waypointV2.waypointType =
+    //    DJIWaypointV2FlightPathModeGoToPointAlongACurve;
     waypointV2.waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
     if (i == (n_points - 1))
     {
-//      waypointV2.waypointType =
-//        DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
+      //      waypointV2.waypointType =
+      //        DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
       /// waypointV2.waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
       waypointV2.dampingDistance = 1;
     }
