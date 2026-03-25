@@ -557,7 +557,7 @@ std::vector<WaypointV2> WaypointV2MissionSample::generateAngleWaypoints(float32_
   // Iterative algorithm
   float32_t X = 20.0;
   float32_t Y = 0.0;
-  float32_t damping = 5.0;
+  float32_t damping = 10.0;
   for (int i = 0; i < n_points; i++) {
     setWaypointV2Defaults(waypointV2);
     if (i % 2) {
