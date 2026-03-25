@@ -288,7 +288,8 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::initMissionSetting(int timeout
   missionInitSettings.gotoFirstWaypointMode = DJIWaypointV2MissionGotoFirstWaypointModePointToPoint;
   // missionInitSettings.mission =  generatePolygonWaypoints(radius, polygonNum);
   // missionInitSettings.mission =  generateLineWaypoints(10.0, 8);  
-  missionInitSettings.mission =  generateStairWaypoints(20.0, 6);  
+  // missionInitSettings.mission =  generateStairWaypoints(20.0, 6);
+  missionInitSettings.mission =  generateStairWaypoints(20.0, 30.0, 6);  
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   ErrorCode::ErrorCodeType ret = vehiclePtr->waypointV2Mission->init(&missionInitSettings,timeout);
@@ -562,8 +563,8 @@ std::vector<WaypointV2> WaypointV2MissionSample::generateAngleWaypoints(float32_
       X += tan(angle)*step;
     } else {
       X -= tan(angle)*step;
-      // Y += step;
     }
+    Y += step;
     waypointV2.dampingDistance = 0.0;
     /// waypointV2.waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
     waypointV2.waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
