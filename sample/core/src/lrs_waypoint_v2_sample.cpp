@@ -688,6 +688,10 @@ WaypointV2MissionSample::generateStairWaypoints(float32_t step,
   return waypointList;
 }
 
+double WaypointV2MissionSample::rad2deg(const double &rad){
+  return rad / M_PI * 180.0;
+}
+
 std::vector<WaypointV2>
 WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
                                                 float32_t angle_deg,
@@ -702,8 +706,8 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
 
   Telemetry::TypeMap<TOPIC_GPS_FUSED>::type subscribeGPosition =
     vehiclePtr->subscribe->getValue<TOPIC_GPS_FUSED>();
-  startPoint.latitude       = subscribeGPosition.latitude;
-  startPoint.longitude      = subscribeGPosition.longitude;
+  startPoint.latitude       = rad2deg(subscribeGPosition.latitude);
+  startPoint.longitude      = rad2deg(subscribeGPosition.longitude);
 
   printf("GPS start lat: %f lon %f", startPoint.latitude , startPoint.longitude);
 

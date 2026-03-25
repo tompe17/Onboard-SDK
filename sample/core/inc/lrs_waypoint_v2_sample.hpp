@@ -167,6 +167,7 @@ public:
   double calculateDistance(const WaypointV2& wp1, const WaypointV2& wp2);
   void printWaypointDistances(const std::vector<WaypointV2>& waypointList);
   double calculateDistance3D(const WaypointV2& wp1, const WaypointV2& wp2);
+  double rad2deg(const double &rad);
 
   /*! @brief Sample generate polygon waypoints
    *
