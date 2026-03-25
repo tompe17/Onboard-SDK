@@ -311,10 +311,10 @@ double
 WaypointV2MissionSample::calculateDistance(const WaypointV2& wp1,
                                            const WaypointV2& wp2)
 {
-  double lat1 = rad2deg(wp1.latitude);
-  double lon1 = rad2deg(wp1.longitude);
-  double lat2 = rad2deg(wp2.latitude);
-  double lon2 = rad2deg(wp2.longitude);
+  double lat1 = (wp1.latitude);
+  double lon1 = (wp1.longitude);
+  double lat2 = (wp2.latitude);
+  double lon2 = (wp2.longitude);
 
   printf("lat1: %f lon1: %f   ----  lat2: %f, lon2: %f",lat1, lon1, lat2, lon2);
 
@@ -388,14 +388,15 @@ WaypointV2MissionSample::initMissionSetting(int timeout)
   // missionInitSettings.mission =  generateStairWaypoints(20.0, 6);
   missionInitSettings.mission      = generateAngleWaypoints(10.0, 45.0, 4);
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
-  printWaypointDistances(missionInitSettings.mission);
-
-  for (auto& wp : missionInitSettings.mission) {
-    wp.latitude  = deg2rad(wp.latitude);
-    wp.longitude = deg2rad(wp.longitude);
-  }
 
   printWaypointDistances(missionInitSettings.mission);
+
+//  for (auto& wp : missionInitSettings.mission) {
+//    wp.latitude  = deg2rad(wp.latitude);
+//    wp.longitude = deg2rad(wp.longitude);
+//  }
+
+//  printWaypointDistances(missionInitSettings.mission);
 
   ErrorCode::ErrorCodeType ret =
     vehiclePtr->waypointV2Mission->init(&missionInitSettings, timeout);
