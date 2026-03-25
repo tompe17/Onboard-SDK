@@ -289,7 +289,7 @@ ErrorCode::ErrorCodeType WaypointV2MissionSample::initMissionSetting(int timeout
   // missionInitSettings.mission =  generatePolygonWaypoints(radius, polygonNum);
   // missionInitSettings.mission =  generateLineWaypoints(10.0, 8);  
   // missionInitSettings.mission =  generateStairWaypoints(20.0, 6);
-  missionInitSettings.mission =  generateStairWaypoints(20.0, 30.0, 6);  
+  missionInitSettings.mission =  generateAngleWaypoints(20.0, 30.0, 6);  
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   ErrorCode::ErrorCodeType ret = vehiclePtr->waypointV2Mission->init(&missionInitSettings,timeout);
