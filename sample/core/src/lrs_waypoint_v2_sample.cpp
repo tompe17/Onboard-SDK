@@ -219,7 +219,7 @@ WaypointV2MissionSample::runWaypointV2Mission()
   }
   /*! wait for subscription data come*/
   sleep(timeout);
-
+  sleep(5);
   /*! init mission */
   ret = initMissionSetting(timeout);
   if (ret != ErrorCode::SysCommonErr::Success)
@@ -723,7 +723,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
          subscribeGPosition.latitude * 180.0 / M_PI,
          subscribeGPosition.longitude * 180.0 / M_PI);
 
-  printf("GPS start lat: %f lon %f", startPoint.latitude , startPoint.longitude);
+  printf("GPS start lat: %f lon %f\n", startPoint.latitude , startPoint.longitude);
 
   startPoint.relativeHeight = 15;
   setWaypointV2Defaults(startPoint);
