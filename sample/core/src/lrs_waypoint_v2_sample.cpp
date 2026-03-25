@@ -649,13 +649,13 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   startPoint.relativeHeight = 15;
   setWaypointV2Defaults(startPoint);
   startPoint.waypointType    = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
-  startPoint.dampingDistance = 0.0;
+  startPoint.dampingDistance = 1.0;
   /// waypointList.push_back(startPoint);
 
   // Iterative algorithm
   float32_t X       = 20.0;
   float32_t Y       = 0.0;
-  uint16_t damping = 5;
+  uint16_t damping = 1;
   for (int i = 0; i < n_points; i++)
   {
     setWaypointV2Defaults(waypointV2);
@@ -676,7 +676,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
 //      waypointV2.waypointType =
 //        DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
       /// waypointV2.waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
-      waypointV2.dampingDistance = 5;
+      waypointV2.dampingDistance = 1;
     }
     waypointV2.latitude = X / EARTH_RADIUS + startPoint.latitude;
     waypointV2.longitude =
