@@ -387,7 +387,7 @@ WaypointV2MissionSample::initMissionSetting(int timeout)
   // missionInitSettings.mission =  generatePolygonWaypoints(radius,
   // polygonNum); missionInitSettings.mission =  generateLineWaypoints(10.0, 8);
   // missionInitSettings.mission =  generateStairWaypoints(20.0, 6);
-  missionInitSettings.mission      = generateAngleWaypoints(40.0, 10.0, 4);
+  missionInitSettings.mission      = generateAngleWaypoints(20.0, 10.0, 4);
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   printWaypointDistances(missionInitSettings.mission);
@@ -788,7 +788,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   // Iterative algorithm
   float32_t X       = 10.0;
   float32_t Y       = 0.0;
-  uint16_t  damping = 10;
+  uint16_t  damping = 30;
 //  uint16_t  damping = 2;
   for (int i = 0; i < n_points; i++)
   {
