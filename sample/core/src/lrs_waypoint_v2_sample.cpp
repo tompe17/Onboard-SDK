@@ -772,6 +772,8 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     vehiclePtr->subscribe->getValue<TOPIC_GPS_FUSED>();
 
   setWaypointV2Defaults(startPoint);
+  waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
+  waypointV2.heading        = 45.0;
   startPoint.latitude       = (subscribeGPosition.latitude);
   startPoint.longitude      = (subscribeGPosition.longitude);
   startPoint.relativeHeight = 15;
@@ -791,6 +793,9 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   for (int i = 0; i < n_points; i++)
   {
     setWaypointV2Defaults(waypointV2);
+    waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
+    waypointV2.heading        = 45.0;
+
     if (i % 2)
     {
       X += tan(angle_rad) * step;
