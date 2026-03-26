@@ -772,8 +772,8 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     vehiclePtr->subscribe->getValue<TOPIC_GPS_FUSED>();
 
   setWaypointV2Defaults(startPoint);
-  waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
-  waypointV2.heading        = 45.0;
+//  waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
+//  waypointV2.heading        = 45.0;
   startPoint.latitude       = (subscribeGPosition.latitude);
   startPoint.longitude      = (subscribeGPosition.longitude);
   startPoint.relativeHeight = 15;
@@ -788,13 +788,13 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   // Iterative algorithm
   float32_t X       = 10.0;
   float32_t Y       = 0.0;
-  uint16_t  damping = 180;
+  uint16_t  damping = 360;
 //  uint16_t  damping = 2;
   for (int i = 0; i < n_points; i++)
   {
     setWaypointV2Defaults(waypointV2);
-    waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
-    waypointV2.heading        = 45.0;
+//    waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
+//    waypointV2.heading        = 45.0;
 
     if (i % 2)
     {
