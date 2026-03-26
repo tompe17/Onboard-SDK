@@ -732,8 +732,8 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
 
   Telemetry::TypeMap<TOPIC_GPS_FUSED>::type subscribeGPosition =
     vehiclePtr->subscribe->getValue<TOPIC_GPS_FUSED>();
-  startPoint.latitude  = rad2deg(subscribeGPosition.latitude);
-  startPoint.longitude = rad2deg(subscribeGPosition.longitude);
+  startPoint.latitude  = (subscribeGPosition.latitude);
+  startPoint.longitude = (subscribeGPosition.longitude);
 
   printf("RAW (rad): lat=%.6f lon=%.6f\n",
          subscribeGPosition.latitude,
@@ -748,7 +748,8 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
 
   startPoint.relativeHeight = 15;
   setWaypointV2Defaults(startPoint);
-  startPoint.waypointType    = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+//  startPoint.waypointType    = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+  startPoint.waypointType    = DJIWaypointV2FlightPathModeCoordinateTurn;
   startPoint.dampingDistance = 1.0;
   /// waypointList.push_back(startPoint);
 
