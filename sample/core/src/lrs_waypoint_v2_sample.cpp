@@ -779,7 +779,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
 //    startPoint.waypointType    = DJIWaypointV2FlightPathModeCoordinateTurn;
     startPoint.waypointType    = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
   startPoint.dampingDistance = 0.0;
-//  waypointList.push_back(startPoint);
+  waypointList.push_back(startPoint);
 
   printWpInfo(startPoint, "start wp");
 
