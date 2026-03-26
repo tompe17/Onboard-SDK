@@ -286,7 +286,7 @@ WaypointV2MissionSample::runWaypointV2Mission()
   if(ret != ErrorCode::SysCommonErr::Success)
     return ret;
 #endif
-  sleep(50);
+  sleep(20);
   /*! Set up telemetry subscription*/
   if (!teardownSubscription(DEFAULT_PACKAGE_INDEX, timeout))
   {
