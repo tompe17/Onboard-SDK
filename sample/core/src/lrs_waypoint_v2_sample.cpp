@@ -392,10 +392,11 @@ WaypointV2MissionSample::initMissionSetting(int timeout)
 
   printWaypointDistances(missionInitSettings.mission);
 
-  //  for (auto& wp : missionInitSettings.mission) {
-  //    wp.latitude  = deg2rad(wp.latitude);
-  //    wp.longitude = deg2rad(wp.longitude);
-  //  }
+  int i=0;
+  for (auto& wp : missionInitSettings.mission)
+  {
+    printWpInfo(wp, std::to_string(i++));
+  }
 
   //  printWaypointDistances(missionInitSettings.mission);
 
