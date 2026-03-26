@@ -719,11 +719,39 @@ WaypointV2MissionSample::rad2deg(const double& rad)
   return rad / M_PI * 180.0;
 }
 
-void
-WaypointV2MissionSample::printWpInfo(const WaypointV2& wp, const std::string &prefix)
+std::string
+WaypointV2MissionSample::wpTypeToString(const DJIWaypointV2FlightPathMode& mode)
 {
-  printf(
-    "%s: lat: %f lon: %f relalt: %.02f damp: %d\n", prefix.c_str(), rad2deg(wp.latitude), rad2deg(wp.longitude), wp.relativeHeight, wp.dampingDistance);
+  switch (mode)
+  {
+    case DJIWaypointV2FlightPathModeGoToPointAlongACurve:
+      return "GoToPointAlongACurve";
+    case DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop:
+      return "GoToPointAlongACurveAndStop";
+    case DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop:
+      return "GoToPointInAStraightLineAndStop";
+    case DJIWaypointV2FlightPathModeCoordinateTurn:
+      return "ModeCoordinateTurn";
+    case DJIWaypointV2FlightPathModeGoToFirstPointAlongAStraightLine:
+      return "GoToFirstPointAlongAStraightLine";
+    case DJIWaypointV2FlightPathModeStraightOut:
+      return "StraightOut";
+    case DJIWaypointV2FlightPathModeUnknown:
+      return "Unknown"
+  }
+}
+
+void
+WaypointV2MissionSample::printWpInfo(const WaypointV2&  wp,
+                                     const std::string& prefix)
+{
+  printf("%s: (%f,%f) relalt: %.02f damp: %d type: %s\n",
+         prefix.c_str(),
+         rad2deg(wp.latitude),
+         rad2deg(wp.longitude),
+         wp.relativeHeight,
+         wp.dampingDistance,
+         wpTypeToString(wp.waypointType).c_str());
 }
 
 std::vector<WaypointV2>
@@ -750,7 +778,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   startPoint.dampingDistance = 1.0;
   //  waypointList.push_back(startPoint);
 
-  printWpInfo(startPoint,"start wp");
+  printWpInfo(startPoint, "start wp");
 
   // Iterative algorithm
   float32_t X       = 20.0;

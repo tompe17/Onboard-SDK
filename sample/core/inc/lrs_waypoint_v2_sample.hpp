@@ -176,13 +176,13 @@ public:
   void   printWaypointDistances(const std::vector<WaypointV2>& waypointList);
   double calculateDistance3D(const WaypointV2& wp1, const WaypointV2& wp2);
   double rad2deg(const double& rad);
-  WaypointV2 xyzToWaypointV2(double            x,
-                             double            y,
-                             double            z,
-                             const WaypointV2& startWp,
-                             WaypointV2 &wp);
-  void printWpInfo(const WaypointV2 &wp, const std::string &prefix);
-
+  WaypointV2  xyzToWaypointV2(double            x,
+                              double            y,
+                              double            z,
+                              const WaypointV2& startWp,
+                              WaypointV2&       wp);
+  void        printWpInfo(const WaypointV2& wp, const std::string& prefix);
+  std::string wpTypeToString(const DJIWaypointV2FlightPathMode& mode);
 
   /*! @brief Sample generate polygon waypoints
    *
