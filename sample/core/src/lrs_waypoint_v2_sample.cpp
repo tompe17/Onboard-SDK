@@ -219,7 +219,7 @@ WaypointV2MissionSample::runWaypointV2Mission()
   }
   /*! wait for subscription data come*/
   sleep(timeout);
-  sleep(5);
+  //  sleep(5);
   /*! init mission */
   ret = initMissionSetting(timeout);
   if (ret != ErrorCode::SysCommonErr::Success)
@@ -268,7 +268,8 @@ WaypointV2MissionSample::runWaypointV2Mission()
   // sleep(timeout);
 
   /*! get global cruise speed */
-  getGlobalCruiseSpeed(timeout);
+  getGlobalCruiseSpeed(8.0);
+
   sleep(timeout);
 
   /*! pause the mission*/
@@ -316,8 +317,8 @@ WaypointV2MissionSample::calculateDistance(const WaypointV2& wp1,
   double lat2 = (wp2.latitude);
   double lon2 = (wp2.longitude);
 
-  printf("lat1: %f lon1: %f   ----  lat2: %f, lon2: %f",lat1, lon1, lat2, lon2);
-
+  printf(
+    "lat1: %f lon1: %f   ----  lat2: %f, lon2: %f", lat1, lon1, lat2, lon2);
 
   double dLat = lat2 - lat1;
   double dLon = lon2 - lon1;
@@ -337,7 +338,6 @@ WaypointV2MissionSample::printWaypointDistances(
   for (size_t i = 1; i < waypointList.size(); ++i)
   {
     double dist = calculateDistance3D(waypointList[i - 1], waypointList[i]);
-
 
     printf("Distance WP[%zu] -> WP[%zu]: %.2f meters\n", i - 1, i, dist);
   }
@@ -391,12 +391,12 @@ WaypointV2MissionSample::initMissionSetting(int timeout)
 
   printWaypointDistances(missionInitSettings.mission);
 
-//  for (auto& wp : missionInitSettings.mission) {
-//    wp.latitude  = deg2rad(wp.latitude);
-//    wp.longitude = deg2rad(wp.longitude);
-//  }
+  //  for (auto& wp : missionInitSettings.mission) {
+  //    wp.latitude  = deg2rad(wp.latitude);
+  //    wp.longitude = deg2rad(wp.longitude);
+  //  }
 
-//  printWaypointDistances(missionInitSettings.mission);
+  //  printWaypointDistances(missionInitSettings.mission);
 
   ErrorCode::ErrorCodeType ret =
     vehiclePtr->waypointV2Mission->init(&missionInitSettings, timeout);
@@ -580,7 +580,7 @@ WaypointV2MissionSample::generatePolygonWaypoints(float32_t radius,
   startPoint.longitude      = subscribeGPosition.longitude;
   startPoint.relativeHeight = 15;
   setWaypointV2Defaults(startPoint);
-  ///  waypointList.push_back(startPoint);
+  waypointList.push_back(startPoint);
 
   // Iterative algorithm
   for (int i = 0; i < polygonNum; i++)
@@ -695,7 +695,9 @@ WaypointV2MissionSample::generateStairWaypoints(float32_t step,
   return waypointList;
 }
 
-double WaypointV2MissionSample::rad2deg(const double &rad){
+double
+WaypointV2MissionSample::rad2deg(const double& rad)
+{
   return rad / M_PI * 180.0;
 }
 
@@ -713,17 +715,19 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
 
   Telemetry::TypeMap<TOPIC_GPS_FUSED>::type subscribeGPosition =
     vehiclePtr->subscribe->getValue<TOPIC_GPS_FUSED>();
-  startPoint.latitude       = rad2deg(subscribeGPosition.latitude);
-  startPoint.longitude      = rad2deg(subscribeGPosition.longitude);
+  startPoint.latitude  = rad2deg(subscribeGPosition.latitude);
+  startPoint.longitude = rad2deg(subscribeGPosition.longitude);
 
   printf("RAW (rad): lat=%.6f lon=%.6f\n",
-         subscribeGPosition.latitude, subscribeGPosition.longitude);
+         subscribeGPosition.latitude,
+         subscribeGPosition.longitude);
 
   printf("DEG: lat=%.6f lon=%.6f\n",
          subscribeGPosition.latitude * 180.0 / M_PI,
          subscribeGPosition.longitude * 180.0 / M_PI);
 
-  printf("GPS start lat: %f lon %f\n", startPoint.latitude , startPoint.longitude);
+  printf(
+    "GPS start lat: %f lon %f\n", startPoint.latitude, startPoint.longitude);
 
   startPoint.relativeHeight = 15;
   setWaypointV2Defaults(startPoint);
