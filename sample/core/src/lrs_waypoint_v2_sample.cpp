@@ -778,8 +778,8 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   startPoint.longitude      = (subscribeGPosition.longitude);
   startPoint.relativeHeight = 15;
 //  startPoint.waypointType   = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
-//    startPoint.waypointType    = DJIWaypointV2FlightPathModeCoordinateTurn;
-    startPoint.waypointType    = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
+    startPoint.waypointType    = DJIWaypointV2FlightPathModeCoordinateTurn;
+//    startPoint.waypointType    = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
   startPoint.dampingDistance = 1.0;
   waypointList.push_back(startPoint);
 
