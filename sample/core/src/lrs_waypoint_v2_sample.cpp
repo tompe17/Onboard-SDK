@@ -802,8 +802,8 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
 
     waypointV2.dampingDistance = damping;
         waypointV2.waypointType =
-        DJIWaypointV2FlightPathModeGoToPointAlongACurve;
-//    waypointV2.waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
+//        DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+    waypointV2.waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
     if (i == (n_points - 1))
     {
       //      waypointV2.waypointType =
