@@ -751,7 +751,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   startPoint.waypointType    = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
 //  startPoint.waypointType    = DJIWaypointV2FlightPathModeCoordinateTurn;
   startPoint.dampingDistance = 1.0;
-  waypointList.push_back(startPoint);
+//  waypointList.push_back(startPoint);
 
   // Iterative algorithm
   float32_t X       = 20.0;
