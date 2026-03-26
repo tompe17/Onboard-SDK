@@ -722,15 +722,8 @@ WaypointV2MissionSample::rad2deg(const double& rad)
 void
 WaypointV2MissionSample::printWpInfo(const WaypointV2& wp, const std::string &prefix)
 {
-  //  printf("RAW (rad): lat=%.6f lon=%.6f\n",
-  //         wp.latitude,
-  //         wp.longitude);
-
   printf(
-    "DEG: lat=%.6f lon=%.6f\n", rad2deg(wp.latitude), rad2deg(wp.longitude));
-
-  printf(
-    "%s: lat: %f lon: %f relalt: %f\n", prefix.c_str(), wp.latitude, wp.longitude, wp.relativeHeight);
+    "%s: lat: %f lon: %f relalt: %f\n", prefix.c_str(), rad2deg(wp.latitude), rad2deg(wp.longitude), wp.relativeHeight);
 }
 
 std::vector<WaypointV2>
