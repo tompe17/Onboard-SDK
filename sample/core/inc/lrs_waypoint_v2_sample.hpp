@@ -179,7 +179,8 @@ public:
   WaypointV2 xyzToWaypointV2(double            x,
                              double            y,
                              double            z,
-                             const WaypointV2& startWp);
+                             const WaypointV2& startWp,
+                             WaypointV2 &wp);
 
   /*! @brief Sample generate polygon waypoints
    *

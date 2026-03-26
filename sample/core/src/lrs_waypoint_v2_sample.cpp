@@ -569,9 +569,10 @@ WaypointV2
 WaypointV2MissionSample::xyzToWaypointV2(double            x,
                                          double            y,
                                          double            z,
-                                         const WaypointV2& startWp)
+                                         const WaypointV2& startWp,
+                                         WaypointV2 &wp)
 {
-  WaypointV2 wp;
+//  WaypointV2 wp;
 
   wp.latitude  = x / EARTH_RADIUS + startWp.latitude;
   wp.longitude = y / (EARTH_RADIUS * cos(startWp.latitude)) + startWp.longitude;
@@ -604,7 +605,7 @@ WaypointV2MissionSample::generatePolygonWaypoints(float32_t radius,
     float32_t x = radius * cos(angler_rad);
     float32_t y = radius * sin(angler_rad);
 
-    waypointV2 = xyzToWaypointV2(x, y, 0, startPoint);
+    xyzToWaypointV2(x, y, 0, startPoint, waypointV2);
     //    waypointV2.latitude = x / EARTH_RADIUS + startPoint.latitude;
     //    waypointV2.longitude =
     //      y / (EARTH_RADIUS * cos(startPoint.latitude)) +
@@ -769,6 +770,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
       X -= tan(angle) * step;
     }
     Y += step;
+
     waypointV2.dampingDistance = damping;
     //    waypointV2.waypointType =
     //    DJIWaypointV2FlightPathModeGoToPointAlongACurve;
@@ -780,7 +782,8 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
       /// waypointV2.waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
       waypointV2.dampingDistance = 1;
     }
-    waypointV2 = xyzToWaypointV2(X, Y, 0, startPoint);
+    xyzToWaypointV2(X, Y, 0, startPoint, waypointV2);
+
 
 //    waypointV2.latitude = X / EARTH_RADIUS + startPoint.latitude;
 //    waypointV2.longitude =
