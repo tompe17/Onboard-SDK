@@ -181,6 +181,8 @@ public:
                              double            z,
                              const WaypointV2& startWp,
                              WaypointV2 &wp);
+  void printWpInfo(const WaypointV2 &wp, const std::string &prefix);
+
 
   /*! @brief Sample generate polygon waypoints
    *

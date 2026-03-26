@@ -570,9 +570,9 @@ WaypointV2MissionSample::xyzToWaypointV2(double            x,
                                          double            y,
                                          double            z,
                                          const WaypointV2& startWp,
-                                         WaypointV2 &wp)
+                                         WaypointV2&       wp)
 {
-//  WaypointV2 wp;
+  //  WaypointV2 wp;
 
   wp.latitude  = x / EARTH_RADIUS + startWp.latitude;
   wp.longitude = y / (EARTH_RADIUS * cos(startWp.latitude)) + startWp.longitude;
@@ -719,6 +719,20 @@ WaypointV2MissionSample::rad2deg(const double& rad)
   return rad / M_PI * 180.0;
 }
 
+void
+WaypointV2MissionSample::printWpInfo(const WaypointV2& wp, const std::string &prefix)
+{
+  //  printf("RAW (rad): lat=%.6f lon=%.6f\n",
+  //         wp.latitude,
+  //         wp.longitude);
+
+  printf(
+    "DEG: lat=%.6f lon=%.6f\n", rad2deg(wp.latitude), rad2deg(wp.longitude));
+
+  printf(
+    "%s: lat: %f lon: %f relalt: %f\n", prefix.c_str(), wp.latitude, wp.longitude, wp.relativeHeight);
+}
+
 std::vector<WaypointV2>
 WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
                                                 float32_t angle_deg,
@@ -726,33 +740,24 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
 {
   // Let's create a vector to store our waypoints in.
 
-  float32_t               angle = angle_deg * M_PI / 180.0;
+  double                  angle_rad = angle_deg * M_PI / 180.0;
   std::vector<WaypointV2> waypointList;
   WaypointV2              startPoint;
   WaypointV2              waypointV2;
 
   Telemetry::TypeMap<TOPIC_GPS_FUSED>::type subscribeGPosition =
     vehiclePtr->subscribe->getValue<TOPIC_GPS_FUSED>();
-  startPoint.latitude  = (subscribeGPosition.latitude);
-  startPoint.longitude = (subscribeGPosition.longitude);
 
-  printf("RAW (rad): lat=%.6f lon=%.6f\n",
-         subscribeGPosition.latitude,
-         subscribeGPosition.longitude);
-
-  printf("DEG: lat=%.6f lon=%.6f\n",
-         subscribeGPosition.latitude * 180.0 / M_PI,
-         subscribeGPosition.longitude * 180.0 / M_PI);
-
-  printf(
-    "GPS start lat: %f lon %f\n", startPoint.latitude, startPoint.longitude);
-
-  startPoint.relativeHeight = 15;
   setWaypointV2Defaults(startPoint);
-  startPoint.waypointType    = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
-//  startPoint.waypointType    = DJIWaypointV2FlightPathModeCoordinateTurn;
+  startPoint.latitude       = (subscribeGPosition.latitude);
+  startPoint.longitude      = (subscribeGPosition.longitude);
+  startPoint.relativeHeight = 15;
+  startPoint.waypointType   = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+  //  startPoint.waypointType    = DJIWaypointV2FlightPathModeCoordinateTurn;
   startPoint.dampingDistance = 1.0;
-//  waypointList.push_back(startPoint);
+  //  waypointList.push_back(startPoint);
+
+  printWpInfo(startPoint,"start wp");
 
   // Iterative algorithm
   float32_t X       = 20.0;
@@ -763,11 +768,11 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     setWaypointV2Defaults(waypointV2);
     if (i % 2)
     {
-      X += tan(angle) * step;
+      X += tan(angle_rad) * step;
     }
     else
     {
-      X -= tan(angle) * step;
+      X -= tan(angle_rad) * step;
     }
     Y += step;
 
@@ -784,11 +789,11 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     }
     xyzToWaypointV2(X, Y, 0, startPoint, waypointV2);
 
-
-//    waypointV2.latitude = X / EARTH_RADIUS + startPoint.latitude;
-//    waypointV2.longitude =
-//      Y / (EARTH_RADIUS * cos(startPoint.latitude)) + startPoint.longitude;
-//    waypointV2.relativeHeight = startPoint.relativeHeight;
+    //    waypointV2.latitude = X / EARTH_RADIUS + startPoint.latitude;
+    //    waypointV2.longitude =
+    //      Y / (EARTH_RADIUS * cos(startPoint.latitude)) +
+    //      startPoint.longitude;
+    //    waypointV2.relativeHeight = startPoint.relativeHeight;
 
     waypointList.push_back(waypointV2);
   }
