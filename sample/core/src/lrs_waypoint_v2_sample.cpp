@@ -205,7 +205,6 @@ WaypointV2MissionSample::runWaypointV2Mission()
   }
 
   int                      timeout      = 1;
-  float                    ftimeout     = 0.5;
   GetRemainRamAck          actionMemory = { 0 };
   ErrorCode::ErrorCodeType ret;
 
@@ -219,16 +218,14 @@ WaypointV2MissionSample::runWaypointV2Mission()
     DSTATUS("Set up subscription successfully!");
   }
   /*! wait for subscription data come*/
-  usleep(ftimeout * 1e6);
+  sleep(timeout);
   //  sleep(timeout);
   //  sleep(5);
   /*! init mission */
   ret = initMissionSetting(timeout);
   if (ret != ErrorCode::SysCommonErr::Success)
     return ret;
-
-  usleep(ftimeout * 1e6);
-  //  sleep(timeout);
+  sleep(timeout);
 
   /*! upload mission */
   /*! upload mission's timeout need to be longer than 2s*/
@@ -236,17 +233,14 @@ WaypointV2MissionSample::runWaypointV2Mission()
   ret                      = uploadWaypointMission(uploadMissionTimeOut);
   if (ret != ErrorCode::SysCommonErr::Success)
     return ret;
-  usleep(ftimeout * 1e6);
-
-//  sleep(timeout);
+  sleep(timeout);
 
   /*! download mission */
   std::vector<WaypointV2> mission;
   ret = downloadWaypointMission(mission, timeout);
   if (ret != ErrorCode::SysCommonErr::Success)
     return ret;
-  usleep(ftimeout * 1e6);
-  //  sleep(timeout);
+  sleep(timeout);
 
   /*! upload  actions */
   /*! check action memory */
@@ -262,8 +256,7 @@ WaypointV2MissionSample::runWaypointV2Mission()
     return ret;
 
   ret = getActionRemainMemory(actionMemory, timeout);
-  usleep(ftimeout * 1e6);
-//  sleep(timeout);
+  sleep(timeout);
 
   /*! start mission */
   ret = startWaypointMission(timeout);
