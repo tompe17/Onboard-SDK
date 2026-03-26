@@ -723,7 +723,7 @@ void
 WaypointV2MissionSample::printWpInfo(const WaypointV2& wp, const std::string &prefix)
 {
   printf(
-    "%s: lat: %f lon: %f relalt: %f damp: %d\n", prefix.c_str(), rad2deg(wp.latitude), rad2deg(wp.longitude), wp.relativeHeight, wp.dampingDistance);
+    "%s: lat: %f lon: %f relalt: %.02f damp: %d\n", prefix.c_str(), rad2deg(wp.latitude), rad2deg(wp.longitude), wp.relativeHeight, wp.dampingDistance);
 }
 
 std::vector<WaypointV2>
