@@ -755,7 +755,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   // Iterative algorithm
   float32_t X       = 20.0;
   float32_t Y       = 0.0;
-  uint16_t  damping = 10;
+  uint16_t  damping = 5;
   for (int i = 0; i < n_points; i++)
   {
     setWaypointV2Defaults(waypointV2);
