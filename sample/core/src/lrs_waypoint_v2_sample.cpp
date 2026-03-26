@@ -565,6 +565,20 @@ WaypointV2MissionSample::setGlobalCruiseSpeed(
   DSTATUS("Current cruise speed is: %f m/s", cruiseSpeed);
 }
 
+WaypointV2
+WaypointV2MissionSample::xyzToWaypointV2(double            x,
+                                         double            y,
+                                         double            z,
+                                         const WaypointV2& startWp)
+{
+  WaypointV2 wp;
+
+  wp.latitude  = x / EARTH_RADIUS + startWp.latitude;
+  wp.longitude = y / (EARTH_RADIUS * cos(startWp.latitude)) + startWp.longitude;
+  wp.relativeHeight = startWp.relativeHeight;
+  return wp;
+}
+
 std::vector<WaypointV2>
 WaypointV2MissionSample::generatePolygonWaypoints(float32_t radius,
                                                   uint16_t  polygonNum)
@@ -585,14 +599,17 @@ WaypointV2MissionSample::generatePolygonWaypoints(float32_t radius,
   // Iterative algorithm
   for (int i = 0; i < polygonNum; i++)
   {
-    float32_t angle = i * 2 * M_PI / polygonNum;
+    float32_t angler_rad = i * 2 * M_PI / polygonNum;
     setWaypointV2Defaults(waypointV2);
-    float32_t X         = radius * cos(angle);
-    float32_t Y         = radius * sin(angle);
-    waypointV2.latitude = X / EARTH_RADIUS + startPoint.latitude;
-    waypointV2.longitude =
-      Y / (EARTH_RADIUS * cos(startPoint.latitude)) + startPoint.longitude;
-    waypointV2.relativeHeight = startPoint.relativeHeight;
+    float32_t x = radius * cos(angler_rad);
+    float32_t y = radius * sin(angler_rad);
+
+    waypointV2 = xyzToWaypointV2(x, y, 0, startPoint);
+    //    waypointV2.latitude = x / EARTH_RADIUS + startPoint.latitude;
+    //    waypointV2.longitude =
+    //      y / (EARTH_RADIUS * cos(startPoint.latitude)) +
+    //      startPoint.longitude;
+    //    waypointV2.relativeHeight = startPoint.relativeHeight;
     waypointList.push_back(waypointV2);
   }
   waypointList.push_back(startPoint);

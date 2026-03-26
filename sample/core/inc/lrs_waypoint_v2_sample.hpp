@@ -39,15 +39,16 @@
 #include <mutex>
 #include <vector>
 // DJI OSDK includes
-#include <dji_vehicle.hpp>
 #include "dji_waypoint_v2.hpp"
+#include <dji_vehicle.hpp>
 // Helpers
 #include <dji_linux_helpers.hpp>
 const int DEFAULT_PACKAGE_INDEX = 0;
-class WaypointV2MissionSample {
+class WaypointV2MissionSample
+{
 
 public:
-  WaypointV2MissionSample(Vehicle *vehicle);
+  WaypointV2MissionSample(Vehicle* vehicle);
 
   ~WaypointV2MissionSample();
 
@@ -86,7 +87,9 @@ public:
    *  @param timeout blocking timeout in seconds
    *  @return ErrorCode::ErrorCodeType error code
    */
-  ErrorCode::ErrorCodeType downloadWaypointMission(std::vector<WaypointV2> &mission,int timeout);
+  ErrorCode::ErrorCodeType downloadWaypointMission(
+    std::vector<WaypointV2>& mission,
+    int                      timeout);
 
   /*! @brief Sample to start mission
    *
@@ -128,7 +131,7 @@ public:
    *  @param timeout blocking timeout in seconds
    *  @return ErrorCode::ErrorCodeType error code
    */
-  void setGlobalCruiseSpeed(const GlobalCruiseSpeed &cruiseSpeed, int timeout);
+  void setGlobalCruiseSpeed(const GlobalCruiseSpeed& cruiseSpeed, int timeout);
 
   /*! @brief Sample to set up subscription
    *
@@ -142,13 +145,12 @@ public:
    *  @param timeout blocking timeout in seconds
    *  @return bool result, 0:fail, 1:success
    */
-  bool teardownSubscription(const int pkgIndex,
-                            int timeout);
+  bool teardownSubscription(const int pkgIndex, int timeout);
   /*! @brief Sample to set single waypoint default value
    *
    *  @param waypointV2 struct of DJIWaypointV2
    */
-//  void setWaypointV2Defaults(DJIWaypointV2& waypointV2);
+  //  void setWaypointV2Defaults(DJIWaypointV2& waypointV2);
 
   void setWaypointV2Defaults(WaypointV2& waypointV2);
   /*! @brief Sample generate polygon waypoints
@@ -157,17 +159,27 @@ public:
    *  @param polygonNum number of polygon sides
    *  @return vector of DJIWaypointV2
    */
-//  std::vector<DJIWaypointV2> generatePolygonWaypoints(float32_t radius, uint16_t polygonNum);
+  //  std::vector<DJIWaypointV2> generatePolygonWaypoints(float32_t radius,
+  //  uint16_t polygonNum);
 
-  std::vector<WaypointV2> generatePolygonWaypoints(float32_t radius, uint16_t polygonNum);
-  std::vector<WaypointV2> generateLineWaypoints(float32_t step, uint16_t n_points);
-  std::vector<WaypointV2> generateStairWaypoints(float32_t step, uint16_t n_points);
-  std::vector<WaypointV2> generateAngleWaypoints(float32_t step, float32_t angle_deg, uint16_t n_points);
+  std::vector<WaypointV2> generatePolygonWaypoints(float32_t radius,
+                                                   uint16_t  polygonNum);
+  std::vector<WaypointV2> generateLineWaypoints(float32_t step,
+                                                uint16_t  n_points);
+  std::vector<WaypointV2> generateStairWaypoints(float32_t step,
+                                                 uint16_t  n_points);
+  std::vector<WaypointV2> generateAngleWaypoints(float32_t step,
+                                                 float32_t angle_deg,
+                                                 uint16_t  n_points);
 
   double calculateDistance(const WaypointV2& wp1, const WaypointV2& wp2);
-  void printWaypointDistances(const std::vector<WaypointV2>& waypointList);
+  void   printWaypointDistances(const std::vector<WaypointV2>& waypointList);
   double calculateDistance3D(const WaypointV2& wp1, const WaypointV2& wp2);
-  double rad2deg(const double &rad);
+  double rad2deg(const double& rad);
+  WaypointV2 xyzToWaypointV2(double            x,
+                             double            y,
+                             double            z,
+                             const WaypointV2& startWp);
 
   /*! @brief Sample generate polygon waypoints
    *
@@ -176,18 +188,20 @@ public:
    */
   std::vector<DJIWaypointV2Action> generateWaypointActions(uint16_t actionNum);
 
-  /*! @brief Get action's remain memory.Only if remian memory is enough, action can be uploaded successfully!
-  *
-  *  @param actionMemory contains total memory and remain memory
-  *  refer to the definition of DJI::OSDK::GetRemainRamAck
-  *  @param timeout blocking timeout in seconds
-  *  @return ErrorCode::ErrorCodeType error code
-  */
-  ErrorCode::ErrorCodeType getActionRemainMemory(GetRemainRamAck &actionMemory, int timeout);
+  /*! @brief Get action's remain memory.Only if remian memory is enough, action
+   * can be uploaded successfully!
+   *
+   *  @param actionMemory contains total memory and remain memory
+   *  refer to the definition of DJI::OSDK::GetRemainRamAck
+   *  @param timeout blocking timeout in seconds
+   *  @return ErrorCode::ErrorCodeType error code
+   */
+  ErrorCode::ErrorCodeType getActionRemainMemory(GetRemainRamAck& actionMemory,
+                                                 int              timeout);
 
 private:
-  Vehicle *vehiclePtr;
+  Vehicle*                         vehiclePtr;
   std::vector<DJIWaypointV2Action> actions;
 };
 
-#endif  // DJIOSDK_WAYPOINT_V2_SAMPLE_HPP
+#endif // DJIOSDK_WAYPOINT_V2_SAMPLE_HPP
