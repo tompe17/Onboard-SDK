@@ -387,7 +387,7 @@ WaypointV2MissionSample::initMissionSetting(int timeout)
   // missionInitSettings.mission =  generatePolygonWaypoints(radius,
   // polygonNum); missionInitSettings.mission =  generateLineWaypoints(10.0, 8);
   // missionInitSettings.mission =  generateStairWaypoints(20.0, 6);
-  missionInitSettings.mission      = generateAngleWaypoints(10.0, 10.0, 2);
+  missionInitSettings.mission      = generateAngleWaypoints(10.0, 10.0, 1);
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   printWaypointDistances(missionInitSettings.mission);
@@ -778,7 +778,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
 //  startPoint.waypointType   = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
     startPoint.waypointType    = DJIWaypointV2FlightPathModeCoordinateTurn;
   startPoint.dampingDistance = 1.0;
-  waypointList.push_back(startPoint);
+//  waypointList.push_back(startPoint);
 
   printWpInfo(startPoint, "start wp");
 
