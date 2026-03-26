@@ -318,8 +318,8 @@ WaypointV2MissionSample::calculateDistance(const WaypointV2& wp1,
   double lat2 = (wp2.latitude);
   double lon2 = (wp2.longitude);
 
-  printf(
-    "lat1: %f lon1: %f   ----  lat2: %f, lon2: %f", lat1, lon1, lat2, lon2);
+//  printf(
+//    "lat1: %f lon1: %f   ----  lat2: %f, lon2: %f", lat1, lon1, lat2, lon2);
 
   double dLat = lat2 - lat1;
   double dLon = lon2 - lon1;
