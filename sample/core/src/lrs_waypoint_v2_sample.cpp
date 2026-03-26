@@ -850,7 +850,8 @@ WaypointV2MissionSample::setWaypointV2Defaults(WaypointV2& waypointV2)
 
   waypointV2.waypointType =
     DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
-  waypointV2.headingMode              = DJIWaypointV2HeadingModeAuto;
+//  waypointV2.headingMode              = DJIWaypointV2HeadingModeAuto;
+  waypointV2.headingMode              = DJIWaypointV2HeadingFixed;
   waypointV2.config.useLocalCruiseVel = 0;
   waypointV2.config.useLocalMaxVel    = 0;
 
