@@ -208,7 +208,9 @@ ErrorCode::ErrorCodeType
 WaypointV2MissionSample::runWaypointV2Mission(uint16_t damping,
                                               float    speed,
                                               float    step,
-                                              float    angle_deg)
+                                              float    angle_deg,
+                                              uint16_t n_points,
+                                              uint16_t curve_type)
 {
   if (!vehiclePtr->isM300())
   {
@@ -234,7 +236,7 @@ WaypointV2MissionSample::runWaypointV2Mission(uint16_t damping,
   //  sleep(timeout);
   //  sleep(5);
   /*! init mission */
-  ret = initMissionSetting(timeout, damping, speed, step, angle_deg);
+  ret = initMissionSetting(timeout, damping, speed, step, angle_deg, n_points, curve_type);
   if (ret != ErrorCode::SysCommonErr::Success)
     return ret;
   sleep(timeout);
@@ -371,7 +373,7 @@ WaypointV2MissionSample::initMissionSetting(int      timeout,
                                             uint16_t damping,
                                             float    speed,
                                             float    step,
-                                            float    angle_deg)
+                                            float    angle_deg, uint16_t n_points, uint16_t curve_type)
 {
 
   // uint16_t polygonNum = 6;

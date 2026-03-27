@@ -62,7 +62,9 @@ public:
   ErrorCode::ErrorCodeType runWaypointV2Mission(uint16_t damping,
                                                 float    speed,
                                                 float    step,
-                                                float    angle_deg);
+                                                float    angle_deg,
+                                                uint16_t n_points,
+                                                uint16_t curve_type);
 
   /*! @brief Sample to init mission settings,
    *
@@ -73,7 +75,7 @@ public:
                                               uint16_t damping,
                                               float    speed,
                                               float    step,
-                                              float    angle_deg);
+                                              float    angle_deg, uint16_t n_points, uint16_t curve_type);
 
   /*! @brief Sample to upload mission
    *

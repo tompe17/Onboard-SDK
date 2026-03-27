@@ -61,16 +61,23 @@ main(int argc, char** argv)
 
 
   uint16_t damp = 0;
+  uint16_t n_points = 0;
+  uint16_t curve_type = 0;
   float speed = 5.0f;
   float step = 10.0f;
   float angle_deg = 0.0f;
 
+
   getCmdOption(argc, argv, "--damp", damp);
+  getCmdOption(argc, argv, "--n", n_points);
+  getCmdOption(argc, argv, "--curve", curve_type);
   getCmdOption(argc, argv, "--speed", speed);
   getCmdOption(argc, argv, "--step", step);
   getCmdOption(argc, argv, "--angle_deg", angle_deg);
 
   std::cout << "damp       = " << damp << std::endl;
+  std::cout << "n_points       = " << n_points << std::endl;
+  std::cout << "curve_type       = " << n_points << std::endl;
   std::cout << "speed      = " << speed << std::endl;
   std::cout << "step       = " << step << std::endl;
   std::cout << "angle_deg  = " << angle_deg << std::endl;
@@ -94,7 +101,7 @@ main(int argc, char** argv)
   auto *sample = new WaypointV2MissionSample(vehicle);
 
   /*! run a new WaypointV2 mission sample*/
-  sample->runWaypointV2Mission(damp, speed, step, angle_deg);
+  sample->runWaypointV2Mission(damp, speed, step, angle_deg, n_points, curve_type);
 
   delete(sample);
 
