@@ -396,7 +396,7 @@ WaypointV2MissionSample::initMissionSetting(int timeout)
   // missionInitSettings.mission =  generatePolygonWaypoints(radius,
   // polygonNum); missionInitSettings.mission =  generateLineWaypoints(10.0, 8);
   // missionInitSettings.mission =  generateStairWaypoints(20.0, 6);
-  missionInitSettings.mission      = generateAngleWaypoints(20.0, 80.0, 4);
+  missionInitSettings.mission      = generateAngleWaypoints(20.0, 90.0, 4);
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   printWaypointDistances(missionInitSettings.mission);
@@ -766,11 +766,12 @@ WaypointV2MissionSample::printWpInfo(const WaypointV2&  wp,
 }
 
 // Returns (dx, dy) for a vector of length "step" rotated by "angle_rad"
-std::pair<double, double> WaypointV2MissionSample::rotateVector(double step, double angle_rad)
+std::pair<double, double>
+WaypointV2MissionSample::rotateVector(double step, double angle_rad)
 {
   double dx = step * std::cos(angle_rad);
   double dy = step * std::sin(angle_rad);
-  return {dx, dy};
+  return { dx, dy };
 }
 
 std::vector<WaypointV2>
@@ -805,27 +806,29 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   printWpInfo(startPoint, "start wp");
 
   // Iterative algorithm
-  double X       = 10.0;
-  double Y       = 0.0;
-  uint16_t  damping = 500.0;
+  double   X       = 10.0;
+  double   Y       = 0.0;
+  uint16_t damping = 500.0;
   //  uint16_t  damping = 2;
+  double a_rad = angle_rad;
   for (int i = 0; i < n_points; i++)
   {
     setWaypointV2Defaults(waypointV2);
     //    waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
     //    waypointV2.heading        = 45.0;
-    auto [dx, dy] = rotateVector(step, angle_rad);
+    auto [dx, dy] = rotateVector(step, a_rad);
+    a_rad += angle_rad;
 
     if (i % 2)
     {
-      X += dx;//tan(angle_rad) * step;
+      X += dx; // tan(angle_rad) * step;
     }
     else
     {
-      X -= dx;//tan(angle_rad) * step;
+      X -= dx; // tan(angle_rad) * step;
     }
-//    Y += step;
-    Y+=dy;
+    //    Y += step;
+    Y += dy;
     waypointV2.dampingDistance = damping;
     //        waypointV2.waypointType =
     //        DJIWaypointV2FlightPathModeGoToPointAlongACurve;
