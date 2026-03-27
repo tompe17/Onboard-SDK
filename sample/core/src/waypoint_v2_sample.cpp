@@ -163,7 +163,7 @@ bool WaypointV2MissionSample::teardownSubscription(const int pkgIndex,
   return true;
 }
 
-ErrorCode::ErrorCodeType WaypointV2MissionSample::runWaypointV2Mission()
+ErrorCode::ErrorCodeType WaypointV2MissionSample::runWaypointV2Mission(uint16_t damping, float speed, float step, float angle_deg)
 {
   if (!vehiclePtr->isM300()) {
     DSTATUS("This sample only supports M300!");

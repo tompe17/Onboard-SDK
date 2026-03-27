@@ -30,14 +30,50 @@
  */
 
 #include "waypoint_v2_sample.hpp"
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <cstdint>
 
 using namespace DJI::OSDK;
 using namespace DJI::OSDK::Telemetry;
+
+// Generic parser
+template <typename T>
+bool getCmdOption(int argc, char* argv[], const std::string& option, T& value)
+{
+  for (int i = 1; i < argc - 1; ++i)
+  {
+    if (std::string(argv[i]) == option)
+    {
+      std::istringstream iss(argv[i + 1]);
+      return (iss >> value) ? true : false;
+    }
+  }
+  return false;
+}
+
 
 int
 main(int argc, char** argv)
 {
   /*! Initialize variables*/
+
+
+  uint16_t damp = 0;
+  float speed = 5.0f;
+  float step = 10.0f;
+  float angle_deg = 0.0f;
+
+  getCmdOption(argc, argv, "--damp", damp);
+  getCmdOption(argc, argv, "--speed", speed);
+  getCmdOption(argc, argv, "--step", step);
+  getCmdOption(argc, argv, "--angle_deg", angle_deg);
+
+  std::cout << "damp       = " << damp << std::endl;
+  std::cout << "speed      = " << speed << std::endl;
+  std::cout << "step       = " << step << std::endl;
+  std::cout << "angle_deg  = " << angle_deg << std::endl;
 
   int functionTimeout = 1;
   /*! Setup OSDK.*/
@@ -57,7 +93,7 @@ main(int argc, char** argv)
   auto *sample = new WaypointV2MissionSample(vehicle);
 
   /*! run a new WaypointV2 mission sample*/
-  sample->runWaypointV2Mission();
+  sample->runWaypointV2Mission(damp, speed, step, angle_deg);
 
   delete(sample);
 

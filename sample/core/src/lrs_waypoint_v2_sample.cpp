@@ -205,7 +205,7 @@ WaypointV2MissionSample::teardownSubscription(const int pkgIndex, int timeout)
 }
 
 ErrorCode::ErrorCodeType
-WaypointV2MissionSample::runWaypointV2Mission()
+WaypointV2MissionSample::runWaypointV2Mission(uint16_t damping, float speed, float step, float angle_deg)
 {
   if (!vehiclePtr->isM300())
   {
