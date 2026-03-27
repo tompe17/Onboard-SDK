@@ -178,7 +178,7 @@ public:
   std::vector<WaypointV2> generateAngleWaypoints(float32_t step,
                                                  float32_t angle_deg,
                                                  uint16_t  n_points,
-                                                 float32_t damping,
+                                                 uint16_t damping,
                                                  float32_t speed);
 
   double calculateDistance(const WaypointV2& wp1, const WaypointV2& wp2);
