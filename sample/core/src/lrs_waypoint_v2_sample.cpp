@@ -61,16 +61,25 @@ updateMissionState(T_CmdHandle*     cmdHandle,
       if (curMs - preMs >= 1000)
       {
         preMs = curMs;
-        DSTATUS("missionStatePushAck->commonDataVersion:%d",
-                missionStatePushAck->commonDataVersion);
-        DSTATUS("missionStatePushAck->commonDataLen:%d",
+        DSTATUS("missionStatePushAck ->commonDataVersion:%d commonDataLen:%d",
+                missionStatePushAck->commonDataVersion,
                 missionStatePushAck->commonDataLen);
-        DSTATUS("missionStatePushAck->data.state:0x%x",
-                missionStatePushAck->data.state);
-        DSTATUS("missionStatePushAck->data.curWaypointIndex:%d",
-                missionStatePushAck->data.curWaypointIndex);
-        DSTATUS("missionStatePushAck->data.velocity:%d",
+        DSTATUS("->missionStatePushAck->data: state:0x%x curWaypointIndex:%d "
+                "velocity:%d",
+                missionStatePushAck->data.state,
+                missionStatePushAck->data.curWaypointIndex,
                 missionStatePushAck->data.velocity);
+
+        //        DSTATUS("missionStatePushAck->commonDataVersion:%d",
+        //                missionStatePushAck->commonDataVersion);
+        //        DSTATUS("missionStatePushAck->commonDataLen:%d",
+        //                missionStatePushAck->commonDataLen);
+        //        DSTATUS("missionStatePushAck->data.state:0x%x",
+        //                missionStatePushAck->data.state);
+        //        DSTATUS("missionStatePushAck->data.curWaypointIndex:%d",
+        //                missionStatePushAck->data.curWaypointIndex);
+        //        DSTATUS("missionStatePushAck->data.velocity:%d",
+        //                missionStatePushAck->data.velocity);
       }
     }
     else
@@ -318,8 +327,8 @@ WaypointV2MissionSample::calculateDistance(const WaypointV2& wp1,
   double lat2 = (wp2.latitude);
   double lon2 = (wp2.longitude);
 
-//  printf(
-//    "lat1: %f lon1: %f   ----  lat2: %f, lon2: %f", lat1, lon1, lat2, lon2);
+  //  printf(
+  //    "lat1: %f lon1: %f   ----  lat2: %f, lon2: %f", lat1, lon1, lat2, lon2);
 
   double dLat = lat2 - lat1;
   double dLon = lon2 - lon1;
@@ -772,14 +781,16 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     vehiclePtr->subscribe->getValue<TOPIC_GPS_FUSED>();
 
   setWaypointV2Defaults(startPoint);
-//  waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
-//  waypointV2.heading        = 45.0;
+  //  waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
+  //  waypointV2.heading        = 45.0;
   startPoint.latitude       = (subscribeGPosition.latitude);
   startPoint.longitude      = (subscribeGPosition.longitude);
   startPoint.relativeHeight = 15;
-//  startPoint.waypointType   = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
-//    startPoint.waypointType    = DJIWaypointV2FlightPathModeCoordinateTurn;
-    startPoint.waypointType    = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
+  //  startPoint.waypointType   =
+  //  DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+  //    startPoint.waypointType    = DJIWaypointV2FlightPathModeCoordinateTurn;
+  startPoint.waypointType =
+    DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
   startPoint.dampingDistance = 1;
   waypointList.push_back(startPoint);
 
@@ -789,12 +800,12 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   float32_t X       = 10.0;
   float32_t Y       = 0.0;
   uint16_t  damping = 500.0;
-//  uint16_t  damping = 2;
+  //  uint16_t  damping = 2;
   for (int i = 0; i < n_points; i++)
   {
     setWaypointV2Defaults(waypointV2);
-//    waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
-//    waypointV2.heading        = 45.0;
+    //    waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
+    //    waypointV2.heading        = 45.0;
 
     if (i % 2)
     {
@@ -807,17 +818,17 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     Y += step;
 
     waypointV2.dampingDistance = damping;
-//        waypointV2.waypointType =
-//        DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+    //        waypointV2.waypointType =
+    //        DJIWaypointV2FlightPathModeGoToPointAlongACurve;
     waypointV2.waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
 
-//    if (i == (n_points - 1))
-//    {
-////            waypointV2.waypointType =
-////              DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
-//      waypointV2.waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
-//      waypointV2.dampingDistance = damping;
-//    }
+    //    if (i == (n_points - 1))
+    //    {
+    ////            waypointV2.waypointType =
+    ////              DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
+    //      waypointV2.waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
+    //      waypointV2.dampingDistance = damping;
+    //    }
     xyzToWaypointV2(X, Y, 0, startPoint, waypointV2);
 
     waypointList.push_back(waypointV2);
@@ -856,8 +867,8 @@ WaypointV2MissionSample::setWaypointV2Defaults(WaypointV2& waypointV2)
 
   waypointV2.waypointType =
     DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
-  waypointV2.headingMode              = DJIWaypointV2HeadingModeAuto;
-//  waypointV2.headingMode              = DJIWaypointV2HeadingFixed;
+  waypointV2.headingMode = DJIWaypointV2HeadingModeAuto;
+  //  waypointV2.headingMode              = DJIWaypointV2HeadingFixed;
   waypointV2.config.useLocalCruiseVel = 0;
   waypointV2.config.useLocalMaxVel    = 0;
 
