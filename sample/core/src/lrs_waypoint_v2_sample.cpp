@@ -765,6 +765,14 @@ WaypointV2MissionSample::printWpInfo(const WaypointV2&  wp,
          wpTypeToString(wp.waypointType).c_str());
 }
 
+// Returns (dx, dy) for a vector of length "step" rotated by "angle_rad"
+std::pair<double, double> WaypointV2MissionSample::rotateVector(double step, double angle_rad)
+{
+  double dx = step * std::cos(angle_rad);
+  double dy = step * std::sin(angle_rad);
+  return {dx, dy};
+}
+
 std::vector<WaypointV2>
 WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
                                                 float32_t angle_deg,
@@ -797,8 +805,8 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   printWpInfo(startPoint, "start wp");
 
   // Iterative algorithm
-  float32_t X       = 10.0;
-  float32_t Y       = 0.0;
+  double X       = 10.0;
+  double Y       = 0.0;
   uint16_t  damping = 500.0;
   //  uint16_t  damping = 2;
   for (int i = 0; i < n_points; i++)
@@ -806,17 +814,18 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     setWaypointV2Defaults(waypointV2);
     //    waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
     //    waypointV2.heading        = 45.0;
+    auto [dx, dy] = rotateVector(step, angle_rad);
 
     if (i % 2)
     {
-      X += tan(angle_rad) * step;
+      X += dx;//tan(angle_rad) * step;
     }
     else
     {
-      X -= tan(angle_rad) * step;
+      X -= dx;//tan(angle_rad) * step;
     }
-    Y += step;
-
+//    Y += step;
+    Y+=dy;
     waypointV2.dampingDistance = damping;
     //        waypointV2.waypointType =
     //        DJIWaypointV2FlightPathModeGoToPointAlongACurve;
