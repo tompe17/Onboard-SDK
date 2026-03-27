@@ -885,6 +885,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   //   this might still fail for very short distances
   // * first waypoint cannot be a coordinated turn
   // * heading is always along the segment for the first WP
+  // * damping seems not to do anything for straight line and curve
   // * WP types:
   //   -coordinated turn: can turn before a WP if damping is high, fly passed
   //    the waypoint if damping is small
@@ -892,6 +893,10 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   //    damping does nothing
   //   - DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop
   //    if it overshoots, it will correct itself by moving closer - looks wierd
+  // * if second (and other) WP are curve, and the first is a straight line - the line s ignored
+  // * distance between waypoints
+  //   - for straight lines, curves: 0.1m is ok
+  //   - coordinated turn: 4m (damp 20)
 
   setWaypointV2Defaults(wpFirst);
   wp.headingMode    = DJIWaypointV2HeadingModeAuto;
