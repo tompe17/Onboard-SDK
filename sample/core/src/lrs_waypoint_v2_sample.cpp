@@ -817,15 +817,16 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     //    waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
     //    waypointV2.heading        = 45.0;
     auto [dx, dy] = rotateVector(step, a_rad);
-    a_rad += angle_rad;
 
     if (i % 2)
     {
       X += dx; // tan(angle_rad) * step;
+      a_rad += angle_rad;
     }
     else
     {
       X -= dx; // tan(angle_rad) * step;
+      a_rad -= angle_rad;
     }
     //    Y += step;
     Y += dy;
