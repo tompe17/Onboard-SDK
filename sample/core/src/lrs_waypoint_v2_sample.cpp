@@ -821,12 +821,11 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   }
 
   setWaypointV2Defaults(startPoint);
-  waypointV2.headingMode    = DJIWaypointV2HeadingManual;
+  waypointV2.headingMode    = DJIWaypointV2HeadingModeAuto;
   waypointV2.heading        = 45.0;
   startPoint.latitude       = (subscribeGPosition.latitude);
   startPoint.longitude      = (subscribeGPosition.longitude);
   startPoint.relativeHeight = 15;
-  //  startPoint.waypointType   =
   //  DJIWaypointV2FlightPathModeGoToPointAlongACurve;
   //    startPoint.waypointType    = DJIWaypointV2FlightPathModeCoordinateTurn;
   startPoint.waypointType =
@@ -839,13 +838,11 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   // Iterative algorithm
   double X = step;
   double Y = 0.0;
-  //  uint16_t damping = 500.0;
-  //  uint16_t  damping = 2;
   double a_rad = angle_rad;
   for (int i = 0; i < n_points; i++)
   {
     setWaypointV2Defaults(waypointV2);
-    waypointV2.headingMode = DJIWaypointV2HeadingManual;
+    waypointV2.headingMode = DJIWaypointV2HeadingModeAuto;
     waypointV2.heading     = 45.0;
     auto [dx, dy]          = rotateVector(step, a_rad);
 
