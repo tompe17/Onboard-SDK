@@ -891,7 +891,6 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   //   -curve: always crosses the waypoint -
   //    damping does nothing
   //   - DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop
-  //    can fail if damping is too big
   //    if it overshoots, it will correct itself by moving closer - looks wierd
 
   setWaypointV2Defaults(wpFirst);
@@ -938,6 +937,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     }
     xyzToWaypointV2(X, Y, 0, wpFirst, wp);
 
+    waypointList.push_back(wp);
     waypointList.push_back(wp);
   }
   /// waypointList.push_back(wpFirst);
