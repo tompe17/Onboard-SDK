@@ -758,6 +758,7 @@ WaypointV2MissionSample::wpTypeToString(const DJIWaypointV2FlightPathMode& mode)
     case DJIWaypointV2FlightPathModeUnknown:
       return "Unknown";
   }
+  return "Unknown";
 }
 
 void
