@@ -181,7 +181,8 @@ public:
                                                  float32_t angle_deg,
                                                  uint16_t  n_points,
                                                  uint16_t damping,
-                                                 float32_t speed);
+                                                 float32_t speed,
+                                                 uint16_t curve_type);
 
   double calculateDistance(const WaypointV2& wp1, const WaypointV2& wp2);
   void   printWaypointDistances(const std::vector<WaypointV2>& waypointList);

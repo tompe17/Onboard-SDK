@@ -236,7 +236,8 @@ WaypointV2MissionSample::runWaypointV2Mission(uint16_t damping,
   //  sleep(timeout);
   //  sleep(5);
   /*! init mission */
-  ret = initMissionSetting(timeout, damping, speed, step, angle_deg, n_points, curve_type);
+  ret = initMissionSetting(
+    timeout, damping, speed, step, angle_deg, n_points, curve_type);
   if (ret != ErrorCode::SysCommonErr::Success)
     return ret;
   sleep(timeout);
@@ -373,7 +374,9 @@ WaypointV2MissionSample::initMissionSetting(int      timeout,
                                             uint16_t damping,
                                             float    speed,
                                             float    step,
-                                            float    angle_deg, uint16_t n_points, uint16_t curve_type)
+                                            float    angle_deg,
+                                            uint16_t n_points,
+                                            uint16_t curve_type)
 {
 
   // uint16_t polygonNum = 6;
@@ -405,8 +408,8 @@ WaypointV2MissionSample::initMissionSetting(int      timeout,
   // missionInitSettings.mission =  generatePolygonWaypoints(radius,
   // polygonNum); missionInitSettings.mission =  generateLineWaypoints(10.0, 8);
   // missionInitSettings.mission =  generateStairWaypoints(20.0, 6);
-  missionInitSettings.mission =
-    generateAngleWaypoints(step, angle_deg, 4, damping, speed);
+  missionInitSettings.mission = generateAngleWaypoints(
+    step, angle_deg, n_points, damping, speed, curve_type);
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   printWaypointDistances(missionInitSettings.mission);
@@ -789,8 +792,9 @@ std::vector<WaypointV2>
 WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
                                                 float32_t angle_deg,
                                                 uint16_t  n_points,
-                                                uint16_t damping,
-                                                float32_t speed)
+                                                uint16_t  damping,
+                                                float32_t speed,
+                                                uint16_t  curve_type)
 {
   // Let's create a vector to store our waypoints in.
 
@@ -802,9 +806,23 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   Telemetry::TypeMap<TOPIC_GPS_FUSED>::type subscribeGPosition =
     vehiclePtr->subscribe->getValue<TOPIC_GPS_FUSED>();
 
+  DJIWaypointV2FlightPathMode waypointType;
+  if (curve_type == 0)
+  {
+    waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
+  }
+  else if (curve_type == 1)
+  {
+    waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+  }
+  else
+  {
+    waypointType = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
+  }
+
   setWaypointV2Defaults(startPoint);
-  //  waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
-  //  waypointV2.heading        = 45.0;
+  waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
+  waypointV2.heading        = 45.0;
   startPoint.latitude       = (subscribeGPosition.latitude);
   startPoint.longitude      = (subscribeGPosition.longitude);
   startPoint.relativeHeight = 15;
@@ -827,33 +845,29 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   for (int i = 0; i < n_points; i++)
   {
     setWaypointV2Defaults(waypointV2);
-    //    waypointV2.headingMode    = DJIWaypointV2HeadingWaypointCustom;
-    //    waypointV2.heading        = 45.0;
-    auto [dx, dy] = rotateVector(step, a_rad);
+    waypointV2.headingMode = DJIWaypointV2HeadingWaypointCustom;
+    waypointV2.heading     = 45.0;
+    auto [dx, dy]          = rotateVector(step, a_rad);
 
     if (i % 2)
     {
-      X += dx; // tan(angle_rad) * step;
+      X += dx;
       a_rad += angle_rad;
     }
     else
     {
-      X -= dx; // tan(angle_rad) * step;
+      X -= dx;
       a_rad -= angle_rad;
     }
-    //    Y += step;
     Y += dy;
     waypointV2.dampingDistance = damping;
-    //        waypointV2.waypointType =
-    //        DJIWaypointV2FlightPathModeGoToPointAlongACurve;
-    waypointV2.waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
+    waypointV2.waypointType    = waypointType;
 
     //    if (i == (n_points - 1))
     //    {
     ////            waypointV2.waypointType =
     ////              DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
     //      waypointV2.waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
-    //      waypointV2.dampingDistance = damping;
     //    }
     xyzToWaypointV2(X, Y, 0, startPoint, waypointV2);
 
