@@ -84,6 +84,7 @@ main(int argc, char** argv)
     std::cout << "Vehicle not initialized, exiting.\n";
     return -1;
   }
+
   int responseTimeout = 1;
 
   /*! Obtain Control Authority*/

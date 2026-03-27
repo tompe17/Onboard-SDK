@@ -59,14 +59,21 @@ public:
    *  @note If any one of the steps fails, it will return the failed error code
    *  @return ErrorCode::ErrorCodeType error code
    */
-  ErrorCode::ErrorCodeType runWaypointV2Mission(uint16_t damping, float speed, float step, float angle_deg);
+  ErrorCode::ErrorCodeType runWaypointV2Mission(uint16_t damping,
+                                                float    speed,
+                                                float    step,
+                                                float    angle_deg);
 
   /*! @brief Sample to init mission settings,
    *
    *  @param timeout blocking timeout in seconds
    *  @return ErrorCode::ErrorCodeType error code
    */
-  ErrorCode::ErrorCodeType initMissionSetting(int timeout);
+  ErrorCode::ErrorCodeType initMissionSetting(int      timeout,
+                                              uint16_t damping,
+                                              float    speed,
+                                              float    step,
+                                              float    angle_deg);
 
   /*! @brief Sample to upload mission
    *
@@ -170,7 +177,9 @@ public:
                                                  uint16_t  n_points);
   std::vector<WaypointV2> generateAngleWaypoints(float32_t step,
                                                  float32_t angle_deg,
-                                                 uint16_t  n_points);
+                                                 uint16_t  n_points,
+                                                 float32_t damping,
+                                                 float32_t speed);
 
   double calculateDistance(const WaypointV2& wp1, const WaypointV2& wp2);
   void   printWaypointDistances(const std::vector<WaypointV2>& waypointList);

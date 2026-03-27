@@ -231,7 +231,7 @@ WaypointV2MissionSample::runWaypointV2Mission(uint16_t damping, float speed, flo
   //  sleep(timeout);
   //  sleep(5);
   /*! init mission */
-  ret = initMissionSetting(timeout);
+  ret = initMissionSetting(timeout, damping, speed, step, angle_deg);
   if (ret != ErrorCode::SysCommonErr::Success)
     return ret;
   sleep(timeout);
@@ -364,7 +364,7 @@ WaypointV2MissionSample::calculateDistance3D(const WaypointV2& wp1,
 }
 
 ErrorCode::ErrorCodeType
-WaypointV2MissionSample::initMissionSetting(int timeout)
+WaypointV2MissionSample::initMissionSetting(int timeout, uint16_t damping, float speed, float step, float angle_deg)
 {
 
   // uint16_t polygonNum = 6;
@@ -396,7 +396,7 @@ WaypointV2MissionSample::initMissionSetting(int timeout)
   // missionInitSettings.mission =  generatePolygonWaypoints(radius,
   // polygonNum); missionInitSettings.mission =  generateLineWaypoints(10.0, 8);
   // missionInitSettings.mission =  generateStairWaypoints(20.0, 6);
-  missionInitSettings.mission      = generateAngleWaypoints(20.0, 90.0, 4);
+  missionInitSettings.mission      = generateAngleWaypoints(step, angle_deg, 4);
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   printWaypointDistances(missionInitSettings.mission);
@@ -777,7 +777,9 @@ WaypointV2MissionSample::rotateVector(double step, double angle_rad)
 std::vector<WaypointV2>
 WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
                                                 float32_t angle_deg,
-                                                uint16_t  n_points)
+                                                uint16_t  n_points,
+                                                float32_t damping,
+                                                float32_t speed)
 {
   // Let's create a vector to store our waypoints in.
 
@@ -806,9 +808,9 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   printWpInfo(startPoint, "start wp");
 
   // Iterative algorithm
-  double   X       = 10.0;
+  double   X       = step;
   double   Y       = 0.0;
-  uint16_t damping = 500.0;
+//  uint16_t damping = 500.0;
   //  uint16_t  damping = 2;
   double a_rad = angle_rad;
   for (int i = 0; i < n_points; i++)
