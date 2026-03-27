@@ -824,10 +824,16 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   {
     wpType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
   }
-  else
+  else if (wp_type == 2)
   {
     wpType = DJIWaypointV2FlightPathModeCoordinateTurn;
   }
+  else //if (wp_type == 3)
+  {
+    wpType = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
+
+  }
+
   //  -----------------------------------------
   //  -----------------------------------------
   //  -----------------------------------------
@@ -835,9 +841,13 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   {
     wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
   }
-  else //if (wp_type_first == 1)
+  else if (wp_type_first == 1)
   {
     wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+  }
+  else //if (wp_type_first == 2)
+  {
+    wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
   }
   //  -----------------------------------------
   //  -----------------------------------------
@@ -854,9 +864,13 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   {
     wpTypeLast = DJIWaypointV2FlightPathModeCoordinateTurn;
   }
-  else //if (wp_type == 3)
+  else if (wp_type == 3)
   {
     wpTypeLast = DJIWaypointV2FlightPathModeStraightOut;
+  }
+  else //if (wp_type == 4)
+  {
+    wpTypeLast = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
   }
 
   // comments:
