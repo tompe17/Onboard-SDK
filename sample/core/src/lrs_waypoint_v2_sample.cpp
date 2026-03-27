@@ -816,6 +816,26 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   DJIWaypointV2FlightPathMode wpType;
   DJIWaypointV2FlightPathMode wpTypeLast;
 
+  //  -----------------------------------------
+  //  -----------------------------------------
+  //  -----------------------------------------
+
+  if (wp_type_first == 0)
+  {
+    wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
+  }
+  else if (wp_type_first == 1)
+  {
+    wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+  }
+  else //if (wp_type_first == 2)
+  {
+    wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
+  }
+
+  //  -----------------------------------------
+  //  -----------------------------------------
+  //  -----------------------------------------
   if (wp_type == 0)
   {
     wpType = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
@@ -837,21 +857,6 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   //  -----------------------------------------
   //  -----------------------------------------
   //  -----------------------------------------
-  if (wp_type_first == 0)
-  {
-    wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
-  }
-  else if (wp_type_first == 1)
-  {
-    wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
-  }
-  else //if (wp_type_first == 2)
-  {
-    wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
-  }
-  //  -----------------------------------------
-  //  -----------------------------------------
-  //  -----------------------------------------
   if (wp_type_last == 0)
   {
     wpTypeLast = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
@@ -864,11 +869,11 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   {
     wpTypeLast = DJIWaypointV2FlightPathModeCoordinateTurn;
   }
-  else if (wp_type == 3)
+  else if (wp_type_last == 3)
   {
     wpTypeLast = DJIWaypointV2FlightPathModeStraightOut;
   }
-  else //if (wp_type == 4)
+  else //if (wp_type_last == 4)
   {
     wpTypeLast = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
   }
@@ -881,9 +886,13 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   // * first waypoint cannot be a coordinated turn
   // * heading is always along the segment for the first WP
   // * WP types:
-  //    coordinated turn: can turn before a WP if damping is high, fly passed
-  //    the waypoint if damping is small curve: always crosses the waypoint -
+  //   -coordinated turn: can turn before a WP if damping is high, fly passed
+  //    the waypoint if damping is small
+  //   -curve: always crosses the waypoint -
   //    damping does nothing
+  //   - DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop
+  //    can fail if damping is too big
+  //    if it overshoots, it will correct itself by moving closer - looks wierd
 
   setWaypointV2Defaults(wpFirst);
   wp.headingMode    = DJIWaypointV2HeadingModeAuto;
