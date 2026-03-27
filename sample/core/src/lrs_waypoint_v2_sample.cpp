@@ -846,11 +846,11 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   {
     wpTypeLast = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
   }
-  else if (wp_type == 1)
+  else if (wp_type_last == 1)
   {
     wpTypeLast = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
   }
-  else if (wp_type == 2)
+  else if (wp_type_last == 2)
   {
     wpTypeLast = DJIWaypointV2FlightPathModeCoordinateTurn;
   }
