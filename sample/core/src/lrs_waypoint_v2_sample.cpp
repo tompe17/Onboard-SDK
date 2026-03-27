@@ -205,7 +205,10 @@ WaypointV2MissionSample::teardownSubscription(const int pkgIndex, int timeout)
 }
 
 ErrorCode::ErrorCodeType
-WaypointV2MissionSample::runWaypointV2Mission(uint16_t damping, float speed, float step, float angle_deg)
+WaypointV2MissionSample::runWaypointV2Mission(uint16_t damping,
+                                              float    speed,
+                                              float    step,
+                                              float    angle_deg)
 {
   if (!vehiclePtr->isM300())
   {
@@ -364,7 +367,11 @@ WaypointV2MissionSample::calculateDistance3D(const WaypointV2& wp1,
 }
 
 ErrorCode::ErrorCodeType
-WaypointV2MissionSample::initMissionSetting(int timeout, uint16_t damping, float speed, float step, float angle_deg)
+WaypointV2MissionSample::initMissionSetting(int      timeout,
+                                            uint16_t damping,
+                                            float    speed,
+                                            float    step,
+                                            float    angle_deg)
 {
 
   // uint16_t polygonNum = 6;
@@ -396,7 +403,8 @@ WaypointV2MissionSample::initMissionSetting(int timeout, uint16_t damping, float
   // missionInitSettings.mission =  generatePolygonWaypoints(radius,
   // polygonNum); missionInitSettings.mission =  generateLineWaypoints(10.0, 8);
   // missionInitSettings.mission =  generateStairWaypoints(20.0, 6);
-  missionInitSettings.mission      = generateAngleWaypoints(step, angle_deg, 4);
+  missionInitSettings.mission =
+    generateAngleWaypoints(step, angle_deg, 4, damping, speed);
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   printWaypointDistances(missionInitSettings.mission);
@@ -808,9 +816,9 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   printWpInfo(startPoint, "start wp");
 
   // Iterative algorithm
-  double   X       = step;
-  double   Y       = 0.0;
-//  uint16_t damping = 500.0;
+  double X = step;
+  double Y = 0.0;
+  //  uint16_t damping = 500.0;
   //  uint16_t  damping = 2;
   double a_rad = angle_rad;
   for (int i = 0; i < n_points; i++)
