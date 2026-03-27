@@ -820,6 +820,12 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     waypointType = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
   }
 
+  // comments:
+  // * damping is in cm - so if given in meters, has to be divided by 100.
+  //   we can do it 0..1 - and scale based on segment length/2
+  //   this might still fail for very short distances
+  // * first waypoint cannot be a coordinated turn
+
   setWaypointV2Defaults(startPoint);
   waypointV2.headingMode    = DJIWaypointV2HeadingModeAuto;
   waypointV2.heading        = 45.0;
@@ -829,9 +835,9 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   //  DJIWaypointV2FlightPathModeGoToPointAlongACurve;
   //    startPoint.waypointType    = DJIWaypointV2FlightPathModeCoordinateTurn;
   startPoint.waypointType =
-    DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
+    DJIWaypointV2FlightPathModeCoordinateTurn;
   startPoint.dampingDistance = 0;
-//  waypointList.push_back(startPoint);
+  waypointList.push_back(startPoint);
 
   printWpInfo(startPoint, "start wp");
 
