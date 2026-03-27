@@ -58,9 +58,14 @@ public:
    *  @note If any one of the steps fails, it will return the failed error code
    *  @return ErrorCode::ErrorCodeType error code
    */
-  ErrorCode::ErrorCodeType runWaypointV2Mission(uint16_t damping, float speed, float step, float angle_deg,
+  ErrorCode::ErrorCodeType runWaypointV2Mission(uint16_t damping,
+                                                float    speed,
+                                                float    step,
+                                                float    angle_deg,
                                                 uint16_t n_points,
-                                                uint16_t curve_type);
+                                                uint16_t wp_type,
+                                                uint16_t wp_type_first,
+                                                uint16_t wp_type_last);
 
   /*! @brief Sample to init mission settings,
    *

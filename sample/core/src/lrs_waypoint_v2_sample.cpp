@@ -210,7 +210,9 @@ WaypointV2MissionSample::runWaypointV2Mission(uint16_t damping,
                                               float    step,
                                               float    angle_deg,
                                               uint16_t n_points,
-                                              uint16_t curve_type)
+                                              uint16_t wp_type,
+                                              uint16_t wp_type_first,
+                                              uint16_t wp_type_last)
 {
   if (!vehiclePtr->isM300())
   {
@@ -237,7 +239,7 @@ WaypointV2MissionSample::runWaypointV2Mission(uint16_t damping,
   //  sleep(5);
   /*! init mission */
   ret = initMissionSetting(
-    timeout, damping, speed, step, angle_deg, n_points, curve_type);
+    timeout, damping, speed, step, angle_deg, n_points, wp_type, wp_type_first, wp_type_last);
   if (ret != ErrorCode::SysCommonErr::Success)
     return ret;
   sleep(timeout);
@@ -376,7 +378,9 @@ WaypointV2MissionSample::initMissionSetting(int      timeout,
                                             float    step,
                                             float    angle_deg,
                                             uint16_t n_points,
-                                            uint16_t curve_type)
+                                            uint16_t wp_type,
+                                            uint16_t wp_type_first,
+                                            uint16_t wp_type_last)
 {
 
   // uint16_t polygonNum = 6;
@@ -409,7 +413,7 @@ WaypointV2MissionSample::initMissionSetting(int      timeout,
   // polygonNum); missionInitSettings.mission =  generateLineWaypoints(10.0, 8);
   // missionInitSettings.mission =  generateStairWaypoints(20.0, 6);
   missionInitSettings.mission = generateAngleWaypoints(
-    step, angle_deg, n_points, damping, speed, curve_type);
+    step, angle_deg, n_points, damping, speed, wp_type, wp_type_first,wp_type_last);
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   printWaypointDistances(missionInitSettings.mission);
@@ -794,62 +798,100 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
                                                 uint16_t  n_points,
                                                 uint16_t  damping,
                                                 float32_t speed,
-                                                uint16_t  curve_type)
+                                                uint16_t  wp_type,
+                                                uint16_t  wp_type_first,
+                                                uint16_t  wp_type_last)
 {
   // Let's create a vector to store our waypoints in.
 
   double                  angle_rad = angle_deg * M_PI / 180.0;
   std::vector<WaypointV2> waypointList;
-  WaypointV2              startPoint;
-  WaypointV2              waypointV2;
+  WaypointV2              wpFirst;
+  WaypointV2              wp;
 
   Telemetry::TypeMap<TOPIC_GPS_FUSED>::type subscribeGPosition =
     vehiclePtr->subscribe->getValue<TOPIC_GPS_FUSED>();
 
-  DJIWaypointV2FlightPathMode waypointType;
-  if (curve_type == 0)
+  DJIWaypointV2FlightPathMode wpTypeFirst;
+  DJIWaypointV2FlightPathMode wpType;
+  DJIWaypointV2FlightPathMode wpTypeLast;
+
+  if (wp_type == 0)
   {
-    waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
+    wpType = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
   }
-  else if (curve_type == 1)
+  else if (wp_type == 1)
   {
-    waypointType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+    wpType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
   }
   else
   {
-    waypointType = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
+    wpType = DJIWaypointV2FlightPathModeCoordinateTurn;
+  }
+  //  -----------------------------------------
+  //  -----------------------------------------
+  //  -----------------------------------------
+  if (wp_type_first == 0)
+  {
+    wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
+  }
+  else //if (wp_type_first == 1)
+  {
+    wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+  }
+  //  -----------------------------------------
+  //  -----------------------------------------
+  //  -----------------------------------------
+  if (wp_type_last == 0)
+  {
+    wpTypeLast = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
+  }
+  else if (wp_type == 1)
+  {
+    wpTypeLast = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+  }
+  else if (wp_type == 2)
+  {
+    wpTypeLast = DJIWaypointV2FlightPathModeCoordinateTurn;
+  }
+  else //if (wp_type == 3)
+  {
+    wpTypeLast = DJIWaypointV2FlightPathModeStraightOut;
   }
 
   // comments:
   // * damping is in cm - so if given in meters, has to be divided by 100.
   //   we can do it 0..1 - and scale based on segment length/2
+  //
   //   this might still fail for very short distances
   // * first waypoint cannot be a coordinated turn
+  // * heading is always along the segment for the first WP
+  // * WP types:
+  //    coordinated turn: can turn before a WP if damping is high, fly passed
+  //    the waypoint if damping is small curve: always crosses the waypoint -
+  //    damping does nothing
 
-  setWaypointV2Defaults(startPoint);
-  waypointV2.headingMode    = DJIWaypointV2HeadingModeAuto;
-  waypointV2.heading        = 45.0;
-  startPoint.latitude       = (subscribeGPosition.latitude);
-  startPoint.longitude      = (subscribeGPosition.longitude);
-  startPoint.relativeHeight = 15;
-  //  DJIWaypointV2FlightPathModeGoToPointAlongACurve;
-  //    startPoint.waypointType    = DJIWaypointV2FlightPathModeCoordinateTurn;
-  startPoint.waypointType =
-    DJIWaypointV2FlightPathModeGoToPointAlongACurve;
-  startPoint.dampingDistance = 0.0;
-  waypointList.push_back(startPoint);
+  setWaypointV2Defaults(wpFirst);
+  wp.headingMode    = DJIWaypointV2HeadingModeAuto;
+  wp.heading        = 45.0;
+  wpFirst.latitude       = (subscribeGPosition.latitude);
+  wpFirst.longitude      = (subscribeGPosition.longitude);
+  wpFirst.relativeHeight = 15;
+  wpFirst.waypointType    = wpTypeFirst;
+  wpFirst.dampingDistance = 0.0;
+  waypointList.push_back(wpFirst);
 
-  printWpInfo(startPoint, "start wp");
+  printWpInfo(wpFirst, "start wp");
 
   // Iterative algorithm
-  double X = step;
-  double Y = 0.0;
+  double X     = step;
+  double Y     = 0.0;
   double a_rad = angle_rad;
   for (int i = 0; i < n_points; i++)
   {
-    setWaypointV2Defaults(waypointV2);
-    waypointV2.headingMode = DJIWaypointV2HeadingModeAuto;
-    waypointV2.heading     = 45.0;
+    setWaypointV2Defaults(wp);
+    wp.headingMode = DJIWaypointV2HeadingModeAuto;
+    wp.heading     = 45.0;
     auto [dx, dy]          = rotateVector(step, a_rad);
 
     if (i % 2)
@@ -863,20 +905,19 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
       a_rad -= angle_rad;
     }
     Y += dy;
-    waypointV2.dampingDistance = damping;
-    waypointV2.waypointType    = waypointType;
+    wp.dampingDistance = damping;
+    wp.waypointType    = wpType;
 
-    //    if (i == (n_points - 1))
-    //    {
-    ////            waypointV2.waypointType =
-    ////              DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
-    //      waypointV2.waypointType = DJIWaypointV2FlightPathModeCoordinateTurn;
-    //    }
-    xyzToWaypointV2(X, Y, 0, startPoint, waypointV2);
+    // last waypoint
+    if (i == (n_points - 1))
+    {
+      wp.waypointType = wpTypeLast;
+    }
+    xyzToWaypointV2(X, Y, 0, wpFirst, wp);
 
-    waypointList.push_back(waypointV2);
+    waypointList.push_back(wp);
   }
-  /// waypointList.push_back(startPoint);
+  /// waypointList.push_back(wpFirst);
   return waypointList;
 }
 

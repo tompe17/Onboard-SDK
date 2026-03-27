@@ -64,7 +64,9 @@ public:
                                                 float    step,
                                                 float    angle_deg,
                                                 uint16_t n_points,
-                                                uint16_t curve_type);
+                                                uint16_t wp_type,
+                                                uint16_t wp_type_first,
+                                                uint16_t wp_type_last);
 
   /*! @brief Sample to init mission settings,
    *
@@ -75,7 +77,11 @@ public:
                                               uint16_t damping,
                                               float    speed,
                                               float    step,
-                                              float    angle_deg, uint16_t n_points, uint16_t curve_type);
+                                              float    angle_deg,
+                                              uint16_t n_points,
+                                              uint16_t wp_type,
+                                              uint16_t wp_type_first,
+                                              uint16_t wp_type_last);
 
   /*! @brief Sample to upload mission
    *
@@ -180,9 +186,11 @@ public:
   std::vector<WaypointV2> generateAngleWaypoints(float32_t step,
                                                  float32_t angle_deg,
                                                  uint16_t  n_points,
-                                                 uint16_t damping,
+                                                 uint16_t  damping,
                                                  float32_t speed,
-                                                 uint16_t curve_type);
+                                                 uint16_t  wp_type,
+                                                 uint16_t  wp_type_first,
+                                                 uint16_t  wp_type_last);
 
   double calculateDistance(const WaypointV2& wp1, const WaypointV2& wp2);
   void   printWaypointDistances(const std::vector<WaypointV2>& waypointList);
