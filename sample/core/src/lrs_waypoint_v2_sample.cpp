@@ -930,14 +930,16 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     wp.dampingDistance = damping;
     wp.waypointType    = wpType;
 
+    xyzToWaypointV2(X, Y, 0, wpFirst, wp);
     // last waypoint
     if (i == (n_points - 1))
     {
       wp.waypointType = wpTypeLast;
+    } else {
+      waypointList.push_back(wp);
     }
-    xyzToWaypointV2(X, Y, 0, wpFirst, wp);
 
-    waypointList.push_back(wp);
+
     waypointList.push_back(wp);
   }
   /// waypointList.push_back(wpFirst);
