@@ -935,9 +935,10 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     if (i == (n_points - 1))
     {
       wp.waypointType = wpTypeLast;
-    } else {
-      waypointList.push_back(wp);
     }
+//    else {
+//      waypointList.push_back(wp);
+//    }
 
 
     waypointList.push_back(wp);
