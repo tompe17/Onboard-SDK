@@ -759,7 +759,7 @@ WaypointV2MissionSample::wpTypeToString(const DJIWaypointV2FlightPathMode& mode)
     case DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop:
       return "GoToPointInAStraightLineAndStop";
     case DJIWaypointV2FlightPathModeCoordinateTurn:
-      return "ModeCoordinateTurn";
+      return "CoordinateTurn";
     case DJIWaypointV2FlightPathModeGoToFirstPointAlongAStraightLine:
       return "GoToFirstPointAlongAStraightLine";
     case DJIWaypointV2FlightPathModeStraightOut:
