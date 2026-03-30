@@ -968,12 +968,13 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
       float32_t dist = calculateDistance3D(wp, waypointList.back());
       dampingDistance        = getDampingFactor(damping, dist);
     }
-    wp.dampingDistance = dampdampingDistanceing;
+    wp.dampingDistance = dampingDistance;
     wp.waypointType    = wpType;
 
     // last waypoint
     if (i == (n_points - 1))
     {
+      
       wp.waypointType = wpTypeLast;
     }
     //    else {
