@@ -962,7 +962,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
 
     xyzToWaypointV2(X, Y, 0, wpFirst, wp);
 
-    uint16_t dampingDistance;
+    uint16_t dampingDistance = 500; // 500 is 5m
     if (!waypointList.empty())
     {
       float32_t dist = calculateDistance3D(wp, waypointList.back());
@@ -974,7 +974,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     // last waypoint
     if (i == (n_points - 1))
     {
-      
+
       wp.waypointType = wpTypeLast;
     }
     //    else {
