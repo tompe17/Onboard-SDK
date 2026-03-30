@@ -930,6 +930,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   // * distance between waypoints:
   //   - for straight lines, curves: 0.1m is ok (in sim)
   //   - coordinated turn: 4m (damp 20)
+  // * for coordinated turn, the minimum angle between segments should be > 15 deg
 
   setWaypointV2Defaults(wpFirst);
   wp.headingMode          = DJIWaypointV2HeadingModeAuto;
@@ -944,7 +945,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   printWpInfo(wpFirst, "start wp");
 
   // Iterative algorithm
-  double X     = step*2;
+  double X     = step;
   double Y     = 0.0;
   double a_rad = angle_rad;
   for (int i = 0; i < n_points; i++)
