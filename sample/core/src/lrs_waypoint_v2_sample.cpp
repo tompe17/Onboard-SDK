@@ -818,8 +818,8 @@ WaypointV2MissionSample::getDampingFactor(float32_t dampingFactor,
   // but making it a bit smaller seems to work more reliably
 
   // 0.0 is also somtimes problematic. Therefore 0.2 is min, 0.490 max
-  double halfWpDistance = wpDistanceM*0.5 * 0.9;
-  return (uint16_t)((0.4 + halfWpDistance * f) * 100.0);
+  double halfWpDistance = wpDistanceM*0.5*0.8;
+  return (uint16_t)((1.2 + halfWpDistance * f) * 100.0);
 }
 
 std::vector<WaypointV2>
