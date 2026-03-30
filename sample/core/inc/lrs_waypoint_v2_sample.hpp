@@ -204,6 +204,7 @@ public:
   void        printWpInfo(const WaypointV2& wp, const std::string& prefix);
   std::string wpTypeToString(const DJIWaypointV2FlightPathMode& mode);
   std::pair<double, double> rotateVector(double step, double angle_rad);
+  uint16_t getDampingFactor(float32_t dampingFactor, float32_t wpDistanceM);
 
   /*! @brief Sample generate polygon waypoints
    *

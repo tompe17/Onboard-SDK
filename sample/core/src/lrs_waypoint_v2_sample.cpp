@@ -238,8 +238,15 @@ WaypointV2MissionSample::runWaypointV2Mission(uint16_t damping,
   //  sleep(timeout);
   //  sleep(5);
   /*! init mission */
-  ret = initMissionSetting(
-    timeout, damping, speed, step, angle_deg, n_points, wp_type, wp_type_first, wp_type_last);
+  ret = initMissionSetting(timeout,
+                           damping,
+                           speed,
+                           step,
+                           angle_deg,
+                           n_points,
+                           wp_type,
+                           wp_type_first,
+                           wp_type_last);
   if (ret != ErrorCode::SysCommonErr::Success)
     return ret;
   sleep(timeout);
@@ -361,6 +368,7 @@ WaypointV2MissionSample::printWaypointDistances(
   }
 }
 
+
 double
 WaypointV2MissionSample::calculateDistance3D(const WaypointV2& wp1,
                                              const WaypointV2& wp2)
@@ -412,17 +420,27 @@ WaypointV2MissionSample::initMissionSetting(int      timeout,
   // missionInitSettings.mission =  generatePolygonWaypoints(radius,
   // polygonNum); missionInitSettings.mission =  generateLineWaypoints(10.0, 8);
   // missionInitSettings.mission =  generateStairWaypoints(20.0, 6);
-  missionInitSettings.mission = generateAngleWaypoints(
-    step, angle_deg, n_points, damping, speed, wp_type, wp_type_first,wp_type_last);
+  missionInitSettings.mission      = generateAngleWaypoints(step,
+                                                       angle_deg,
+                                                       n_points,
+                                                       damping,
+                                                       speed,
+                                                       wp_type,
+                                                       wp_type_first,
+                                                       wp_type_last);
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   printWaypointDistances(missionInitSettings.mission);
+
+
 
   int i = 0;
   for (auto& wp : missionInitSettings.mission)
   {
     printWpInfo(wp, std::to_string(i++));
   }
+
+
 
   //  printWaypointDistances(missionInitSettings.mission);
 
@@ -792,6 +810,21 @@ WaypointV2MissionSample::rotateVector(double step, double angle_rad)
   return { dx, dy };
 }
 
+// input: 0.0 - 1.0 - will be clamped
+// 0.0 means overshooting a waypoint
+// 1.0 means breaking early to "skip" the waypoint on a curve
+// this applies only to coordinated turn waypoint type
+uint16_t
+WaypointV2MissionSample::getDampingFactor(float32_t dampingFactor,
+                                          float32_t wpDistanceM)
+{
+  double f = std::max(0.0, std::min(1.0, (double)dampingFactor));
+  // the damping factor should be less than half the segment distance
+  // but making it a bit smaller seems to work more reliably
+  double halfWpDistance =  wpDistanceM * 0.49;
+  return uint16_t(halfWpDistance * f);
+}
+
 std::vector<WaypointV2>
 WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
                                                 float32_t angle_deg,
@@ -828,7 +861,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   {
     wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
   }
-  else //if (wp_type_first == 2)
+  else // if (wp_type_first == 2)
   {
     wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
   }
@@ -848,10 +881,9 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   {
     wpType = DJIWaypointV2FlightPathModeCoordinateTurn;
   }
-  else //if (wp_type == 3)
+  else // if (wp_type == 3)
   {
     wpType = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
-
   }
 
   //  -----------------------------------------
@@ -873,7 +905,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   {
     wpTypeLast = DJIWaypointV2FlightPathModeStraightOut;
   }
-  else //if (wp_type_last == 4)
+  else // if (wp_type_last == 4)
   {
     wpTypeLast = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
   }
@@ -881,31 +913,31 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   // comments:
   // * damping is in cm - so if given in meters, has to be divided by 100.
   //   we can do it 0..1 - and scale based on segment length/2
-  //
   //   this might still fail for very short distances
-  // * first waypoint cannot be a coordinated turn
+  // * first waypoint cannot be a coordinated turn - will refuse to fly
   // * heading is always along the segment for the first WP
   // * damping seems not to do anything for straight line and curve
   // * WP types:
-  //   -coordinated turn: can turn before a WP if damping is high, fly passed
+  //   -coordinated turn: can turn before a WP if damping is high, fly pass
   //    the waypoint if damping is small
   //   -curve: always crosses the waypoint -
-  //    damping does nothing
+  //      damping does nothing
   //   - DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop
-  //    if it overshoots, it will correct itself by moving closer - looks wierd
-  // * if second (and other) WP are curve, and the first is a straight line - the line s ignored
-  // * distance between waypoints
-  //   - for straight lines, curves: 0.1m is ok
+  //    if it overshoots, it will correct itself by moving closer - looks weird
+  // * if second (and other) WP are curve, and the first is a straight line -
+  //      the line s ignored - it will curve the first segment also
+  // * distance between waypoints:
+  //   - for straight lines, curves: 0.1m is ok (in sim)
   //   - coordinated turn: 4m (damp 20)
 
   setWaypointV2Defaults(wpFirst);
-  wp.headingMode    = DJIWaypointV2HeadingModeAuto;
-  wp.heading        = 45.0;
-  wpFirst.latitude       = (subscribeGPosition.latitude);
-  wpFirst.longitude      = (subscribeGPosition.longitude);
-  wpFirst.relativeHeight = 15;
+  wp.headingMode          = DJIWaypointV2HeadingModeAuto;
+  wp.heading              = 45.0;
+  wpFirst.latitude        = (subscribeGPosition.latitude);
+  wpFirst.longitude       = (subscribeGPosition.longitude);
+  wpFirst.relativeHeight  = 15;
   wpFirst.waypointType    = wpTypeFirst;
-  wpFirst.dampingDistance = 0.0;
+  wpFirst.dampingDistance = 0;
   waypointList.push_back(wpFirst);
 
   printWpInfo(wpFirst, "start wp");
@@ -919,7 +951,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     setWaypointV2Defaults(wp);
     wp.headingMode = DJIWaypointV2HeadingModeAuto;
     wp.heading     = 45.0;
-    auto [dx, dy]          = rotateVector(step, a_rad);
+    auto [dx, dy]  = rotateVector(step, a_rad);
 
     if (i % 2)
     {
@@ -932,19 +964,26 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
       a_rad -= angle_rad;
     }
     Y += dy;
+
+
+    xyzToWaypointV2(X, Y, 0, wpFirst, wp);
+
+    if (!waypointList.empty()){
+      float32_t dist = calculateDistance3D(wp, waypointList.back());
+      damping = getDampingFactor(damping, dist);
+    }
     wp.dampingDistance = damping;
     wp.waypointType    = wpType;
 
-    xyzToWaypointV2(X, Y, 0, wpFirst, wp);
+
     // last waypoint
     if (i == (n_points - 1))
     {
       wp.waypointType = wpTypeLast;
     }
-//    else {
-//      waypointList.push_back(wp);
-//    }
-
+    //    else {
+    //      waypointList.push_back(wp);
+    //    }
 
     waypointList.push_back(wp);
   }
