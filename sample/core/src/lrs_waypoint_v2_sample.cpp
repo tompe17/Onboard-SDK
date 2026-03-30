@@ -817,8 +817,8 @@ WaypointV2MissionSample::getDampingFactor(float32_t dampingFactor,
   // the damping factor should be less than half the segment distance
   // but making it a bit smaller seems to work more reliably
 
-  // 0.0 is also somtimes problematic. Therefore 0.1 is min, 0.495 max
-  double halfWpDistance = wpDistanceM * 0.29;
+  // 0.0 is also somtimes problematic. Therefore 0.2 is min, 0.490 max
+  double halfWpDistance = wpDistanceM*0.5 * 0.8;
   return (uint16_t)((0.2 + halfWpDistance * f) * 100.0);
 }
 
