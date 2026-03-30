@@ -944,7 +944,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   printWpInfo(wpFirst, "start wp");
 
   // Iterative algorithm
-  double X     = step;
+  double X     = step*2;
   double Y     = 0.0;
   double a_rad = angle_rad;
   for (int i = 0; i < n_points; i++)
