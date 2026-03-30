@@ -59,7 +59,7 @@ public:
    *  @note If any one of the steps fails, it will return the failed error code
    *  @return ErrorCode::ErrorCodeType error code
    */
-  ErrorCode::ErrorCodeType runWaypointV2Mission(uint16_t damping,
+  ErrorCode::ErrorCodeType runWaypointV2Mission(float32_t damping,
                                                 float    speed,
                                                 float    step,
                                                 float    angle_deg,
@@ -74,7 +74,7 @@ public:
    *  @return ErrorCode::ErrorCodeType error code
    */
   ErrorCode::ErrorCodeType initMissionSetting(int      timeout,
-                                              uint16_t damping,
+                                              float32_t damping,
                                               float    speed,
                                               float    step,
                                               float    angle_deg,
@@ -186,7 +186,7 @@ public:
   std::vector<WaypointV2> generateAngleWaypoints(float32_t step,
                                                  float32_t angle_deg,
                                                  uint16_t  n_points,
-                                                 uint16_t  damping,
+                                                 float32_t damping,
                                                  float32_t speed,
                                                  uint16_t  wp_type,
                                                  uint16_t  wp_type_first,

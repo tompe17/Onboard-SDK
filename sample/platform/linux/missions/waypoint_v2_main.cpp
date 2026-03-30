@@ -60,7 +60,7 @@ main(int argc, char** argv)
   /*! Initialize variables*/
 
 
-  uint16_t damp = 0;
+  float32_t damp = 0;
   uint16_t n_points = 0;
   uint16_t wp_type   = 0;
   uint16_t wp_type_first   = 0;
