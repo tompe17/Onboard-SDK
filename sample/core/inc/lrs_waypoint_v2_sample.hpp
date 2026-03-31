@@ -212,6 +212,8 @@ public:
                              const WaypointV2& C);
   void printWaypointAngles3D(const std::vector<WaypointV2>& waypointList);
 
+  bool   sanityCheckMission(    const std::vector<WaypointV2>& waypointList);
+
   /*! @brief Sample generate polygon waypoints
    *
    *  @param actionNum number of actions

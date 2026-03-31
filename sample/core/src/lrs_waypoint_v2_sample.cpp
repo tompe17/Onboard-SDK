@@ -393,6 +393,33 @@ WaypointV2MissionSample::printWaypointDistances(
   }
 }
 
+bool
+WaypointV2MissionSample::sanityCheckMission(
+  const std::vector<WaypointV2>& waypointList)
+{
+
+  if (waypointList.size() < 2)
+  {
+    printf("ERROR: Number of waypoints must be 2 or more. Now: %zu",
+           waypointList.size());
+    return false;
+  }
+
+  auto type = waypointList.front().waypointType;
+  if (type == DJIWaypointV2FlightPathModeCoordinateTurn)
+  {
+    printf("ERROR: The first waypoint type cannot be: %s",
+           wpTypeToString(type).c_str());
+    return false;
+  }
+
+  //  for (auto wp: waypointList)
+  //  {
+  //    if (wp.)
+  //  }
+  return true;
+}
+
 void
 WaypointV2MissionSample::printWaypointAngles3D(
   const std::vector<WaypointV2>& waypointList)
@@ -455,6 +482,13 @@ WaypointV2MissionSample::initMissionSetting(GenParams& params)
   printf("Number of waypoints: %zu\n", missionInitSettings.mission.size());
   printWaypointDistances(missionInitSettings.mission);
   printWaypointAngles3D(missionInitSettings.mission);
+
+  if (!sanityCheckMission(missionInitSettings.mission))
+  {
+    printf("NOT EVEN SENDING THIS");
+    return ErrorCode::SysCommonErr::UndefinedError;
+  }
+
   int i = 0;
   for (auto& wp : missionInitSettings.mission)
   {
@@ -960,7 +994,7 @@ WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
   wpFirst.relativeHeight  = 15;
   wpFirst.waypointType    = wpTypeFirst;
   wpFirst.dampingDistance = 0;
-//  waypointList.push_back(wpFirst);
+  //  waypointList.push_back(wpFirst);
 
   printWpInfo(wpFirst, "start wp");
 
@@ -1004,11 +1038,12 @@ WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
     {
       if (waypointList.back().dampingDistance > wp.dampingDistance)
       {
-        printf("--> WARNING: Updating damping of the previous wp[%zu]: from: %d "
-               "to %d\n",
-               waypointList.size() - 1,
-               waypointList.back().dampingDistance,
-               wp.dampingDistance);
+        printf(
+          "--> WARNING: Updating damping of the previous wp[%zu]: from: %d "
+          "to %d\n",
+          waypointList.size() - 1,
+          waypointList.back().dampingDistance,
+          wp.dampingDistance);
         waypointList.back().dampingDistance = wp.dampingDistance;
       }
     }
