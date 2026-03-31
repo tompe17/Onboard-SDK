@@ -1002,8 +1002,13 @@ WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
     // the previous might be too large so set it to the same
     if (!waypointList.empty())
     {
-      if (waypointList.back().dampingDistance > wp.dampingDistance){
-        printf("--> WARNING: Updating damping of the previous wp: from: %d to %d", waypointList.back().dampingDistance, wp.dampingDistance);
+      if (waypointList.back().dampingDistance > wp.dampingDistance)
+      {
+        printf("--> WARNING: Updating damping of the previous wp[%zu]: from: %d "
+               "to %d\n",
+               waypointList.size() - 1,
+               waypointList.back().dampingDistance,
+               wp.dampingDistance);
         waypointList.back().dampingDistance = wp.dampingDistance;
       }
     }
@@ -1019,7 +1024,7 @@ WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
 
     waypointList.push_back(wp);
   }
-//  waypointList[1].dampingDistance = 600;
+  //  waypointList[1].dampingDistance = 600;
   return waypointList;
 }
 
