@@ -484,6 +484,7 @@ WaypointV2MissionSample::initMissionSetting(int       timeout,
                                                        wp_type_last);
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
+  printf("Number of waypoints: %zu", missionInitSettings.mission.size());
   printWaypointDistances(missionInitSettings.mission);
   printWaypointAngles3D(missionInitSettings.mission);
   int i = 0;
