@@ -40,7 +40,7 @@ using namespace DJI::OSDK::Telemetry;
 
 // Generic parser
 template <typename T>
-bool getCmdOption(int argc, char* argv[], const std::string& option, T& value)
+bool getCmdOptionString(int argc, char* argv[], const std::string& option, T& value)
 {
   for (int i = 1; i < argc - 1; ++i)
   {
@@ -53,6 +53,48 @@ bool getCmdOption(int argc, char* argv[], const std::string& option, T& value)
   return false;
 }
 
+// Unified parser: single value OR CSV
+template <typename T>
+bool getCmdOptionFlexible(int argc, char* argv[],
+                     const std::string& option,
+                     std::vector<T>& values)
+{
+  std::string raw;
+  if (!getCmdOptionString(argc, argv, option, raw))
+    return false;
+
+  values.clear();
+
+  std::stringstream ss(raw);
+  std::string item;
+
+  // Detect CSV by comma
+  if (raw.find(',') != std::string::npos)
+  {
+    while (std::getline(ss, item, ','))
+    {
+      std::istringstream iss(item);
+      T val;
+      if (!(iss >> val))
+        return false;
+
+      values.push_back(val);
+    }
+  }
+  else
+  {
+    // Single value → still return as vector of size 1
+    std::istringstream iss(raw);
+    T val;
+    if (!(iss >> val))
+      return false;
+
+    values.push_back(val);
+  }
+
+  return true;
+}
+
 
 int
 main(int argc, char** argv)
@@ -60,33 +102,33 @@ main(int argc, char** argv)
   /*! Initialize variables*/
 
 
-  float32_t damp = 0;
-  uint16_t n_points = 0;
-  uint16_t wp_type   = 0;
-  uint16_t wp_type_first   = 0;
-  uint16_t wp_type_last   = 0;
-  float speed = 5.0f;
-  float step = 10.0f;
-  float angle_deg = 0.0f;
+  std::vector<float32_t> damp ;
+  std::vector<uint16_t> n_points ;
+  std::vector<uint16_t> wp_type ;
+  std::vector<uint16_t> wp_type_first ;
+  std::vector<uint16_t> wp_type_last  ;
+  std::vector<float> speed  ;
+  std::vector<float> step ;
+  std::vector<float> angle_deg ;
 
 
-  getCmdOption(argc, argv, "--damp", damp);
-  getCmdOption(argc, argv, "--n", n_points);
-  getCmdOption(argc, argv, "--wp", wp_type);
-  getCmdOption(argc, argv, "--wp_first", wp_type_first);
-  getCmdOption(argc, argv, "--wp_last", wp_type_last);
-  getCmdOption(argc, argv, "--speed", speed);
-  getCmdOption(argc, argv, "--step", step);
-  getCmdOption(argc, argv, "--angle_deg", angle_deg);
+  getCmdOptionFlexible(argc, argv, "--damp", damp);
+  getCmdOptionFlexible(argc, argv, "--n", n_points);
+  getCmdOptionFlexible(argc, argv, "--wp", wp_type);
+  getCmdOptionFlexible(argc, argv, "--wp_first", wp_type_first);
+  getCmdOptionFlexible(argc, argv, "--wp_last", wp_type_last);
+  getCmdOptionFlexible(argc, argv, "--speed", speed);
+  getCmdOptionFlexible(argc, argv, "--step", step);
+  getCmdOptionFlexible(argc, argv, "--angle_deg", angle_deg);
 
-  std::cout << "damp          = " << damp << std::endl;
-  std::cout << "n_points      = " << n_points << std::endl;
-  std::cout << "wp_type       = " << wp_type << std::endl;
-  std::cout << "wp_type_first = " << wp_type_first << std::endl;
-  std::cout << "wp_type_last  = " << wp_type_last << std::endl;
-  std::cout << "speed         = " << speed << std::endl;
-  std::cout << "step          = " << step << std::endl;
-  std::cout << "angle_deg     = " << angle_deg << std::endl;
+  std::cout << "damp          = " << damp[0] << std::endl;
+  std::cout << "n_points      = " << n_points[0] << std::endl;
+  std::cout << "wp_type       = " << wp_type[0] << std::endl;
+  std::cout << "wp_type_first = " << wp_type_first[0] << std::endl;
+  std::cout << "wp_type_last  = " << wp_type_last[0] << std::endl;
+  std::cout << "speed         = " << speed[0] << std::endl;
+  std::cout << "step          = " << step[0] << std::endl;
+  std::cout << "angle_deg     = " << angle_deg[0] << std::endl;
 
   int functionTimeout = 1;
   /*! Setup OSDK.*/
