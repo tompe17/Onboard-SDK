@@ -413,10 +413,26 @@ WaypointV2MissionSample::sanityCheckMission(
     return false;
   }
 
-  //  for (auto wp: waypointList)
-  //  {
-  //    if (wp.)
-  //  }
+
+  for (size_t i = 1; i < waypointList.size(); ++i)
+  {
+    auto &wp = waypointList[i];
+    auto &wp_prev = waypointList[i-1];
+
+    if (wp.waypointType == DJIWaypointV2FlightPathModeCoordinateTurn)
+    {
+      double dist = calculateDistance3D(wp_prev, wp);
+      if (dist < 1.0){
+        printf("ERROR: The waypoint [%zu] is type Curve and distance to previous wp is %f (<=1.0)\n",i,dist);
+        return false;
+    }
+  }
+
+    for (auto wp: waypointList)
+    {
+        if ()
+      }
+    }
   return true;
 }
 
@@ -980,7 +996,7 @@ WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
   //      the line s ignored - it will curve the first segment also
   // * distance between waypoints:
   //   - for straight lines, curves: 0.1m is ok (in sim)
-  //   - coordinated turn: 2m
+  //   - coordinated turn: 1m
   // * for coordinated turn, the minimum angle between segments must be: 3
 
   setWaypointV2Defaults(wpFirst);
