@@ -989,7 +989,7 @@ WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
 
     xyzToWaypointV2(X, Y, 0, wpFirst, wp);
 
-    uint16_t dampingDistance = 500; // 500 is 5m
+    uint16_t dampingDistance = 0; // 500 is 5m
     if (!waypointList.empty())
     {
       float32_t dist  = calculateDistance3D(wp, waypointList.back());
