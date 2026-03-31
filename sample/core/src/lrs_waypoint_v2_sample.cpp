@@ -1240,7 +1240,7 @@ WaypointV2MissionSample::generateWaypoints(GenParams& params)
       wp_prev.dampingDistance = wp.dampingDistance;
     }
     printf("---- %d type: %d\n",i, params.types[i]);
-    wp.waypointType    = (DJIWaypointV2FlightPathMode)params.types[i];
+    wp.waypointType    = (DJIWaypointV2FlightPathMode)params.types[i+1];
     waypointList.push_back(wp);
 
   }
