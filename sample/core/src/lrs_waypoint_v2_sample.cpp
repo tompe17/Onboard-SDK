@@ -1210,7 +1210,7 @@ WaypointV2MissionSample::generateWaypoints(GenParams& params)
   double   Y     = 0;
   double   a_rad = 0.0, angle_rad;
   uint16_t dampingDistance;
-  for (int i = 1; i < expected_n_points; i++)
+  for (int i = 0; i < expected_n_points; i++)
   {
     setWaypointV2Defaults(wp);
     wp.headingMode = DJIWaypointV2HeadingModeAuto;
@@ -1226,7 +1226,7 @@ WaypointV2MissionSample::generateWaypoints(GenParams& params)
     WaypointV2& wp_prev = waypointList.back();
 
     xyzToWaypointV2(dx, dy, 0, wp_prev, wp);
-    wp.relativeHeight = params.alts[i];
+    wp.relativeHeight = params.alts[i+1];
     float32_t dist  = calculateDistance3D(wp, wp_prev);
     dampingDistance = getDampingFactor(params.damps[i], dist);
     wp.dampingDistance = dampingDistance;
