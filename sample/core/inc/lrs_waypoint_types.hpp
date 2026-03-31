@@ -15,6 +15,15 @@ struct GenParams
   float speed;
   float step;
   float angle_deg;
+
+  std::vector<float> steps;
+  std::vector<float> lengths;
+  std::vector<float> angles_deg;
+  std::vector<float> speeds;
+  std::vector<float> damps;
+  std::vector<float> alts;
+  std::vector<uint8_t> types;
+
 };
 
 

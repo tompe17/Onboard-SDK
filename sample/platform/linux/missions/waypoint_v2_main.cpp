@@ -122,6 +122,14 @@ main(int argc, char** argv)
 
   GenParams params{};
 
+  getCmdOptionFlexible(argc, argv, "--damps", params.damps);
+  getCmdOptionFlexible(argc, argv, "--types", params.types);
+  getCmdOptionFlexible(argc, argv, "--speeds", params.speeds);
+  getCmdOptionFlexible(argc, argv, "--steps", params.steps);
+  getCmdOptionFlexible(argc, argv, "--angles_deg", params.angles_deg);
+
+
+
   params.damp = damp_[0];
   params.n_points = n_points_[0] ;
   params.wp_type = wp_type_[0];

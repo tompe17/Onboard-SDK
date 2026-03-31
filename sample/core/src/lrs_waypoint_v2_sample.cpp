@@ -439,7 +439,7 @@ WaypointV2MissionSample::sanityCheckMission(
 
     if (angle <= 3.0)
     {
-      printf("Angle at WPs[%zu->%zu]->%zu]]: %.2f deg (<=3.0)\n",
+      printf("Angle at WPs[%zu->%zu->%zu]: %.2f deg (<=3.0)\n",
              i - 1,
              i,
              i + 1,
@@ -1092,6 +1092,204 @@ WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
 
     waypointList.push_back(wp);
   }
+  //  waypointList[1].dampingDistance = 600;
+  return waypointList;
+}
+
+std::vector<WaypointV2>
+WaypointV2MissionSample::generateWaypoints(GenParams& params)
+{
+  std::vector<WaypointV2> waypointList;
+  WaypointV2              wp;
+
+  Telemetry::TypeMap<TOPIC_GPS_FUSED>::type subscribeGPosition =
+    vehiclePtr->subscribe->getValue<TOPIC_GPS_FUSED>();
+
+  //  DJIWaypointV2FlightPathMode wpTypeFirst;
+  DJIWaypointV2FlightPathMode wpType;
+  //  DJIWaypointV2FlightPathMode wpTypeLast;
+
+  auto expected_n_points = params.steps.size();
+
+  //  -----------------------------------------
+  //  -----------------------------------------
+  //  -----------------------------------------
+  //
+  //  if (params.wp_type_first == 0)
+  //  {
+  //    wpTypeFirst =
+  //    DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
+  //  }
+  //  else if (params.wp_type_first == 1)
+  //  {
+  //    wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+  //  }
+  //  else // if (wp_type_first == 2)
+  //  {
+  //    wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
+  //  }
+  //
+  //  //  -----------------------------------------
+  //  //  -----------------------------------------
+  //  //  -----------------------------------------
+  //  if (params.wp_type == 0)
+  //  {
+  //    wpType = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
+  //  }
+  //  else if (params.wp_type == 1)
+  //  {
+  //    wpType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+  //  }
+  //  else if (params.wp_type == 2)
+  //  {
+  //    wpType = DJIWaypointV2FlightPathModeCoordinateTurn;
+  //  }
+  //  else // if (wp_type == 3)
+  //  {
+  //    wpType = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
+  //  }
+  //
+  //  //  -----------------------------------------
+  //  //  -----------------------------------------
+  //  //  -----------------------------------------
+  //  if (params.wp_type_last == 0)
+  //  {
+  //    wpTypeLast = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
+  //  }
+  //  else if (params.wp_type_last == 1)
+  //  {
+  //    wpTypeLast = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
+  //  }
+  //  else if (params.wp_type_last == 2)
+  //  {
+  //    wpTypeLast = DJIWaypointV2FlightPathModeCoordinateTurn;
+  //  }
+  //  else if (params.wp_type_last == 3)
+  //  {
+  //    wpTypeLast = DJIWaypointV2FlightPathModeStraightOut;
+  //  }
+  //  else // if (params.wp_type_last == 4)
+  //  {
+  //    wpTypeLast = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
+  //  }
+
+  // comments:
+  // * damping is in cm - so if given in meters, has to be divided by 100.
+  //   we can do it 0..1 - and scale based on segment length/2
+  //   this might still fail for very short distances
+  // * first waypoint cannot be a coordinated turn - will refuse to fly
+  // * heading is always along the segment for the first WP
+  // * damping seems not to do anything for straight line and curve
+  // * WP types:
+  //   -coordinated turn: can turn before a WP if damping is high, fly pass
+  //    the waypoint if damping is small
+  //   -curve: always crosses the waypoint -
+  //      damping does nothing
+  //   - DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop
+  //    if it overshoots, it will correct itself by moving closer - looks weird
+  // * if second (and other) WP are curve, and the first is a straight line -
+  //      the line s ignored - it will curve the first segment also
+  // * distance between waypoints:
+  //   - for straight lines, curves: 0.1m is ok (in sim)
+  //   - coordinated turn: 1m
+  // * for coordinated turn, the minimum angle between segments must be: 3
+
+  setWaypointV2Defaults(wp);
+  wp.headingMode     = DJIWaypointV2HeadingModeAuto;
+  wp.heading         = 45.0;
+  wp.latitude        = subscribeGPosition.latitude;
+  wp.longitude       = subscribeGPosition.longitude;
+  wp.relativeHeight  = 15;
+  wp.waypointType    = (DJIWaypointV2FlightPathMode)params.types.front();
+  wp.dampingDistance = 0;
+  printWpInfo(wp, "start wp");
+  waypointList.push_back(wp);
+
+  double   X     = 0;
+  double   Y     = 0;
+  double   a_rad = 0.0, angle_rad;
+  uint16_t dampingDistance;
+  for (int i = 0; i < expected_n_points; i++)
+  {
+    setWaypointV2Defaults(wp);
+    wp.headingMode = DJIWaypointV2HeadingModeAuto;
+    wp.heading     = 45.0;
+
+    angle_rad = params.angles_deg[i] * M_PI / 180.0;
+    a_rad += angle_rad;
+
+    auto [dx, dy] = rotateVector(params.steps[i], a_rad);
+    X += dx;
+    Y += dy;
+
+    WaypointV2& wp_prev = waypointList.back();
+
+    xyzToWaypointV2(X, Y, 0, wp_prev, wp);
+    float32_t dist  = calculateDistance3D(wp, wp_prev);
+    dampingDistance = getDampingFactor(params.damps[i], dist);
+    wp.dampingDistance = dampingDistance;
+    if (wp_prev.dampingDistance > wp.dampingDistance)
+    {
+      printf("--> WARNING: Updating damping of the previous wp[%zu]: from: %d "
+             "to %d\n",
+             waypointList.size() - 1,
+             wp_prev.dampingDistance,
+             wp.dampingDistance);
+      wp_prev.dampingDistance = wp.dampingDistance;
+    }
+    wp.waypointType    = (DJIWaypointV2FlightPathMode)params.types[i];
+
+    waypointList.push_back(wp);
+
+  }
+//
+//  for (int i = 0; i < params.n_points; i++)
+//  {
+//    setWaypointV2Defaults(wp);
+//    wp.headingMode = DJIWaypointV2HeadingModeAuto;
+//    wp.heading     = 45.0;
+//    auto [dx, dy]  = rotateVector(params.step, a_rad);
+//
+//    if (i % 2)
+//    {
+//      X += dx;
+//      a_rad += angle_rad;
+//    }
+//    else
+//    {
+//      X -= dx;
+//      a_rad -= angle_rad;
+//    }
+//    Y += dy;
+//
+//    xyzToWaypointV2(X, Y, 0, waypointList[i], wp);
+//
+//    uint16_t dampingDistance = 0; // 500 is 5m
+//    if (!waypointList.empty())
+//    {
+//      float32_t dist  = calculateDistance3D(wp, waypointList.back());
+//      dampingDistance = getDampingFactor(params.damp, dist);
+//    }
+//    wp.dampingDistance = dampingDistance;
+//    wp.waypointType    = wpType;
+//
+//    // check if the previous segment is compatible with this dumping factor
+//    // the previous might be too large so set it to the same
+//    if (!waypointList.empty())
+//    {
+//      if (waypointList.back().dampingDistance > wp.dampingDistance)
+//      {
+//        printf(
+//          "--> WARNING: Updating damping of the previous wp[%zu]: from: %d "
+//          "to %d\n",
+//          waypointList.size() - 1,
+//          waypointList.back().dampingDistance,
+//          wp.dampingDistance);
+//        waypointList.back().dampingDistance = wp.dampingDistance;
+//      }
+//    }
+
+//  }
   //  waypointList[1].dampingDistance = 600;
   return waypointList;
 }
