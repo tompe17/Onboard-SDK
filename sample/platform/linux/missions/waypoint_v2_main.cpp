@@ -128,10 +128,10 @@ main(int argc, char** argv)
   getCmdOptionFlexible(argc, argv, "--steps", params.steps);
   getCmdOptionFlexible(argc, argv, "--angles_deg", params.angles_deg);
 
-  for (auto v : params.types)
-  {
-    printf("ttt %d", v);
-  }
+//  for (auto v : params.types)
+//  {
+//    printf("ttt %d", v);
+//  }
 
   params.damp = damp_[0];
   params.n_points = n_points_[0] ;
