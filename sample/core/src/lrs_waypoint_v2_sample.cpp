@@ -875,7 +875,7 @@ WaypointV2MissionSample::getDampingFactor(float32_t dampingFactor,
   // and having a minimum is also more reliable
   // both 0.4 and 0.1 are experimental
   double halfWpDistance = wpDistanceM*0.4*f;
-  double minimum = 0.1*wpDistanceM;
+  double minimum = 0.01*wpDistanceM;
   if (halfWpDistance < minimum)
       halfWpDistance = minimum;
 
