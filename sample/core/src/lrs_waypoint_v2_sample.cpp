@@ -512,7 +512,8 @@ WaypointV2MissionSample::initMissionSetting(GenParams& params)
   // missionInitSettings.mission =  generatePolygonWaypoints(radius,
   // polygonNum); missionInitSettings.mission =  generateLineWaypoints(10.0, 8);
   // missionInitSettings.mission =  generateStairWaypoints(20.0, 6);
-  missionInitSettings.mission      = generateAngleWaypoints(params);
+//  missionInitSettings.mission      = generateAngleWaypoints(params);
+  missionInitSettings.mission      = generateWaypoints(params);
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   printf("Number of waypoints: %zu\n", missionInitSettings.mission.size());
