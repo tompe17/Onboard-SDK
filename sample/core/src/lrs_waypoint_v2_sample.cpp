@@ -332,6 +332,47 @@ deg2rad(double deg)
   return deg * M_PI / 180.0;
 }
 
+
+
+
+WaypointV2MissionSample::Vec3 WaypointV2MissionSample::toLocalXYZ(const WaypointV2& ref, const WaypointV2& p)
+{
+  double dLat = p.latitude  - ref.latitude;
+  double dLon = p.longitude - ref.longitude;
+  double dAlt = p.relativeHeight - ref.relativeHeight; // or altitude field
+
+  double x = dLon * EARTH_RADIUS * cos(ref.latitude);
+  double y = dLat * EARTH_RADIUS;
+  double z = dAlt;
+
+  return {x, y, z};
+}
+double WaypointV2MissionSample::computeAngleDeg3D(const WaypointV2& A,
+                  const WaypointV2& B,
+                  const WaypointV2& C)
+{
+  Vec3 BA = toLocalXYZ(B, A);
+  Vec3 BC = toLocalXYZ(B, C);
+
+  // Dot product
+  double dot = BA.x * BC.x + BA.y * BC.y + BA.z * BC.z;
+
+  // Magnitudes
+  double mag1 = sqrt(BA.x*BA.x + BA.y*BA.y + BA.z*BA.z);
+  double mag2 = sqrt(BC.x*BC.x + BC.y*BC.y + BC.z*BC.z);
+
+  if (mag1 == 0 || mag2 == 0)
+    return 0.0;
+
+  double cosAngle = dot / (mag1 * mag2);
+
+  // Clamp for safety
+  cosAngle = std::max(-1.0, std::min(1.0, cosAngle));
+
+  double angleRad = acos(cosAngle);
+  return angleRad * 180.0 / M_PI;
+}
+
 // Haversine distance (meters)
 double
 WaypointV2MissionSample::calculateDistance(const WaypointV2& wp1,
@@ -365,6 +406,20 @@ WaypointV2MissionSample::printWaypointDistances(
     double dist = calculateDistance3D(waypointList[i - 1], waypointList[i]);
 
     printf("Distance WP[%zu] -> WP[%zu]: %.2f meters\n", i - 1, i, dist);
+  }
+}
+
+void WaypointV2MissionSample::printWaypointAngles3D(
+  const std::vector<WaypointV2>& waypointList)
+{
+  for (size_t i = 1; i < waypointList.size() - 1; ++i)
+  {
+    double angle = computeAngleDeg3D(
+      waypointList[i - 1],
+      waypointList[i],
+      waypointList[i + 1]);
+
+    printf("Angle at WP[%zu]: %.2f deg\n", i, angle);
   }
 }
 
@@ -430,7 +485,7 @@ WaypointV2MissionSample::initMissionSetting(int       timeout,
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
   printWaypointDistances(missionInitSettings.mission);
-
+  printWaypointAngles3D(missionInitSettings.mission);
   int i = 0;
   for (auto& wp : missionInitSettings.mission)
   {

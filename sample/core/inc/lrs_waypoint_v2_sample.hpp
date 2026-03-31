@@ -60,28 +60,28 @@ public:
    *  @return ErrorCode::ErrorCodeType error code
    */
   ErrorCode::ErrorCodeType runWaypointV2Mission(float32_t damping,
-                                                float    speed,
-                                                float    step,
-                                                float    angle_deg,
-                                                uint16_t n_points,
-                                                uint16_t wp_type,
-                                                uint16_t wp_type_first,
-                                                uint16_t wp_type_last);
+                                                float     speed,
+                                                float     step,
+                                                float     angle_deg,
+                                                uint16_t  n_points,
+                                                uint16_t  wp_type,
+                                                uint16_t  wp_type_first,
+                                                uint16_t  wp_type_last);
 
   /*! @brief Sample to init mission settings,
    *
    *  @param timeout blocking timeout in seconds
    *  @return ErrorCode::ErrorCodeType error code
    */
-  ErrorCode::ErrorCodeType initMissionSetting(int      timeout,
+  ErrorCode::ErrorCodeType initMissionSetting(int       timeout,
                                               float32_t damping,
-                                              float    speed,
-                                              float    step,
-                                              float    angle_deg,
-                                              uint16_t n_points,
-                                              uint16_t wp_type,
-                                              uint16_t wp_type_first,
-                                              uint16_t wp_type_last);
+                                              float     speed,
+                                              float     step,
+                                              float     angle_deg,
+                                              uint16_t  n_points,
+                                              uint16_t  wp_type,
+                                              uint16_t  wp_type_first,
+                                              uint16_t  wp_type_last);
 
   /*! @brief Sample to upload mission
    *
@@ -192,6 +192,13 @@ public:
                                                  uint16_t  wp_type_first,
                                                  uint16_t  wp_type_last);
 
+  struct Vec3
+  {
+    double x;
+    double y;
+    double z;
+  };
+
   double calculateDistance(const WaypointV2& wp1, const WaypointV2& wp2);
   void   printWaypointDistances(const std::vector<WaypointV2>& waypointList);
   double calculateDistance3D(const WaypointV2& wp1, const WaypointV2& wp2);
@@ -205,6 +212,11 @@ public:
   std::string wpTypeToString(const DJIWaypointV2FlightPathMode& mode);
   std::pair<double, double> rotateVector(double step, double angle_rad);
   uint16_t getDampingFactor(float32_t dampingFactor, float32_t wpDistanceM);
+  Vec3     toLocalXYZ(const WaypointV2& ref, const WaypointV2& p);
+  double   computeAngleDeg3D(const WaypointV2& A,
+                             const WaypointV2& B,
+                             const WaypointV2& C);
+  void printWaypointAngles3D(const std::vector<WaypointV2>& waypointList);
 
   /*! @brief Sample generate polygon waypoints
    *
