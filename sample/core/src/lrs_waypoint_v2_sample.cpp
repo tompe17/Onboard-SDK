@@ -960,7 +960,7 @@ WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
   wpFirst.relativeHeight  = 15;
   wpFirst.waypointType    = wpTypeFirst;
   wpFirst.dampingDistance = 0;
-  waypointList.push_back(wpFirst);
+//  waypointList.push_back(wpFirst);
 
   printWpInfo(wpFirst, "start wp");
 
