@@ -127,6 +127,7 @@ main(int argc, char** argv)
   getCmdOptionFlexible(argc, argv, "--speeds", params.speeds);
   getCmdOptionFlexible(argc, argv, "--steps", params.steps);
   getCmdOptionFlexible(argc, argv, "--angles_deg", params.angles_deg);
+  getCmdOptionFlexible(argc, argv, "--alts", params.alts);
 
 //  for (auto v : params.types)
 //  {

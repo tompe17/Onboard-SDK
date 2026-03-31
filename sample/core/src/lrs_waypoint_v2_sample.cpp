@@ -1200,7 +1200,7 @@ WaypointV2MissionSample::generateWaypoints(GenParams& params)
   wp.heading         = 45.0;
   wp.latitude        = subscribeGPosition.latitude;
   wp.longitude       = subscribeGPosition.longitude;
-  wp.relativeHeight  = 15;
+  wp.relativeHeight  = params.alts[0];
   wp.waypointType    = (DJIWaypointV2FlightPathMode)params.types[0];
   wp.dampingDistance = 0;
   printWpInfo(wp, "start wp");
@@ -1220,14 +1220,13 @@ WaypointV2MissionSample::generateWaypoints(GenParams& params)
     a_rad += angle_rad;
 
     auto [dx, dy] = rotateVector(params.steps[i], a_rad);
-    X += dx;
-    Y += dy;
 
     printf("x: %f, y: %f dx: %f dy: %f\n", X, Y, dx, dy);
 
     WaypointV2& wp_prev = waypointList.back();
 
     xyzToWaypointV2(dx, dy, 0, wp_prev, wp);
+    wp.relativeHeight = params.alts[i];
     float32_t dist  = calculateDistance3D(wp, wp_prev);
     dampingDistance = getDampingFactor(params.damps[i], dist);
     wp.dampingDistance = dampingDistance;
