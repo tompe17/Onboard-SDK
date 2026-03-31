@@ -484,7 +484,7 @@ WaypointV2MissionSample::initMissionSetting(int       timeout,
                                                        wp_type_last);
   missionInitSettings.missTotalLen = missionInitSettings.mission.size();
 
-  printf("Number of waypoints: %zu", missionInitSettings.mission.size());
+  printf("Number of waypoints: %zu\n", missionInitSettings.mission.size());
   printWaypointDistances(missionInitSettings.mission);
   printWaypointAngles3D(missionInitSettings.mission);
   int i = 0;
@@ -879,6 +879,7 @@ WaypointV2MissionSample::getDampingFactor(float32_t dampingFactor,
   if (halfWpDistance < minimum)
       halfWpDistance = minimum;
 
+  halfWpDistance = 0.0;
   return (uint16_t)(halfWpDistance * 100.0);
 }
 
