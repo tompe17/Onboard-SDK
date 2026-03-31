@@ -439,7 +439,11 @@ WaypointV2MissionSample::sanityCheckMission(
 
     if (angle <= 3.0)
     {
-      printf("Angle at WP[%zu]: %.2f deg (<=3.0)\n", i, angle);
+      printf("Angle at WPs[%zu->%zu]->%zu]]: %.2f deg (<=3.0)\n",
+             i - 1,
+             i,
+             i + 1,
+             angle);
       return false;
     }
   }
