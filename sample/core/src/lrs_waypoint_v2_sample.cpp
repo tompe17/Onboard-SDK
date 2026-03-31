@@ -1047,7 +1047,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
 
     waypointList.push_back(wp);
   }
-  waypointList[1].dampingDistance = 530;
+  waypointList[1].dampingDistance = 510;
   return waypointList;
 }
 
