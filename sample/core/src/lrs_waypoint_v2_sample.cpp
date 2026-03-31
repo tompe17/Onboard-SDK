@@ -400,7 +400,7 @@ WaypointV2MissionSample::sanityCheckMission(
 
   if (waypointList.size() < 2)
   {
-    printf("ERROR: Number of waypoints must be 2 or more. Now: %zu",
+    printf("ERROR: Number of waypoints must be 2 or more. Now: %zu\n",
            waypointList.size());
     return false;
   }
@@ -408,7 +408,7 @@ WaypointV2MissionSample::sanityCheckMission(
   auto type = waypointList.front().waypointType;
   if (type == DJIWaypointV2FlightPathModeCoordinateTurn)
   {
-    printf("ERROR: The first waypoint type cannot be: %s",
+    printf("ERROR: The first waypoint type cannot be: %s\n",
            wpTypeToString(type).c_str());
     return false;
   }
@@ -485,7 +485,7 @@ WaypointV2MissionSample::initMissionSetting(GenParams& params)
 
   if (!sanityCheckMission(missionInitSettings.mission))
   {
-    printf("NOT EVEN SENDING THIS");
+    printf("NOT EVEN SENDING THIS\n");
     return ErrorCode::SysCommonErr::UndefinedError;
   }
 
