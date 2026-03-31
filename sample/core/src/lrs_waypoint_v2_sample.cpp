@@ -461,8 +461,8 @@ WaypointV2MissionSample::initMissionSetting(int       timeout,
   missionInitSettings.finishedAction = DJIWaypointV2MissionFinishedNoAction;
   //  missionInitSettings.finishedAction =
   //  DJIWaypointV2MissionFinishedGoToFirstWaypoint;
-  missionInitSettings.maxFlightSpeed            = 12.0;
-  missionInitSettings.autoFlightSpeed           = 7.0;
+  missionInitSettings.maxFlightSpeed            = 15.0; // RC stick
+  missionInitSettings.autoFlightSpeed           = speed;
   missionInitSettings.exitMissionOnRCSignalLost = 1;
   missionInitSettings.gotoFirstWaypointMode =
     DJIWaypointV2MissionGotoFirstWaypointModePointToPoint;
