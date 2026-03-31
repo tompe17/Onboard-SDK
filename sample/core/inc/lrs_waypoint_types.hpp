@@ -22,7 +22,7 @@ struct GenParams
   std::vector<float> speeds;
   std::vector<float> damps;
   std::vector<float> alts;
-  std::vector<uint8_t> types;
+  std::vector<uint16_t> types;
 
 };
 
