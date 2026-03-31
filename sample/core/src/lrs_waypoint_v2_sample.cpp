@@ -1223,6 +1223,8 @@ WaypointV2MissionSample::generateWaypoints(GenParams& params)
     X += dx;
     Y += dy;
 
+    printf("x: %f, y: %f dx: %f dy: %f\n", X, Y, dx, dy);
+
     WaypointV2& wp_prev = waypointList.back();
 
     xyzToWaypointV2(X, Y, 0, wp_prev, wp);
