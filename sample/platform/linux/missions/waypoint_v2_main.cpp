@@ -132,6 +132,8 @@ main(int argc, char** argv)
   params.angle_deg = angle_deg_[0];
 
 
+  params.timeout = 1;
+
   std::cout << "damp          = " << params.damp << std::endl;
   std::cout << "n_points      = " << params.n_points << std::endl;
   std::cout << "wp_type       = " << params.wp_type << std::endl;
