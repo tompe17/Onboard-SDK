@@ -413,26 +413,30 @@ WaypointV2MissionSample::sanityCheckMission(
     return false;
   }
 
-
   for (size_t i = 1; i < waypointList.size(); ++i)
   {
-    auto &wp = waypointList[i];
-    auto &wp_prev = waypointList[i-1];
+    auto& wp      = waypointList[i];
+    auto& wp_prev = waypointList[i - 1];
 
     if (wp.waypointType == DJIWaypointV2FlightPathModeCoordinateTurn)
     {
       double dist = calculateDistance3D(wp_prev, wp);
-      if (dist < 1.0){
-        printf("ERROR: The waypoint [%zu] is type Curve and distance to previous wp is %f (<=1.0)\n",i,dist);
+      if (dist < 1.0)
+      {
+        printf("ERROR: The waypoint [%zu] is type Curve and distance to "
+               "previous wp is %f (<=1.0)\n",
+               i,
+               dist);
         return false;
+      }
     }
   }
 
-//    for (auto wp: waypointList)
-//    {
-//        if ()
-//      }
-//    }
+  //    for (auto wp: waypointList)
+  //    {
+  //        if ()
+  //      }
+  //    }
   return true;
 }
 
