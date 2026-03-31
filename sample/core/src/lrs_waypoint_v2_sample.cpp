@@ -981,10 +981,7 @@ WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
   // * distance between waypoints:
   //   - for straight lines, curves: 0.1m is ok (in sim)
   //   - coordinated turn: 2m
-  // * for coordinated turn, the minimum angle between segments must be:
-  //    - 3..15 degs - the damping must be large - close to max
-  //    > 15 the standard should work
-  // deg
+  // * for coordinated turn, the minimum angle between segments must be: 3
 
   setWaypointV2Defaults(wpFirst);
   wp.headingMode          = DJIWaypointV2HeadingModeAuto;
@@ -994,7 +991,7 @@ WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
   wpFirst.relativeHeight  = 15;
   wpFirst.waypointType    = wpTypeFirst;
   wpFirst.dampingDistance = 0;
-  //  waypointList.push_back(wpFirst);
+  waypointList.push_back(wpFirst);
 
   printWpInfo(wpFirst, "start wp");
 
