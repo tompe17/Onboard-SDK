@@ -1003,7 +1003,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
 
   // Iterative algorithm
   double X     = step;
-  double Y     = 0.0;
+  double Y     = step;
   double a_rad = angle_rad;
   for (int i = 0; i < n_points; i++)
   {
