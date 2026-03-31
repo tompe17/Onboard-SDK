@@ -43,20 +43,10 @@
 #include "dji_waypoint_v2.hpp"
 // Helpers
 #include <dji_linux_helpers.hpp>
+#include "lrs_waypoint_types.hpp"
+
 const int DEFAULT_PACKAGE_INDEX = 0;
 
-struct GenParams
-{
-  float32_t damp;
-  int timeout;
-  uint16_t n_points;
-  uint16_t wp_type;
-  uint16_t wp_type_first;
-  uint16_t wp_type_last;
-  float speed;
-  float step;
-  float angle_deg;
-};
 
 class WaypointV2MissionSample {
 

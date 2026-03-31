@@ -34,7 +34,7 @@
 #include <string>
 #include <sstream>
 #include <cstdint>
-
+#include "lrs_waypoint_types.hpp"
 using namespace DJI::OSDK;
 using namespace DJI::OSDK::Telemetry;
 
