@@ -428,11 +428,11 @@ WaypointV2MissionSample::sanityCheckMission(
     }
   }
 
-    for (auto wp: waypointList)
-    {
-        if ()
-      }
-    }
+//    for (auto wp: waypointList)
+//    {
+//        if ()
+//      }
+//    }
   return true;
 }
 
