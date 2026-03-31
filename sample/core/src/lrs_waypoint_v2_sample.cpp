@@ -998,10 +998,19 @@ WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
     wp.dampingDistance = dampingDistance;
     wp.waypointType    = wpType;
 
+    // check if the previous segment is compatible with this dumping factor
+    // the previous might be too large so set it to the same
+    if (!waypointList.empty())
+    {
+      if (waypointList.back().dampingDistance > wp.dampingDistance){
+        printf("Updating damping of the previous wp: from: %d to %d", waypointList.back().dampingDistance, wp.dampingDistance);
+        waypointList.back().dampingDistance = wp.dampingDistance;
+      }
+    }
+
     // last waypoint
     if (i == (params.n_points - 1))
     {
-
       wp.waypointType = wpTypeLast;
     }
     //    else {
