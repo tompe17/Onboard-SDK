@@ -955,8 +955,8 @@ WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
   setWaypointV2Defaults(wpFirst);
   wp.headingMode          = DJIWaypointV2HeadingModeAuto;
   wp.heading              = 45.0;
-  wpFirst.latitude        = (subscribeGPosition.latitude);
-  wpFirst.longitude       = (subscribeGPosition.longitude);
+  wpFirst.latitude        = subscribeGPosition.latitude;
+  wpFirst.longitude       = subscribeGPosition.longitude;
   wpFirst.relativeHeight  = 15;
   wpFirst.waypointType    = wpTypeFirst;
   wpFirst.dampingDistance = 0;
@@ -1003,7 +1003,7 @@ WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
     if (!waypointList.empty())
     {
       if (waypointList.back().dampingDistance > wp.dampingDistance){
-        printf("Updating damping of the previous wp: from: %d to %d", waypointList.back().dampingDistance, wp.dampingDistance);
+        printf("--> WARNING: Updating damping of the previous wp: from: %d to %d", waypointList.back().dampingDistance, wp.dampingDistance);
         waypointList.back().dampingDistance = wp.dampingDistance;
       }
     }
