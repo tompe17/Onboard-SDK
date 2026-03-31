@@ -413,11 +413,11 @@ WaypointV2MissionSample::sanityCheckMission(
     return false;
   }
 
+  // distance between wps for type: curve
   for (size_t i = 1; i < waypointList.size(); ++i)
   {
     auto& wp      = waypointList[i];
     auto& wp_prev = waypointList[i - 1];
-
     if (wp.waypointType == DJIWaypointV2FlightPathModeCoordinateTurn)
     {
       double dist = calculateDistance3D(wp_prev, wp);
@@ -429,6 +429,18 @@ WaypointV2MissionSample::sanityCheckMission(
                dist);
         return false;
       }
+    }
+  }
+
+  for (size_t i = 1; i < waypointList.size() - 1; ++i)
+  {
+    double angle = computeAngleDeg3D(
+      waypointList[i - 1], waypointList[i], waypointList[i + 1]);
+
+    if (angle <= 3.0)
+    {
+      printf("Angle at WP[%zu]: %.2f deg (<=3.0)\n", i, angle);
+      return false;
     }
   }
 
@@ -505,7 +517,7 @@ WaypointV2MissionSample::initMissionSetting(GenParams& params)
 
   if (!sanityCheckMission(missionInitSettings.mission))
   {
-    printf("NOT EVEN SENDING THIS\n");
+    printf("----> NOT EVEN SENDING THIS\n");
     return ErrorCode::SysCommonErr::UndefinedError;
   }
 
