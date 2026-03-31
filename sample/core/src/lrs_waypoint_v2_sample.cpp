@@ -332,12 +332,10 @@ deg2rad(double deg)
   return deg * M_PI / 180.0;
 }
 
-
-
-
-WaypointV2MissionSample::Vec3 WaypointV2MissionSample::toLocalXYZ(const WaypointV2& ref, const WaypointV2& p)
+WaypointV2MissionSample::Vec3
+WaypointV2MissionSample::toLocalXYZ(const WaypointV2& ref, const WaypointV2& p)
 {
-  double dLat = p.latitude  - ref.latitude;
+  double dLat = p.latitude - ref.latitude;
   double dLon = p.longitude - ref.longitude;
   double dAlt = p.relativeHeight - ref.relativeHeight; // or altitude field
 
@@ -345,11 +343,12 @@ WaypointV2MissionSample::Vec3 WaypointV2MissionSample::toLocalXYZ(const Waypoint
   double y = dLat * EARTH_RADIUS;
   double z = dAlt;
 
-  return {x, y, z};
+  return { x, y, z };
 }
-double WaypointV2MissionSample::computeAngleDeg3D(const WaypointV2& A,
-                  const WaypointV2& B,
-                  const WaypointV2& C)
+double
+WaypointV2MissionSample::computeAngleDeg3D(const WaypointV2& A,
+                                           const WaypointV2& B,
+                                           const WaypointV2& C)
 {
   Vec3 BA = toLocalXYZ(B, A);
   Vec3 BC = toLocalXYZ(B, C);
@@ -358,8 +357,8 @@ double WaypointV2MissionSample::computeAngleDeg3D(const WaypointV2& A,
   double dot = BA.x * BC.x + BA.y * BC.y + BA.z * BC.z;
 
   // Magnitudes
-  double mag1 = sqrt(BA.x*BA.x + BA.y*BA.y + BA.z*BA.z);
-  double mag2 = sqrt(BC.x*BC.x + BC.y*BC.y + BC.z*BC.z);
+  double mag1 = sqrt(BA.x * BA.x + BA.y * BA.y + BA.z * BA.z);
+  double mag2 = sqrt(BC.x * BC.x + BC.y * BC.y + BC.z * BC.z);
 
   if (mag1 == 0 || mag2 == 0)
     return 0.0;
@@ -409,15 +408,14 @@ WaypointV2MissionSample::printWaypointDistances(
   }
 }
 
-void WaypointV2MissionSample::printWaypointAngles3D(
+void
+WaypointV2MissionSample::printWaypointAngles3D(
   const std::vector<WaypointV2>& waypointList)
 {
   for (size_t i = 1; i < waypointList.size() - 1; ++i)
   {
     double angle = computeAngleDeg3D(
-      waypointList[i - 1],
-      waypointList[i],
-      waypointList[i + 1]);
+      waypointList[i - 1], waypointList[i], waypointList[i + 1]);
 
     printf("Angle at WP[%zu]: %.2f deg\n", i, angle);
   }
@@ -874,10 +872,10 @@ WaypointV2MissionSample::getDampingFactor(float32_t dampingFactor,
   // but making it a bit smaller seems to work more reliably
   // and having a minimum is also more reliable
   // both 0.4 and 0.1 are experimental
-  double halfWpDistance = wpDistanceM;//*f*0.4;
-  double minimum = 0.1*wpDistanceM;
+  double halfWpDistance = wpDistanceM * f; //*0.4;
+  double minimum        = 0.1 * wpDistanceM;
   if (halfWpDistance < minimum)
-      halfWpDistance = minimum;
+    halfWpDistance = minimum;
 
   return (uint16_t)(halfWpDistance * 100.0);
 }
@@ -986,7 +984,8 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   // * distance between waypoints:
   //   - for straight lines, curves: 0.1m is ok (in sim)
   //   - coordinated turn: 4m (damp 20)
-  // * for coordinated turn, the minimum angle between segments should be > 15 deg
+  // * for coordinated turn, the minimum angle between segments should be > 15
+  // deg
 
   setWaypointV2Defaults(wpFirst);
   wp.headingMode          = DJIWaypointV2HeadingModeAuto;
@@ -1028,8 +1027,8 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
     uint16_t dampingDistance = 500; // 500 is 5m
     if (!waypointList.empty())
     {
-      float32_t dist = calculateDistance3D(wp, waypointList.back());
-      dampingDistance        = getDampingFactor(damping, dist);
+      float32_t dist  = calculateDistance3D(wp, waypointList.back());
+      dampingDistance = getDampingFactor(damping, dist);
     }
     wp.dampingDistance = dampingDistance;
     wp.waypointType    = wpType;
