@@ -102,33 +102,43 @@ main(int argc, char** argv)
   /*! Initialize variables*/
 
 
-  std::vector<float32_t> damp ;
-  std::vector<uint16_t> n_points ;
-  std::vector<uint16_t> wp_type ;
-  std::vector<uint16_t> wp_type_first ;
-  std::vector<uint16_t> wp_type_last  ;
-  std::vector<float> speed  ;
-  std::vector<float> step ;
-  std::vector<float> angle_deg ;
+  std::vector<float32_t> damp_ ;
+  std::vector<uint16_t> n_points_ ;
+  std::vector<uint16_t> wp_type_ ;
+  std::vector<uint16_t> wp_type_first_ ;
+  std::vector<uint16_t> wp_type_last_  ;
+  std::vector<float> speed_  ;
+  std::vector<float> step_ ;
+  std::vector<float> angle_deg_ ;
 
 
-  getCmdOptionFlexible(argc, argv, "--damp", damp);
-  getCmdOptionFlexible(argc, argv, "--n", n_points);
-  getCmdOptionFlexible(argc, argv, "--wp", wp_type);
-  getCmdOptionFlexible(argc, argv, "--wp_first", wp_type_first);
-  getCmdOptionFlexible(argc, argv, "--wp_last", wp_type_last);
-  getCmdOptionFlexible(argc, argv, "--speed", speed);
-  getCmdOptionFlexible(argc, argv, "--step", step);
-  getCmdOptionFlexible(argc, argv, "--angle_deg", angle_deg);
+  getCmdOptionFlexible(argc, argv, "--damp", damp_);
+  getCmdOptionFlexible(argc, argv, "--n", n_points_);
+  getCmdOptionFlexible(argc, argv, "--wp", wp_type_);
+  getCmdOptionFlexible(argc, argv, "--wp_first", wp_type_first_);
+  getCmdOptionFlexible(argc, argv, "--wp_last", wp_type_last_);
+  getCmdOptionFlexible(argc, argv, "--speed", speed_);
+  getCmdOptionFlexible(argc, argv, "--step", step_);
+  getCmdOptionFlexible(argc, argv, "--angle_deg", angle_deg_);
 
-  std::cout << "damp          = " << damp[0] << std::endl;
-  std::cout << "n_points      = " << n_points[0] << std::endl;
-  std::cout << "wp_type       = " << wp_type[0] << std::endl;
-  std::cout << "wp_type_first = " << wp_type_first[0] << std::endl;
-  std::cout << "wp_type_last  = " << wp_type_last[0] << std::endl;
-  std::cout << "speed         = " << speed[0] << std::endl;
-  std::cout << "step          = " << step[0] << std::endl;
-  std::cout << "angle_deg     = " << angle_deg[0] << std::endl;
+  float32_t damp = damp_[0];
+  uint16_t n_points = n_points_[0] ;
+  uint16_t wp_type = wp_type_[0];
+  uint16_t wp_type_first = wp_type_first_[0];
+  uint16_t wp_type_last =wp_type_last_[0];
+  float speed = speed_[0];
+  float step = step_[0];
+  float angle_deg = angle_deg_[0];
+
+
+  std::cout << "damp          = " << damp << std::endl;
+  std::cout << "n_points      = " << n_points << std::endl;
+  std::cout << "wp_type       = " << wp_type << std::endl;
+  std::cout << "wp_type_first = " << wp_type_first << std::endl;
+  std::cout << "wp_type_last  = " << wp_type_last << std::endl;
+  std::cout << "speed         = " << speed << std::endl;
+  std::cout << "step          = " << step << std::endl;
+  std::cout << "angle_deg     = " << angle_deg << std::endl;
 
   int functionTimeout = 1;
   /*! Setup OSDK.*/
