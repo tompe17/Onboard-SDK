@@ -44,12 +44,27 @@
 // Helpers
 #include <dji_linux_helpers.hpp>
 const int DEFAULT_PACKAGE_INDEX = 0;
+
+struct GenParams
+{
+  float32_t damp;
+  int timeout;
+  uint16_t n_points;
+  uint16_t wp_type;
+  uint16_t wp_type_first;
+  uint16_t wp_type_last;
+  float speed;
+  float step;
+  float angle_deg;
+};
+
 class WaypointV2MissionSample {
 
 public:
   WaypointV2MissionSample(Vehicle *vehicle);
 
   ~WaypointV2MissionSample();
+
 
 public:
   /*! @brief Sample to run a complete mission, include init mission,
@@ -58,14 +73,7 @@ public:
    *  @note If any one of the steps fails, it will return the failed error code
    *  @return ErrorCode::ErrorCodeType error code
    */
-  ErrorCode::ErrorCodeType runWaypointV2Mission(float32_t damping,
-                                                float    speed,
-                                                float    step,
-                                                float    angle_deg,
-                                                uint16_t n_points,
-                                                uint16_t wp_type,
-                                                uint16_t wp_type_first,
-                                                uint16_t wp_type_last);
+  ErrorCode::ErrorCodeType runWaypointV2Mission(GenParams& params);
 
   /*! @brief Sample to init mission settings,
    *

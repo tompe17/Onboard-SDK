@@ -111,7 +111,6 @@ main(int argc, char** argv)
   std::vector<float> step_ ;
   std::vector<float> angle_deg_ ;
 
-
   getCmdOptionFlexible(argc, argv, "--damp", damp_);
   getCmdOptionFlexible(argc, argv, "--n", n_points_);
   getCmdOptionFlexible(argc, argv, "--wp", wp_type_);
@@ -121,24 +120,26 @@ main(int argc, char** argv)
   getCmdOptionFlexible(argc, argv, "--step", step_);
   getCmdOptionFlexible(argc, argv, "--angle_deg", angle_deg_);
 
-  float32_t damp = damp_[0];
-  uint16_t n_points = n_points_[0] ;
-  uint16_t wp_type = wp_type_[0];
-  uint16_t wp_type_first = wp_type_first_[0];
-  uint16_t wp_type_last =wp_type_last_[0];
-  float speed = speed_[0];
-  float step = step_[0];
-  float angle_deg = angle_deg_[0];
+  GenParams params{};
+
+  params.damp = damp_[0];
+  params.n_points = n_points_[0] ;
+  params.wp_type = wp_type_[0];
+  params.wp_type_first = wp_type_first_[0];
+  params.wp_type_last =wp_type_last_[0];
+  params.speed = speed_[0];
+  params.step = step_[0];
+  params.angle_deg = angle_deg_[0];
 
 
-  std::cout << "damp          = " << damp << std::endl;
-  std::cout << "n_points      = " << n_points << std::endl;
-  std::cout << "wp_type       = " << wp_type << std::endl;
-  std::cout << "wp_type_first = " << wp_type_first << std::endl;
-  std::cout << "wp_type_last  = " << wp_type_last << std::endl;
-  std::cout << "speed         = " << speed << std::endl;
-  std::cout << "step          = " << step << std::endl;
-  std::cout << "angle_deg     = " << angle_deg << std::endl;
+  std::cout << "damp          = " << params.damp << std::endl;
+  std::cout << "n_points      = " << params.n_points << std::endl;
+  std::cout << "wp_type       = " << params.wp_type << std::endl;
+  std::cout << "wp_type_first = " << params.wp_type_first << std::endl;
+  std::cout << "wp_type_last  = " << params.wp_type_last << std::endl;
+  std::cout << "speed         = " << params.speed << std::endl;
+  std::cout << "step          = " << params.step << std::endl;
+  std::cout << "angle_deg     = " << params.angle_deg << std::endl;
 
   int functionTimeout = 1;
   /*! Setup OSDK.*/
@@ -159,8 +160,7 @@ main(int argc, char** argv)
   auto *sample = new WaypointV2MissionSample(vehicle);
 
   /*! run a new WaypointV2 mission sample*/
-  sample->runWaypointV2Mission(
-    damp, speed, step, angle_deg, n_points, wp_type, wp_type_first, wp_type_last);
+  sample->runWaypointV2Mission(params);
 
   delete(sample);
 

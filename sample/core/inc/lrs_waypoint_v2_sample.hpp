@@ -43,6 +43,20 @@
 #include <dji_vehicle.hpp>
 // Helpers
 #include <dji_linux_helpers.hpp>
+
+struct GenParams
+{
+  float32_t damp;
+  int timeout;
+  uint16_t n_points;
+  uint16_t wp_type;
+  uint16_t wp_type_first;
+  uint16_t wp_type_last;
+  float speed;
+  float step;
+  float angle_deg;
+};
+
 const int DEFAULT_PACKAGE_INDEX = 0;
 class WaypointV2MissionSample
 {
@@ -59,29 +73,14 @@ public:
    *  @note If any one of the steps fails, it will return the failed error code
    *  @return ErrorCode::ErrorCodeType error code
    */
-  ErrorCode::ErrorCodeType runWaypointV2Mission(float32_t damping,
-                                                float     speed,
-                                                float     step,
-                                                float     angle_deg,
-                                                uint16_t  n_points,
-                                                uint16_t  wp_type,
-                                                uint16_t  wp_type_first,
-                                                uint16_t  wp_type_last);
+  ErrorCode::ErrorCodeType runWaypointV2Mission(GenParams& params);
 
   /*! @brief Sample to init mission settings,
    *
    *  @param timeout blocking timeout in seconds
    *  @return ErrorCode::ErrorCodeType error code
    */
-  ErrorCode::ErrorCodeType initMissionSetting(int       timeout,
-                                              float32_t damping,
-                                              float     speed,
-                                              float     step,
-                                              float     angle_deg,
-                                              uint16_t  n_points,
-                                              uint16_t  wp_type,
-                                              uint16_t  wp_type_first,
-                                              uint16_t  wp_type_last);
+  ErrorCode::ErrorCodeType initMissionSetting(GenParams& params);
 
   /*! @brief Sample to upload mission
    *
@@ -183,14 +182,7 @@ public:
                                                 uint16_t  n_points);
   std::vector<WaypointV2> generateStairWaypoints(float32_t step,
                                                  uint16_t  n_points);
-  std::vector<WaypointV2> generateAngleWaypoints(float32_t step,
-                                                 float32_t angle_deg,
-                                                 uint16_t  n_points,
-                                                 float32_t damping,
-                                                 float32_t speed,
-                                                 uint16_t  wp_type,
-                                                 uint16_t  wp_type_first,
-                                                 uint16_t  wp_type_last);
+  std::vector<WaypointV2> generateAngleWaypoints(GenParams& params);
 
   struct Vec3
   {
