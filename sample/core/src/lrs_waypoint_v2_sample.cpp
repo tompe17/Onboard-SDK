@@ -1227,7 +1227,7 @@ WaypointV2MissionSample::generateWaypoints(GenParams& params)
 
     WaypointV2& wp_prev = waypointList.back();
 
-    xyzToWaypointV2(X, Y, 0, wp_prev, wp);
+    xyzToWaypointV2(dx, dy, 0, wp_prev, wp);
     float32_t dist  = calculateDistance3D(wp, wp_prev);
     dampingDistance = getDampingFactor(params.damps[i], dist);
     wp.dampingDistance = dampingDistance;
