@@ -872,7 +872,7 @@ WaypointV2MissionSample::getDampingFactor(float32_t dampingFactor,
   // but making it a bit smaller seems to work more reliably
   // and having a minimum is also more reliable
   // both 0.4 and 0.1 are experimental
-  double halfWpDistance = wpDistanceM * f * 0.4;
+  double halfWpDistance = wpDistanceM * f * 0.395;
   double minimum        = 0.1 * wpDistanceM;
   if (halfWpDistance < minimum)
     halfWpDistance = minimum;
@@ -983,7 +983,7 @@ WaypointV2MissionSample::generateAngleWaypoints(float32_t step,
   //      the line s ignored - it will curve the first segment also
   // * distance between waypoints:
   //   - for straight lines, curves: 0.1m is ok (in sim)
-  //   - coordinated turn: 4m (damp 20)
+  //   - coordinated turn: 2m
   // * for coordinated turn, the minimum angle between segments must be:
   //    - 3..15 degs - the damping must be large - close to max
   //    > 15 the standard should work
