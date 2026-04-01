@@ -439,7 +439,7 @@ WaypointV2MissionSample::sanityCheckMission(
 
     const double EPS = 1e-9;
 //    if (x < 3.0 - EPS)
-    if (angle <= 3.0-EPS)
+    if (angle < 3.0-EPS)
     {
       printf("Angle at WPs[%zu->%zu->%zu]: %.2f deg (<=3.0)\n",
              i - 1,
