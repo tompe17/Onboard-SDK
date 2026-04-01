@@ -1150,7 +1150,12 @@ WaypointV2MissionSample::generateWaypoints(GenParams& params)
 
     printf("-----> WP: %d, prev: %d curr: %d\n",i,wp_prev.dampingDistance, wp.dampingDistance);
 
-    if (wp_prev.dampingDistance > wp.dampingDistance)
+    auto a =wp_prev.dampingDistance;
+    auto b = wp.dampingDistance;
+    float percent = 0.1;
+    if (std::abs(a - b) > percent * std::abs(a))
+
+//    if (wp_prev.dampingDistance > wp.dampingDistance)
     {
       printf("--> WARNING: Updating damping of the previous wp[%zu]: from: %d "
              "to %d\n",
