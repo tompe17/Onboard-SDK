@@ -1152,7 +1152,7 @@ WaypointV2MissionSample::generateWaypoints(GenParams& params)
 
     auto a =wp_prev.dampingDistance;
     auto b = wp.dampingDistance;
-    float percent = 0.1;
+    float percent = 0.2;
   if (i>0)
     if (std::abs(a - b) > percent * std::abs(a))
 
