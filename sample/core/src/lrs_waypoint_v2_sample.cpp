@@ -1155,9 +1155,10 @@ WaypointV2MissionSample::generateWaypoints(GenParams& params)
     float percent = 0.1;
   if (i>1)
     if (std::abs(a - b) > percent * std::abs(a))
-      wp.dampingDistance =     std::min(a, b);
+
 //    if (wp_prev.dampingDistance > wp.dampingDistance)
     {
+      wp.dampingDistance =     std::min(a, b);
       printf("--> WARNING: Updating damping of the previous wp[%zu]: from: %d "
              "to %d\n",
              waypointList.size() - 1,
