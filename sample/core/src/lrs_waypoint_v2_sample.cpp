@@ -1112,89 +1112,6 @@ WaypointV2MissionSample::generateWaypoints(GenParams& params)
 
   auto expected_n_points = params.steps.size();
 
-  //  -----------------------------------------
-  //  -----------------------------------------
-  //  -----------------------------------------
-  //
-  //  if (params.wp_type_first == 0)
-  //  {
-  //    wpTypeFirst =
-  //    DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
-  //  }
-  //  else if (params.wp_type_first == 1)
-  //  {
-  //    wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
-  //  }
-  //  else // if (wp_type_first == 2)
-  //  {
-  //    wpTypeFirst = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
-  //  }
-  //
-  //  //  -----------------------------------------
-  //  //  -----------------------------------------
-  //  //  -----------------------------------------
-  //  if (params.wp_type == 0)
-  //  {
-  //    wpType = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
-  //  }
-  //  else if (params.wp_type == 1)
-  //  {
-  //    wpType = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
-  //  }
-  //  else if (params.wp_type == 2)
-  //  {
-  //    wpType = DJIWaypointV2FlightPathModeCoordinateTurn;
-  //  }
-  //  else // if (wp_type == 3)
-  //  {
-  //    wpType = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
-  //  }
-  //
-  //  //  -----------------------------------------
-  //  //  -----------------------------------------
-  //  //  -----------------------------------------
-  //  if (params.wp_type_last == 0)
-  //  {
-  //    wpTypeLast = DJIWaypointV2FlightPathModeGoToPointInAStraightLineAndStop;
-  //  }
-  //  else if (params.wp_type_last == 1)
-  //  {
-  //    wpTypeLast = DJIWaypointV2FlightPathModeGoToPointAlongACurve;
-  //  }
-  //  else if (params.wp_type_last == 2)
-  //  {
-  //    wpTypeLast = DJIWaypointV2FlightPathModeCoordinateTurn;
-  //  }
-  //  else if (params.wp_type_last == 3)
-  //  {
-  //    wpTypeLast = DJIWaypointV2FlightPathModeStraightOut;
-  //  }
-  //  else // if (params.wp_type_last == 4)
-  //  {
-  //    wpTypeLast = DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop;
-  //  }
-
-  // comments:
-  // * damping is in cm - so if given in meters, has to be divided by 100.
-  //   we can do it 0..1 - and scale based on segment length/2
-  //   this might still fail for very short distances
-  // * first waypoint cannot be a coordinated turn - will refuse to fly
-  // * heading is always along the segment for the first WP
-  // * damping seems not to do anything for straight line and curve
-  // * WP types:
-  //   -coordinated turn: can turn before a WP if damping is high, fly pass
-  //    the waypoint if damping is small
-  //   -curve: always crosses the waypoint -
-  //      damping does nothing
-  //   - DJIWaypointV2FlightPathModeGoToPointAlongACurveAndStop
-  //    if it overshoots, it will correct itself by moving closer - looks weird
-  // * if second (and other) WP are curve, and the first is a straight line -
-  //      the line s ignored - it will curve the first segment also
-  // * distance between waypoints:
-  //   - for straight lines, curves: 0.1m is ok (in sim)
-  //   - coordinated turn: 1m
-  // * for coordinated turn, the minimum angle between segments must be: 3
-
   setWaypointV2Defaults(wp);
   wp.headingMode     = DJIWaypointV2HeadingModeAuto;
   wp.heading         = 45.0;
@@ -1221,7 +1138,7 @@ WaypointV2MissionSample::generateWaypoints(GenParams& params)
 
     auto [dx, dy] = rotateVector(params.steps[i], a_rad);
 
-    printf("x: %f, y: %f dx: %f dy: %f\n", X, Y, dx, dy);
+//    printf("x: %f, y: %f dx: %f dy: %f\n", X, Y, dx, dy);
 
     WaypointV2& wp_prev = waypointList.back();
 
@@ -1239,7 +1156,7 @@ WaypointV2MissionSample::generateWaypoints(GenParams& params)
              wp.dampingDistance);
       wp_prev.dampingDistance = wp.dampingDistance;
     }
-    printf("---- %d type: %d\n",i, params.types[i]);
+//    printf("---- %d type: %d\n",i, params.types[i]);
     wp.waypointType    = (DJIWaypointV2FlightPathMode)params.types[i+1];
     waypointList.push_back(wp);
 
