@@ -1148,7 +1148,7 @@ WaypointV2MissionSample::generateWaypoints(GenParams& params)
     dampingDistance = getDampingFactor(params.damps[i], dist);
     wp.dampingDistance = dampingDistance;
 
-    printf("-----> WP: %d, prev: %d curr: %d",i,wp_prev.dampingDistance, wp.dampingDistance);
+    printf("-----> WP: %d, prev: %d curr: %d\n",i,wp_prev.dampingDistance, wp.dampingDistance);
 
     if (wp_prev.dampingDistance > wp.dampingDistance)
     {
