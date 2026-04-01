@@ -6,15 +6,15 @@
 
 struct GenParams
 {
-  float32_t damp;
+//  float32_t damp;
   int timeout;
-  uint16_t n_points;
-  uint16_t wp_type;
-  uint16_t wp_type_first;
-  uint16_t wp_type_last;
-  float speed;
-  float step;
-  float angle_deg;
+//  uint16_t n_points;
+//  uint16_t wp_type;
+//  uint16_t wp_type_first;
+//  uint16_t wp_type_last;
+//  float speed;
+//  float step;
+//  float angle_deg;
 
   std::vector<float> steps;
   std::vector<float> lengths;

@@ -423,7 +423,6 @@ WaypointV2MissionSample::sanityCheckMission(
       double dist = calculateDistance3D(wp_prev, wp);
       const double EPS = 1e-9;
 
-//      if (x < 3.0 - EPS)
       if (dist < 3.0 - EPS)
       {
         printf("ERROR: The waypoint [%zu] is type Curve and distance to "
@@ -505,7 +504,7 @@ WaypointV2MissionSample::initMissionSetting(GenParams& params)
   //  missionInitSettings.finishedAction =
   //  DJIWaypointV2MissionFinishedGoToFirstWaypoint;
   missionInitSettings.maxFlightSpeed            = 15.0; // RC stick
-  missionInitSettings.autoFlightSpeed           = params.speed;
+  missionInitSettings.autoFlightSpeed           = params.speeds[0];
   missionInitSettings.exitMissionOnRCSignalLost = 1;
   missionInitSettings.gotoFirstWaypointMode =
     DJIWaypointV2MissionGotoFirstWaypointModePointToPoint;
@@ -924,6 +923,7 @@ WaypointV2MissionSample::getDampingFactor(float32_t dampingFactor,
   return (uint16_t)(halfWpDistance * 100.0);
 }
 
+#if 0
 std::vector<WaypointV2>
 WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
 {
@@ -1099,7 +1099,7 @@ WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
   //  waypointList[1].dampingDistance = 600;
   return waypointList;
 }
-
+#endif
 std::vector<WaypointV2>
 WaypointV2MissionSample::generateWaypoints(GenParams& params)
 {

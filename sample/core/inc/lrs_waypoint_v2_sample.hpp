@@ -184,7 +184,7 @@ public:
                                                 uint16_t  n_points);
   std::vector<WaypointV2> generateStairWaypoints(float32_t step,
                                                  uint16_t  n_points);
-  std::vector<WaypointV2> generateAngleWaypoints(GenParams& params);
+//  std::vector<WaypointV2> generateAngleWaypoints(GenParams& params);
   std::vector<WaypointV2> generateWaypoints(GenParams& params);
 
   struct Vec3
