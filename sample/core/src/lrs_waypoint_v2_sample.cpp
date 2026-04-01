@@ -421,7 +421,10 @@ WaypointV2MissionSample::sanityCheckMission(
     if (wp.waypointType == DJIWaypointV2FlightPathModeCoordinateTurn)
     {
       double dist = calculateDistance3D(wp_prev, wp);
-      if (dist < 3.0)
+      const double EPS = 1e-9;
+
+//      if (x < 3.0 - EPS)
+      if (dist < 3.0 - EPS)
       {
         printf("ERROR: The waypoint [%zu] is type Curve and distance to "
                "previous wp is %f (<3.0)\n",
@@ -437,9 +440,7 @@ WaypointV2MissionSample::sanityCheckMission(
     double angle = computeAngleDeg3D(
       waypointList[i - 1], waypointList[i], waypointList[i + 1]);
 
-    const double EPS = 1e-9;
-//    if (x < 3.0 - EPS)
-    if (angle < 3.0-EPS)
+    if (angle <= 3.0)
     {
       printf("Angle at WPs[%zu->%zu->%zu]: %.2f deg (<=3.0)\n",
              i - 1,
@@ -1019,7 +1020,7 @@ WaypointV2MissionSample::generateAngleWaypoints(GenParams& params)
   //      the line s ignored - it will curve the first segment also
   // * distance between waypoints:
   //   - for straight lines, curves: 0.1m is ok (in sim)
-  //   - coordinated turn: 3m (because of small damping below 3 is problematic)
+  //   - coordinated turn: 3m (because of small damping)
   // * for coordinated turn, the minimum angle between segments must be: 3
 
   setWaypointV2Defaults(wpFirst);
